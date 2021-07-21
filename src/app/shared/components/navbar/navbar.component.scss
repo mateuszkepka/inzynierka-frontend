@@ -1,0 +1,39 @@
+nav {
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: white;
+    padding: 1rem 2rem;
+}
+
+.menu {
+    color: var(--primary-blue);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 1rem;
+    
+    :hover {
+        color: var(--primary-blue-hover);    
+    }
+    
+    &-item {
+        display: flex;
+        cursor: pointer;
+        transition: 0.3s;
+
+        p {
+            margin-left: 1rem;
+        }
+    }
+}
+
+
+

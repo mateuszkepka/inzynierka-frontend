@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'inzynierka-frontend';
-  value2: string;
 }

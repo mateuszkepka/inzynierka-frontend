@@ -1,0 +1,10 @@
+:host {
+    --primary-blue: hsl(204, 97%, 65%);
+    --primary-blue-hover: hsl(204, 97%, 45%);
+}
+
+.main-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
