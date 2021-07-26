@@ -1,0 +1,12 @@
+.lottie-header {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr 1fr;
+
+    &-texts {
+        align-self: center;
+        justify-self: center;
+        text-align: center;
+    }
+
+}
