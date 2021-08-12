@@ -6,7 +6,6 @@ export interface LottieHeaderTexts {
   upperBoldText: string;
   lowerNormalText: string;
 }
-
 @Component({
   selector: 'app-lottie-header',
   templateUrl: './lottie-header.component.html',

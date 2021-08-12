@@ -1,0 +1,12 @@
+<div class="promo" [ngClass]="{'direction-rtl': imageOnLeft}">
+    <div class="promo-texts">
+        <p class="promo-texts-upper">
+            {{ promoTexts.upperText }}
+        </p>
+        <p class="promo-texts-lower">
+            {{ promoTexts.lowerText }}
+        </p>
+    </div>
+    <img [src]="imagePath" alt="home-page-promo" />
+</div>
+

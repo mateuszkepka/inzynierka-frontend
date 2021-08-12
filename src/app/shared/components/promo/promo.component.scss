@@ -1,0 +1,29 @@
+.promo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    margin: 2rem 0;
+
+    &-texts {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        direction: ltr;
+        padding: 1rem;
+
+        &-upper {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        &-lower {
+            padding: 1rem 0;
+        }
+    }
+}
+
+.direction-rtl {
+    direction: rtl;
+}

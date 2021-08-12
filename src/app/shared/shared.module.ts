@@ -6,6 +6,7 @@ import { LottieHeaderComponent } from './components/lottie-header/lottie-header.
 import { LottieModule } from 'ngx-lottie';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgModule } from '@angular/core';
+import { PromoComponent } from './components/promo/promo.component';
 import { RouterModule } from '@angular/router';
 import player from 'lottie-web';
 
@@ -16,7 +17,8 @@ export function playerFactory() {
   declarations: [
     NavbarComponent,
     FooterComponent,
-    LottieHeaderComponent
+    LottieHeaderComponent,
+    PromoComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ export function playerFactory() {
   exports: [
     NavbarComponent,
     FooterComponent,
-    LottieHeaderComponent
+    LottieHeaderComponent,
+    PromoComponent
   ]
 })
 export class SharedModule { }

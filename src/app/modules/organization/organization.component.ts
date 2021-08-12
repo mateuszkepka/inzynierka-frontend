@@ -3,11 +3,11 @@ import { LottieHeaderTexts } from "src/app/shared/components/lottie-header/lotti
 import { PromoTexts } from "src/app/shared/components/promo/promo.component";
 
 @Component({
-    selector: `app-home`,
-    templateUrl: `./home.component.html`,
+    selector: `app-organization`,
+    templateUrl: `./organization.component.html`,
 })
-export class HomeComponent {
-    lottiePath = `/assets/animations/blue-trophy.json`;
+export class OrganizationComponent {
+    lottiePath = `/assets/animations/organization.json`;
 
     imagePaths: string[] = [
         `/assets/images/home-page/homepage-1.png`,
