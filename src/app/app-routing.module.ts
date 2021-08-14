@@ -27,6 +27,14 @@ const routes: Routes = [
             );
         },
     },
+    {
+        path: `log-in`,
+        loadChildren: async () => {
+            return import(`./modules/log-in/log-in.module`).then(
+                (m) => m.LogInModule
+            );
+        },
+    },
 ];
 
 @NgModule({

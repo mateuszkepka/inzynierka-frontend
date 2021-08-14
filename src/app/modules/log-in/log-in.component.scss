@@ -1,0 +1,46 @@
+.log-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5vh;
+    
+    &-icon {
+        color: var(--primary-blue);
+    }
+
+    &-label {
+        font-weight: 600;
+        font-size: 1.5rem;
+        padding: 1rem 0;
+    }
+
+    &-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 60%;
+
+        formly-form{
+            width: 100%;
+        }
+    }
+
+    &-forgot-password {
+        color: var(--primary-blue);
+        font-size: 0.75rem;
+        align-self: flex-start;
+        text-decoration: underline;
+        padding-top: 0.25rem;
+    }
+}
+
+::ng-deep .p-inputtext {
+    width: 100%;
+}
+
+.p-button {
+    width: 60%;
+    margin: 1rem 0;
+}
