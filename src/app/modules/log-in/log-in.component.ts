@@ -15,14 +15,14 @@ export class LogInComponent {
 
     // FORM
     form = new FormGroup({});
-    model = { email: `email@gmail.com`};
+    model = { };
     fields: FormlyFieldConfig[] = [
         {
             key: `email`,
             type: `input`,
             templateOptions: {
                 label: `E-mail Address`,
-                placeholder: `Enter email`,
+                placeholder: `Enter e-mail`,
                 required: true,
             }
         },
@@ -31,6 +31,7 @@ export class LogInComponent {
             type: `input`,
             templateOptions: {
                 label: `Password`,
+                placeholder: `Enter password`,
                 type: `password`,
                 required: true,
             }
@@ -38,6 +39,6 @@ export class LogInComponent {
     ]
 
     onSubmit() {
-        console.log(`FORM MODEL`, this.model);
+        console.log(`SENDING...`);
     }
 }

@@ -19,14 +19,31 @@
                 [form]="form"
                 [fields]="fields"
                 [model]="model" 
-            >
-            </formly-form>
+            ></formly-form>
             <span class="log-in-forgot-password">Forgot password?</span>
-            <button 
-                type="submit"
-                pButton
-                label="Submit"
-            ></button>
+            <div class="log-in-buttons">
+                <button 
+                    type="submit"
+                    pButton
+                    label="Submit"
+                ></button>
+
+                <div class="log-in-buttons__create-account">
+                    <div class="log-in-buttons__create-account-line"></div>
+                    <p>Or create account</p>
+                    <div class="log-in-buttons__create-account-line"></div>
+                </div>
+
+                <button 
+                    pButton 
+                    pRipple 
+                    type="button" 
+                    label="Register" 
+                    class="p-button-outlined"
+                    [routerLink]="['/register']"
+                ></button>
+
+            </div>
         </form>
     </div>
 </div>

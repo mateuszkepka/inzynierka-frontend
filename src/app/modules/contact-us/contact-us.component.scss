@@ -1,10 +1,10 @@
-.log-in {
+.contact-us {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding-top: 5vh;
-    
+
     &-icon {
         color: var(--primary-blue);
     }
@@ -22,7 +22,7 @@
         justify-content: center;
         min-width: 60%;
 
-        formly-form{
+        formly-form {
             display: flex;
             flex-direction: column;
             gap: 1rem;
@@ -30,33 +30,9 @@
         }
     }
 
-    &-forgot-password {
-        color: var(--primary-blue);
-        font-size: 0.75rem;
-        align-self: flex-start;
-        text-decoration: underline;
-        padding-top: 0.25rem;
-    }
-
     &-buttons {
         width: 35%;
         min-width: 300px;
-        display: flex;
-        flex-direction: column;
-
-        &__create-account {
-            display: grid;
-            grid-template-columns: 0.6fr 1fr 0.6fr;
-            align-items: center;
-            justify-items: center;
-            font-size: 0.75rem;
-
-            &-line {
-                height: 1px;
-                width: 100%;
-                background: black;
-            }
-        }
     }
 }
 
@@ -65,5 +41,6 @@
 }
 
 .p-button {
+    width: 100%;
     margin: 1rem 0;
 }

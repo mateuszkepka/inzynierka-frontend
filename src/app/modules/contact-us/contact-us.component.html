@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="contact-us">
+        <span class="contact-us-icon">
+            <fa-icon
+                [icon]="faEnvelopeOpen"
+                size="5x"
+            ></fa-icon>
+        </span>
+
+        <p class="contact-us-label">Contact us</p>
+
+        <form
+            [formGroup]="form"
+            (ngSumbit)="onSubmit()"
+            class="contact-us-form"
+        >
+            <formly-form
+                [form]="form"
+                [fields]="fields"
+            ></formly-form>
+            <div class="contact-us-buttons">
+                <button
+                    type="submit"
+                    pButton
+                    label="Send"
+                ></button>
+            </div>
+        </form>
+    </div>
+</div>
