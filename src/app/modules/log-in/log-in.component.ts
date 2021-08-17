@@ -36,7 +36,7 @@ export class LogInComponent {
                 required: true,
             }
         }
-    ]
+    ];
 
     onSubmit() {
         console.log(`SENDING...`);

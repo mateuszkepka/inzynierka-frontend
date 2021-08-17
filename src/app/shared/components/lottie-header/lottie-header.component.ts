@@ -7,9 +7,9 @@ export interface LottieHeaderTexts {
   lowerNormalText: string;
 }
 @Component({
-  selector: 'app-lottie-header',
-  templateUrl: './lottie-header.component.html',
-  styleUrls: ['./lottie-header.component.scss']
+  selector: `app-lottie-header`,
+  templateUrl: `./lottie-header.component.html`,
+  styleUrls: [`./lottie-header.component.scss`]
 })
 
 export class LottieHeaderComponent implements OnInit {
@@ -22,7 +22,7 @@ export class LottieHeaderComponent implements OnInit {
 
   styles: Partial<CSSStyleDeclaration> = {
     maxWidth: `500px`,
-  }
+  };
 
   constructor() { }
 
@@ -30,7 +30,7 @@ export class LottieHeaderComponent implements OnInit {
     this.options = {
       ...this.options,
       path: this.lottiePath,
-    }
+    };
   }
 
 }

@@ -10,9 +10,7 @@ import { PromoComponent } from './components/promo/promo.component';
 import { RouterModule } from '@angular/router';
 import player from 'lottie-web';
 
-export function playerFactory() {
-  return player;
-}
+const playerFactory = () => player;
 @NgModule({
   declarations: [
     NavbarComponent,

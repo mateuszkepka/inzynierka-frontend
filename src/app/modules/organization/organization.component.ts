@@ -23,7 +23,7 @@ export class OrganizationComponent {
             upperText: `Exercitation veniam consequat sunt nostrud amet.`,
             lowerText: `Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.`
         },
-    ]
+    ];
 
     headerTexts: LottieHeaderTexts = {
         upperBoldText: `Lorem ipsum`,

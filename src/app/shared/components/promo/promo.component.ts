@@ -6,9 +6,9 @@ export interface PromoTexts {
 }
 
 @Component({
-  selector: 'app-promo',
-  templateUrl: './promo.component.html',
-  styleUrls: ['./promo.component.scss']
+  selector: `app-promo`,
+  templateUrl: `./promo.component.html`,
+  styleUrls: [`./promo.component.scss`]
 })
 export class PromoComponent implements OnInit {
 

@@ -18,7 +18,7 @@ import { SharedModule } from './shared/shared.module';
     FontAwesomeModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormlyModule.forRoot({ 
+    FormlyModule.forRoot({
       extras: { lazyRender: true },
       validationMessages: [
         { name: `required`, message: `This field is required`}

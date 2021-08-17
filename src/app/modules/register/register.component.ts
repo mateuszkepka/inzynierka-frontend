@@ -8,7 +8,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
     templateUrl: `./register.component.html`,
     styleUrls: [`./register.component.scss`]
 })
-export class RegisterComponent { 
+export class RegisterComponent {
     faUserCircle = faUserCircle;
 
     form = new FormGroup({});
@@ -40,7 +40,6 @@ export class RegisterComponent {
                 placeholder: `Enter password`,
                 type: `password`,
                 required: true,
-                
             }
         },
         {
@@ -103,6 +102,6 @@ export class RegisterComponent {
     ];
 
     onSubmit() {
-        console.log(`REGISTERING...`)
+        console.log(`REGISTERING...`);
     }
 }

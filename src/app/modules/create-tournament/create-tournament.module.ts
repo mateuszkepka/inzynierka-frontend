@@ -1,23 +1,21 @@
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { CreateTournamentComponent } from './create-tournament.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RegisterComponent } from './register.component';
-import { RegisterRoutingModule } from './register-routing.module';
 
 @NgModule({
-  declarations: [RegisterComponent],
+  declarations: [CreateTournamentComponent],
   imports: [
-    RegisterRoutingModule,
     CommonModule,
-    ReactiveFormsModule,
-    FormlyModule.forChild(),
-    FormlyPrimeNGModule,
     FontAwesomeModule,
-    ButtonModule,
+    FormlyModule,
+    FormlyPrimeNGModule,
+    ReactiveFormsModule,
+    ButtonModule
   ]
 })
-export class RegisterModule { }
+export class CreateTournamentModule { }

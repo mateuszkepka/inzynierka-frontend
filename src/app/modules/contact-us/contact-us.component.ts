@@ -8,7 +8,7 @@ import { faEnvelopeOpen } from "@fortawesome/free-solid-svg-icons";
     templateUrl: `./contact-us.component.html`,
     styleUrls: [`./contact-us.component.scss`]
 })
-export class ContactUsComponent { 
+export class ContactUsComponent {
     faEnvelopeOpen = faEnvelopeOpen;
 
     form = new FormGroup({});
@@ -46,6 +46,6 @@ export class ContactUsComponent {
     ];
 
     onSubmit() {
-        console.log(`SENDING CONTACT FORM...`)
+        console.log(`SENDING CONTACT FORM...`);
     }
 }
