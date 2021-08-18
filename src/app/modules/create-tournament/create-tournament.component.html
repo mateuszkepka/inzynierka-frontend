@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="create-tournament">
+        <span class="create-tournament-icon">
+            <fa-icon
+                [icon]="faTrophy"
+                size="5x" 
+            ></fa-icon>
+        </span>
+
+        <p class="create-tournament-label"></p>
+
+        <form 
+            [formGroup]="form" 
+            (ngSubmit)="onSubmit()" 
+            class="create-tournament-form"
+        >
+            <formly-form
+                [form]="form"
+                [fields]="fields"
+                [model]="model"
+            ></formly-form>
+            <div class="create-tournament-buttons">
+                <button 
+                    type="submit"
+                    pButton
+                    label="Create tournament"
+                ></button>
+            </div>
+        </form>
+    </div>
+</div>
