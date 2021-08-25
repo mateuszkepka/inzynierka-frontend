@@ -1,0 +1,12 @@
+
+<div class="ui-widget ng-star-inserted">
+        <label for="icon">{{ to.label }}</label>
+        <span class="ng-star-inserted" aria-hidden="true">*</span>
+</div>
+<p-calendar
+        [(ngModel)]="date" 
+        [showIcon]="true" 
+        inputId="icon" 
+        [placeholder]="to.placeholder" 
+        [required]="to.required"
+></p-calendar>

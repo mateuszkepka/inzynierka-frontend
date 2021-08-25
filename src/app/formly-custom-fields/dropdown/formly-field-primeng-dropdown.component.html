@@ -1,0 +1,12 @@
+
+<div class="ui-widget ng-star-inserted">
+    <label for="icon">{{ to.label }}</label>
+    <span class="ng-star-inserted" aria-hidden="true">*</span>
+</div>
+<p-dropdown
+    [options]="to.options"
+    [(ngModel)]="selectedValue"
+    [placeholder]="to.placeholder"
+    [optionLabel]="to.optionLabel"
+    [showClear]="to.showClear"
+></p-dropdown>
