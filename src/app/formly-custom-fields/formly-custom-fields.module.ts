@@ -8,9 +8,11 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { FormlyFieldPrimengCalendarComponent } from "./calendar/formly-field-primeng-calendar.component";
 import { FormlyFieldPrimengDropdownComponent } from './dropdown/formly-field-primeng-dropdown.component';
 import { FormlyFieldPrimengFileUploadComponent } from './file-upload/formly-field-primeng-file-upload.component';
+import { FormlyFieldPrimengPasswordComponent } from './password/formly-field-primeng-password.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from "@angular/core";
+import { PasswordModule } from 'primeng/password';
 import { TabViewModule } from 'primeng/tabview';
 import { ToastModule } from 'primeng/toast';
 
@@ -18,7 +20,8 @@ import { ToastModule } from 'primeng/toast';
     declarations: [
         FormlyFieldPrimengCalendarComponent,
         FormlyFieldPrimengDropdownComponent,
-        FormlyFieldPrimengFileUploadComponent
+        FormlyFieldPrimengFileUploadComponent,
+        FormlyFieldPrimengPasswordComponent
     ],
     imports: [
         CommonModule,
@@ -31,7 +34,8 @@ import { ToastModule } from 'primeng/toast';
         ToastModule,
         TabViewModule,
         ButtonModule,
-        HttpClientModule
+        HttpClientModule,
+        PasswordModule,
     ],
     exports: [
         FormlyFieldPrimengCalendarComponent

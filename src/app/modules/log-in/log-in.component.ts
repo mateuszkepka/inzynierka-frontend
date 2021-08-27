@@ -28,11 +28,10 @@ export class LogInComponent {
         },
         {
             key: `password`,
-            type: `input`,
+            type: `password`,
             templateOptions: {
                 label: `Password`,
                 placeholder: `Enter password`,
-                type: `password`,
                 required: true,
             }
         }

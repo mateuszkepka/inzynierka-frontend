@@ -34,21 +34,19 @@ export class RegisterComponent {
         },
         {
             key: `password`,
-            type: `input`,
+            type: `password`,
             templateOptions: {
                 label: `Password`,
                 placeholder: `Enter password`,
-                type: `password`,
                 required: true,
             }
         },
         {
             key: `password-repeat`,
-            type: `input`,
+            type: `password`,
             templateOptions: {
                 label: `Repeat password`,
                 placeholder: `Repeat password`,
-                type: `password`,
                 required: true,
                 toggleMask: true,
             }

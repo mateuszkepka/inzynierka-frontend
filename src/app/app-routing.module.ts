@@ -45,6 +45,12 @@ const routes: Routes = [
             (m) => m.CreateTournamentModule
         ),
     },
+    {
+        path: `tournaments`,
+        loadChildren: async () => import(`./modules/tournaments/tournaments.module`).then(
+            (m) => m.TournamentsModule
+        ),
+    },
 ];
 
 @NgModule({
