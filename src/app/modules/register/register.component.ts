@@ -79,15 +79,6 @@ export class RegisterComponent {
             }
         },
         {
-            key: `studentId`,
-            type: `input`,
-            templateOptions: {
-                label: `Student ID Number`,
-                placeholder: `Enter your student ID number`,
-                required: false,
-            }
-        },
-        {
             key: `acceptTermsOfUse`,
             type: `checkbox`,
             templateOptions: {
