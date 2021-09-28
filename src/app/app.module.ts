@@ -1,3 +1,5 @@
+import * as passwordValidation from './validators/password';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -9,9 +11,11 @@ import { FormlyFieldPrimengFileUploadComponent } from './formly-custom-fields/fi
 import { FormlyFieldPrimengPasswordComponent } from './formly-custom-fields/password/formly-field-primeng-password.component';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
+import { MessageService } from 'primeng/api';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -25,18 +29,25 @@ import { SharedModule } from './shared/shared.module';
     ReactiveFormsModule,
     FormlyModule.forRoot({
       extras: { lazyRender: true },
+      validators: [
+        {
+          name: `passwordValidator`,
+          validation: passwordValidation.passwordValidator
+        }
+      ],
       validationMessages: [
-        { name: `required`, message: `This field is required`}
+        { name: `required`, message: `This field is required` },
+        { name: `password`, message: passwordValidation.passwordValidatorMessage }
       ],
       types: [
         { name: `datepicker`, component: FormlyFieldPrimengCalendarComponent },
         { name: `dropdown`, component: FormlyFieldPrimengDropdownComponent },
         { name: `fileUpload`, component: FormlyFieldPrimengFileUploadComponent },
-        { name: `password`, component: FormlyFieldPrimengPasswordComponent },
+        { name: `password`, component: FormlyFieldPrimengPasswordComponent},
       ]
     }),
     FormlyPrimeNGModule,
-    FormlyCustomFieldsModule
+    FormlyCustomFieldsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

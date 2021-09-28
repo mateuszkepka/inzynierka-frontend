@@ -1,5 +1,6 @@
 import { RouterModule, Routes } from "@angular/router";
 
+import { AuthGuard } from "./guards/auth.guard";
 import { NgModule } from "@angular/core";
 
 const routes: Routes = [
@@ -47,6 +48,7 @@ const routes: Routes = [
     },
     {
         path: `tournaments`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/tournaments/tournaments.module`).then(
             (m) => m.TournamentsModule
         ),

@@ -14,8 +14,10 @@
             class="register-form"
         >
             <formly-form
+                [model]="model"
                 [form]="form"
                 [fields]="fields"
+                [options]="formOptions"
             ></formly-form>
             <div class="register-buttons">
                 <button
@@ -27,3 +29,4 @@
         </form>
     </div>
 </div>
+<!-- <p-toast position="bottom-right"></p-toast> -->

@@ -1,18 +1,39 @@
+import { FormlyFieldConfig, FormlyFormOptions } from "@ngx-formly/core";
+
+import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { FormlyFieldConfig } from "@ngx-formly/core";
+import { MessageService } from "primeng/api";
+import { RegisterInput } from "src/app/shared/interfaces/register-input.interface";
+import { Router } from "@angular/router";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
     selector: `app-register`,
     templateUrl: `./register.component.html`,
-    styleUrls: [`./register.component.scss`]
+    styleUrls: [`./register.component.scss`],
 })
 export class RegisterComponent {
     faUserCircle = faUserCircle;
 
     form = new FormGroup({});
-    model = {};
+
+    model = {
+        email: ``,
+        username: ``,
+        country: ``,
+        university: ``,
+        password: ``,
+        repeatPassword: ``,
+        studentId: ``
+    };
+
+    formOptions: FormlyFormOptions = {
+        formState: {
+            model: this.model,
+        }
+    };
+
     fields: FormlyFieldConfig[] = [
         {
             key: `email`,
@@ -39,7 +60,8 @@ export class RegisterComponent {
                 label: `Password`,
                 placeholder: `Enter password`,
                 required: true,
-            }
+                modelField: `password`,
+            },
         },
         {
             key: `password-repeat`,
@@ -49,6 +71,7 @@ export class RegisterComponent {
                 placeholder: `Repeat password`,
                 required: true,
                 toggleMask: true,
+                modelField: `repeatPassword`
             }
         },
         {
@@ -90,7 +113,21 @@ export class RegisterComponent {
         }
     ];
 
-    onSubmit() {
-        console.log(`REGISTERING...`);
+    constructor(
+        private readonly apiService: ApiService,
+        private readonly router: Router,
+    ) {}
+
+    async onSubmit() {
+        (await this.apiService.register(this.model as RegisterInput)).subscribe((res) => {
+            if (res) {
+                // this.messageService.add({severity: `success`, summary: `Success!`, detail: `Account has been created.`});
+                void this.router.navigate([`/log-in`]);
+                return;
+            }
+        }, () => {
+            // this.messageService.add({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
+        });
+
     }
 }
