@@ -1,4 +1,4 @@
-import { LogInInput, RegisterInput } from "../shared/interfaces/register-input.interface";
+import { LogInInput, RegisterInput } from "../shared/interfaces/interfaces";
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -21,6 +21,16 @@ export class ApiService {
 
     async login(input: LogInInput) {
         const url = this.apiUrl + `/auth/log-in`;
-        return this.httpClient.post(url, input, {withCredentials: true});
+        return this.httpClient.post(url, input, { withCredentials: true });
+    }
+
+    async refreshToken() {
+        const url = this.apiUrl + `/auth/refresh`;
+        return await this.httpClient.get(url, { withCredentials: true });
+    }
+
+    async logOut() {
+        const url = this.apiUrl + `/auth/log-out`;
+        return this.httpClient.post(url, {}, { withCredentials: true });
     }
 }

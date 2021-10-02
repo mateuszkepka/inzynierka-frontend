@@ -48,9 +48,15 @@ const routes: Routes = [
     },
     {
         path: `tournaments`,
-        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/tournaments/tournaments.module`).then(
             (m) => m.TournamentsModule
+        ),
+    },
+    {
+        path: `user-dashboard`,
+        canActivate: [AuthGuard],
+        loadChildren: async () => import(`./modules/user-dashboard/user-dashboard.module`).then(
+            (m) => m.UserDashboardModule
         ),
     },
 ];

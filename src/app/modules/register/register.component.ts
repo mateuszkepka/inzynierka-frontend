@@ -4,7 +4,7 @@ import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { MessageService } from "primeng/api";
-import { RegisterInput } from "src/app/shared/interfaces/register-input.interface";
+import { RegisterInput } from "src/app/shared/interfaces/interfaces";
 import { Router } from "@angular/router";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 

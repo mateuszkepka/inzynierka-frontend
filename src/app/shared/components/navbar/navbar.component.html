@@ -18,12 +18,5 @@
             <p [routerLink]="['/contact-us']">Contact us</p>
         </span>
     </div>
-    <button 
-        pButton 
-        pRipple 
-        type="button" 
-        label="Log in" 
-        class="p-button-outlined"
-        [routerLink]="['/log-in']"
-    ></button>
+    <app-logged-in-status></app-logged-in-status>
 </nav>

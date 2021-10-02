@@ -7,7 +7,6 @@ import { Injectable } from "@angular/core";
 export class AuthGuard implements CanActivate {
 
     canActivate() {
-        console.log(document.cookie);
-        return true;
+        return document.cookie.includes(`Authentication`);
     }
 }

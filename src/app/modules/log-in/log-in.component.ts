@@ -1,9 +1,12 @@
 import { FormlyFieldConfig, FormlyFormOptions } from "@ngx-formly/core";
+import { LogInInput, User } from "src/app/shared/interfaces/interfaces";
 
 import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { LogInInput } from "src/app/shared/interfaces/register-input.interface";
+import { Router } from "@angular/router";
+import { SetCurrentUser } from "src/app/state/current-user.actions";
+import { Store } from "@ngxs/store";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -45,16 +48,20 @@ export class LogInComponent {
         }
     ];
 
-    constructor(private readonly apiService: ApiService) {}
+    constructor(
+        private readonly apiService: ApiService,
+        private readonly store: Store,
+        private readonly router: Router,
+    ) {}
 
 
     async onSubmit() {
         (await this.apiService.login(this.model as LogInInput)).subscribe((res) => {
             if (res) {
-                console.log(res);
+                this.store.dispatch(new SetCurrentUser(res as User));
+                void this.router.navigate([`/user-dashboard`]);
                 return;
             }
-        }, () => {
         });
     }
 }

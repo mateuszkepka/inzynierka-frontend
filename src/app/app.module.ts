@@ -3,6 +3,7 @@ import * as passwordValidation from './validators/password';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { CurrentUserState } from './state/current-user.state';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormlyCustomFieldsModule } from './formly-custom-fields/formly-custom-fields.module';
 import { FormlyFieldPrimengCalendarComponent } from './formly-custom-fields/calendar/formly-field-primeng-calendar.component';
@@ -13,6 +14,7 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { MessageService } from 'primeng/api';
 import { NgModule } from '@angular/core';
+import { NgxsModule } from '@ngxs/store';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { ToastModule } from 'primeng/toast';
@@ -48,6 +50,7 @@ import { ToastModule } from 'primeng/toast';
     }),
     FormlyPrimeNGModule,
     FormlyCustomFieldsModule,
+    NgxsModule.forRoot([CurrentUserState]),
   ],
   providers: [],
   bootstrap: [AppComponent]

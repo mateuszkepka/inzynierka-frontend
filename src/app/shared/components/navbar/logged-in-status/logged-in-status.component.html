@@ -1,0 +1,21 @@
+<button
+    *ngIf="!currentUser; else currentUserSection"
+    pButton 
+    pRipple 
+    type="button" 
+    label="Log in" 
+    class="p-button-outlined"
+    [routerLink]="['/log-in']"
+></button>
+
+<ng-template #currentUserSection>
+    <p-overlayPanel #op [showCloseIcon]="true">
+        <ng-template pTemplate>
+            Hello, {{ currentUser.username }}
+            <button pButton (click)="logOut()">Log out</button>
+        </ng-template>
+    </p-overlayPanel>
+    <button pButton pRipple (click)="op.toggle($event)">
+        Logged as: {{ currentUser.username }}
+    </button>
+</ng-template>
