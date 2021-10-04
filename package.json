@@ -28,6 +28,7 @@
     "@ngx-formly/core": "^5.0.0",
     "@ngx-formly/primeng": "^5.0.0",
     "@ngxs/store": "^3.7.2",
+    "@types/lodash": "^4.14.175",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-max-params-no-constructor": "0.0.4",

@@ -1,1 +1,12 @@
-<p>user-dashboard works!</p>
+<div class="container pt-8">
+    <h1>Hello, {{ currentUser.username }}</h1>
+
+    <div class="grid grid-cols-2 w-full gap-4">
+        <app-module-card [moduleData]="modulesData.playerAccounts"></app-module-card>
+        <app-module-card [moduleData]="modulesData.userTournaments"></app-module-card>
+        <app-module-card [moduleData]="modulesData.userProfile"></app-module-card>
+        <app-module-card [moduleData]="modulesData.userTeams"></app-module-card>
+        <app-module-card [moduleData]="modulesData.userSuspensions"></app-module-card>
+        <app-module-card [moduleData]="modulesData.userPerformance"></app-module-card>
+    </div>
+</div>

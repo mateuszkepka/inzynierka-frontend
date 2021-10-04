@@ -25,13 +25,11 @@ export class RefreshTokenService {
     }
 
     async refreshCookies() {
-        if (this.currentUser) {
-            this.refreshToken();
-        }
+        this.refreshToken();
+
         setInterval(() => {
             if (this.currentUser) {
                 this.refreshToken();
-                console.log(`COOKIES`, document.cookie);
             }
         }, 5000);
     }

@@ -12,12 +12,10 @@ import { FormlyFieldPrimengFileUploadComponent } from './formly-custom-fields/fi
 import { FormlyFieldPrimengPasswordComponent } from './formly-custom-fields/password/formly-field-primeng-password.component';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
-import { MessageService } from 'primeng/api';
 import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
-import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
