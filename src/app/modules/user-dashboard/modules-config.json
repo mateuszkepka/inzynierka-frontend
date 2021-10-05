@@ -7,27 +7,32 @@
     "userTournaments": {
         "title": "Your tournaments",
         "subtitle": "See your tournaments",
-        "link": "player-tournaments"
+        "link": "profile",
+        "activeTab": 1
     },
     "userProfile": {
         "title": "Your profile",
         "subtitle": "Manage your profile",
-        "link": "user-profile"
+        "link": "profile",
+        "activeTab": 0
     },
     "userTeams": {
         "title": "Your teams",
         "subtitle": "See or manage your teams",
-        "link": "user-teams"
+        "link": "profile",
+        "activeTab": 4
     },
     "userSuspensions": {
         "title": "Your suspensions",
         "subtitle": "See your suspensions",
-        "link": "user-suspensions"
+        "link": "profile",
+        "activeTab": 2
     },
     "userPerformance": {
         "title": "Your performance",
         "subtitle": "See your performance",
-        "link": "user-performance"
+        "link": "profile",
+        "activeTab": 3
     }
 
 }

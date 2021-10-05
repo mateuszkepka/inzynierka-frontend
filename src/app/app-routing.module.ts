@@ -59,6 +59,10 @@ const routes: Routes = [
             (m) => m.UserDashboardModule
         ),
     },
+    {
+        path: `profile`,
+        loadChildren: async () => import(`./modules/profile/profile.module`).then(m => m.ProfileModule),
+    },
 ];
 
 @NgModule({

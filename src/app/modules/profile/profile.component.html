@@ -1,0 +1,28 @@
+<div class="bg-gray-300 w-full h-96 p-8 flex items-center gap-20">
+    <div class="border-2 w-40 h-40 border-black"></div>
+    <p class="text-4xl font-bold">{{ currentUser.username }}</p>
+</div>
+
+<div class="container pt-12">
+    <p-tabView [activeIndex]="activeTab">
+        <p-tabPanel header="Details">
+            DETAILS PANEL
+        </p-tabPanel>
+        
+        <p-tabPanel header="Tournaments">
+            Tournaments PANEL
+        </p-tabPanel>
+        
+        <p-tabPanel header="Suspensions">
+            Suspensions PANEL
+        </p-tabPanel>
+        
+        <p-tabPanel header="Performance">
+            Performance PANEL
+        </p-tabPanel>
+
+        <p-tabPanel header="Teams">
+            Teams PANEL
+        </p-tabPanel>
+    </p-tabView>
+</div>

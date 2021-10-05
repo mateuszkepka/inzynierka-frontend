@@ -14,6 +14,8 @@ export class ModuleCardComponent {
   constructor(private readonly router: Router) {}
 
   onClick(link: string) {
-    void this.router.navigate([`/${link}`]);
+    void this.router.navigate([`/${link}`], {
+      state: { activeTab: this.moduleData?.activeTab }
+    });
   }
 }

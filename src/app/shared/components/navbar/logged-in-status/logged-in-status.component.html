@@ -11,8 +11,17 @@
 <ng-template #currentUserSection>
     <p-overlayPanel #op [showCloseIcon]="true">
         <ng-template pTemplate>
-            Hello, {{ currentUser.username }}
-            <button pButton (click)="logOut()">Log out</button>
+            <div class="flex flex-col gap-4">
+                <p class="overlay-panel__item">
+                    Hello, {{ currentUser.username }}
+                </p>
+
+                <p class="overlay-panel__item cursor-pointer" [routerLink]="['/user-dashboard']">
+                    Dashboard
+                </p>
+
+                <p class="overlay-panel__item cursor-pointer" (click)="logOut()">Log out</p>
+            </div>
         </ng-template>
     </p-overlayPanel>
     <button pButton pRipple (click)="op.toggle($event)">
