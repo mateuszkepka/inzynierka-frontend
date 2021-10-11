@@ -1,10 +1,12 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
+import { ApiService } from 'src/app/services/api.service';
+import { SetCurrentUser } from 'src/app/state/current-user.actions';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/interfaces';
-import { map } from 'rxjs/operators';
+import { isEqual } from 'lodash';
 
 @Component({
   selector: `app-profile`,
@@ -17,22 +19,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   activeTab: number;
 
   constructor(
-    public route: ActivatedRoute,
+    private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly apiService: ApiService,
   ) {
     this.activeTab = this.router.getCurrentNavigation().extras.state?.activeTab || 0;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.subscriptions.push(
       this.store
         .select((state) => state.currentUser.currentUser)
         .subscribe((currentUser: User) => {
           this.currentUser = currentUser;
         }),
-
     );
+    await this.getUserDetails();
   }
 
   ngOnDestroy() {
@@ -41,4 +44,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
+  async getUserDetails() {
+    const result = await this.apiService.getUserById(this.currentUser.userId);
+    if (!isEqual(this.currentUser, result)) {
+      this.store.dispatch(new SetCurrentUser(result));
+    }
+  }
 }

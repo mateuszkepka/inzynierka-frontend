@@ -1,4 +1,4 @@
-import { LogInInput, RegisterInput } from "../shared/interfaces/interfaces";
+import { LogInInput, RegisterInput, User } from "../shared/interfaces/interfaces";
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -32,5 +32,13 @@ export class ApiService {
     async logOut() {
         const url = this.apiUrl + `/auth/log-out`;
         return this.httpClient.post(url, {}, { withCredentials: true });
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                    USER                                    */
+    /* -------------------------------------------------------------------------- */
+    async getUserById(userId: number) {
+        const url = this.apiUrl + `/users/${userId}`;
+        return this.httpClient.get<User>(url, { withCredentials: true }).toPromise();
     }
 }
