@@ -1,1 +1,31 @@
-<p>profile-performance works!</p>
+<div class="container" *ngIf="currentUser.organizedTournaments.length > 0; else noData">
+    <p-table
+        [value]="currentUser.organizedTournaments"
+        [paginator]="true"
+        [rows]="2"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="{first}-{last} of {totalRecords}"
+        [rowsPerPageOptions]="[2,5,10]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-organizedTournament>
+            <tr>
+                <td>{{ organizedTournament.name || "-" }}</td>
+                <td>{{ (organizedTournament.suspensionStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>{{ (organizedTournament.suspensionEndDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<ng-template #noData>
+    <app-no-data></app-no-data>
+</ng-template>

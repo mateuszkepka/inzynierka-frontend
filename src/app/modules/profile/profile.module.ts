@@ -1,3 +1,4 @@
+import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ProfileComponent } from './profile.component';
@@ -26,6 +27,7 @@ import { TableModule } from 'primeng/table';
     TabViewModule,
     TableModule,
     SharedModule,
+    ButtonModule
   ]
 })
 export class ProfileModule { }

@@ -45,7 +45,7 @@ export interface Tournament {
     // matches: Match[];
     // tournamentAdmins: TournamentAdmin[];
     // preset: Preset;
-    // organizer: User;
+    organizer: User;
 }
 
 export interface Suspension {

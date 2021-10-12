@@ -6,11 +6,11 @@
 <div class="container pt-12">
     <p-tabView [activeIndex]="activeTab">
         <p-tabPanel header="Details">
-            <app-no-data></app-no-data>
+            <app-profile-details></app-profile-details>
         </p-tabPanel>
         
         <p-tabPanel header="Tournaments">
-            Tournaments PANEL
+            <app-profile-tournaments></app-profile-tournaments>
         </p-tabPanel>
         
         <p-tabPanel header="Suspensions">
@@ -18,11 +18,11 @@
         </p-tabPanel>
         
         <p-tabPanel header="Performance">
-            Performance PANEL
+            <app-profile-performance></app-profile-performance>
         </p-tabPanel>
 
         <p-tabPanel header="Teams">
-            Teams PANEL
+            <app-profile-teams></app-profile-teams>
         </p-tabPanel>
     </p-tabView>
 </div>
