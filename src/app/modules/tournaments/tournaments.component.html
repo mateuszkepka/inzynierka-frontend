@@ -16,16 +16,30 @@
     >
         <ng-template pTemplate="header">
             <tr>
-                <th>Image</th>
-                <th>Tournament</th>
-                <th>See more</th>
+                <th>Name</th>
+                <th>Registration Start Date</th>
+                <th>Registration End Date</th>
+                <th>Tournament Start Date</th>
+                <th>Tournament End Date</th>
+                <th>See details</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-tournament>
             <tr>
-                <td>image</td>
-                <td>{{ tournament.title }} {{ tournament.description }}</td>
-                <td>{{ tournament.buttonLabel }}</td>
+                <td>{{ tournament.name || "-" }}</td>
+                <td>{{ (tournament.registerStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>{{ (tournament.registerEndDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>{{ (tournament.tournamentStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>{{ (tournament.tournamentEndDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>
+                    <button 
+                        pButton 
+                        label="See details"
+                        type="button" 
+                        class="p-button-info"
+                        [routerLink]="['/tournaments/' + tournament.tournamentId]"
+                    ></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>

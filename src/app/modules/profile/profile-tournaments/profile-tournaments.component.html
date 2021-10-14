@@ -13,14 +13,23 @@
                 <th>Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th></th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-organizedTournament>
             <tr>
                 <td>{{ organizedTournament.name || "-" }}</td>
-                <td>{{ (organizedTournament.suspensionStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
-                <td>{{ (organizedTournament.suspensionEndDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>{{ (organizedTournament.tournamentStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>{{ (organizedTournament.tournamentEndDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>
+                    <button 
+                        pButton 
+                        label="See details"
+                        type="button" 
+                        class="p-button-info"
+                    ></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>
