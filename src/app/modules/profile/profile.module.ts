@@ -11,6 +11,7 @@ import { ProfileTournamentsComponent } from './profile-tournaments/profile-tourn
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
+import { ProfileDetailsEditComponent } from './profile-details-edit/profile-details-edit.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TableModule } from 'primeng/table';
     ProfileSuspensionsComponent,
     ProfileTournamentsComponent,
     ProfileTeamsComponent,
-    ProfilePerformanceComponent
+    ProfilePerformanceComponent,
+    ProfileDetailsEditComponent
   ],
   imports: [
     ProfileRoutingModule,

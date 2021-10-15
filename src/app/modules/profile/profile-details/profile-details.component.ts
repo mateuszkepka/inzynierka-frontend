@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/interfaces';
@@ -16,6 +17,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly store: Store,
+    private readonly activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {

@@ -1,12 +1,33 @@
-<div class="bg-gray-300 w-full h-96 p-8 flex items-center gap-20">
+<div class="bg-gray-300 w-full h-96 p-8 flex items-center gap-20" *ngIf="currentUser">
     <div class="border-2 w-40 h-40 border-black"></div>
     <p class="text-4xl font-bold">{{ currentUser.username }}</p>
 </div>
 
-<div class="container pt-12">
+<div class="container pt-12" *ngIf="currentUser">
     <p-tabView [activeIndex]="activeTab">
         <p-tabPanel header="Details">
-            <app-profile-details></app-profile-details>
+            <ng-container *ngIf="routerEditModes.profileDetails; else profileDetailsEdit">
+                <button 
+                    class="p-button-primary" 
+                    pButton 
+                    label="Edit"
+                    (click)="navigateToEdit()"
+                ></button>
+            </ng-container>
+            <ng-template #profileDetailsEdit>
+                <button 
+                    class="p-button-primary" 
+                    pButton 
+                    label="Back"
+                    [routerLink]="[{ outlets: { profileDetails: ['edit'] } }]"
+                    (click)="routerEditModes.profileDetails = !routerEditModes.profileDetails"
+                ></button>
+            </ng-template>
+            <router-outlet
+                (activate)="readRouterOutlet('profileDetails', $event)" 
+                name="profileDetails"
+            ></router-outlet>
+            <!-- <app-profile-details></app-profile-details> -->
         </p-tabPanel>
         
         <p-tabPanel header="Tournaments">
