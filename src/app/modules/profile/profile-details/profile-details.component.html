@@ -1,5 +1,4 @@
 <div class="container" *ngIf="currentUser; else noData">
-    <div class="grid grid-cols-2">
         <div class="flex flex-col gap-4">
             <span>
                 <b>Username:</b> {{ currentUser.username || "n/a" }}
@@ -21,17 +20,6 @@
                 <b>Student ID:</b> {{ currentUser.studentId || "n/a" }}
             </span>
         </div>
-        <div class="justify-self-end">
-            <button 
-                pButton 
-                label="Edit data" 
-                type="button" 
-                class="p-button-info"
-                [routerLink]="[{outlets: {profileDetails: ['edit']}}]"
-            ></button>
-        </div>
-
-    </div>
 </div>
 
 <ng-template #noData>

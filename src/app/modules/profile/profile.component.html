@@ -6,28 +6,32 @@
 <div class="container pt-12" *ngIf="currentUser">
     <p-tabView [activeIndex]="activeTab">
         <p-tabPanel header="Details">
-            <ng-container *ngIf="routerEditModes.profileDetails; else profileDetailsEdit">
-                <button 
-                    class="p-button-primary" 
-                    pButton 
-                    label="Edit"
-                    (click)="navigateToEdit()"
-                ></button>
-            </ng-container>
-            <ng-template #profileDetailsEdit>
-                <button 
-                    class="p-button-primary" 
-                    pButton 
-                    label="Back"
-                    [routerLink]="[{ outlets: { profileDetails: ['edit'] } }]"
-                    (click)="routerEditModes.profileDetails = !routerEditModes.profileDetails"
-                ></button>
-            </ng-template>
-            <router-outlet
-                (activate)="readRouterOutlet('profileDetails', $event)" 
-                name="profileDetails"
-            ></router-outlet>
-            <!-- <app-profile-details></app-profile-details> -->
+            <div class="flex justify-between">
+                <router-outlet
+                    (activate)="readRouterOutlet('profileDetails', $event)" 
+                    name="profileDetails"
+                ></router-outlet>
+                <div>
+                    <ng-container *ngIf="routerEditModes.profileDetails; else profileDetailsEdit">
+                        <button 
+                            class="p-button-primary" 
+                            pButton 
+                            label="Back"
+                            [routerLink]="['./']"
+                            (click)="routerEditModes.profileDetails = !routerEditModes.profileDetails"
+                        ></button>
+                    </ng-container>
+                    <ng-template #profileDetailsEdit>
+                        <button 
+                            class="p-button-primary" 
+                            pButton 
+                            label="Edit data"
+                            [routerLink]="[{ outlets: { profileDetails: ['edit'] } }]"
+                            (click)="routerEditModes.profileDetails = !routerEditModes.profileDetails"
+                        ></button>
+                    </ng-template>
+                </div>
+            </div>
         </p-tabPanel>
         
         <p-tabPanel header="Tournaments">

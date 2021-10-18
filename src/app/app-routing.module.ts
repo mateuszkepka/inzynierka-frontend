@@ -60,7 +60,7 @@ const routes: Routes = [
         ),
     },
     {
-        path: `profile`,
+        path: ``,
         loadChildren: async () => import(`./modules/profile/profile.module`).then(m => m.ProfileModule),
     },
 ];

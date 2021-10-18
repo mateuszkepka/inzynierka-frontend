@@ -7,7 +7,7 @@ import { ProfileDetailsEditComponent } from './profile-details-edit/profile-deta
 
 const routes: Routes = [
     {
-        path: ``,
+        path: `profile`,
         component: ProfileComponent,
         children: [
             {
