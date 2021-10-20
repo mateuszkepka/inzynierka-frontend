@@ -18,7 +18,9 @@ export interface CurrentUserStateModel {
 export class CurrentUserState {
     @Action(SetCurrentUser)
     setCurrentUser(ctx: StateContext<CurrentUserStateModel>, { currentUser }: SetCurrentUser) {
+        const currentState = ctx.getState();
         ctx.patchState({
+            ...currentState.currentUser,
             currentUser
         });
     }

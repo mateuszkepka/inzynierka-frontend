@@ -8,9 +8,11 @@ import { LottieModule } from 'ngx-lottie';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgModule } from '@angular/core';
 import { NoDataComponent } from './components/no-data/no-data.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PromoComponent } from './components/promo/promo.component';
 import { RouterModule } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
 import player from 'lottie-web';
 
 const playerFactory = () => player;
@@ -21,7 +23,8 @@ const playerFactory = () => player;
     LottieHeaderComponent,
     PromoComponent,
     LoggedInStatusComponent,
-    NoDataComponent
+    NoDataComponent,
+    NotificationsComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +33,7 @@ const playerFactory = () => player;
     RouterModule,
     LottieModule.forRoot({ player: playerFactory }),
     OverlayPanelModule,
+    ToastModule,
   ],
   exports: [
     NavbarComponent,
@@ -37,6 +41,7 @@ const playerFactory = () => player;
     LottieHeaderComponent,
     PromoComponent,
     NoDataComponent,
+    NotificationsComponent,
   ]
 })
 export class SharedModule { }

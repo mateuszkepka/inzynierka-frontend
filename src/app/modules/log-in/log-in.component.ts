@@ -4,6 +4,7 @@ import { LogInInput, User } from "src/app/shared/interfaces/interfaces";
 import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
+import { RefreshTokenService } from "src/app/services/refresh-token.service";
 import { Router } from "@angular/router";
 import { SetCurrentUser } from "src/app/state/current-user.actions";
 import { Store } from "@ngxs/store";
@@ -52,13 +53,15 @@ export class LogInComponent {
         private readonly apiService: ApiService,
         private readonly store: Store,
         private readonly router: Router,
+        private readonly refreshTokenService: RefreshTokenService,
     ) {}
 
 
     async onSubmit() {
-        (await this.apiService.login(this.model as LogInInput)).subscribe((res) => {
+        (await this.apiService.login(this.model as LogInInput)).subscribe(async (res) => {
             if (res) {
                 this.store.dispatch(new SetCurrentUser(res as User));
+                await this.refreshTokenService.refreshCookies();
                 void this.router.navigate([`/user-dashboard`]);
                 return;
             }

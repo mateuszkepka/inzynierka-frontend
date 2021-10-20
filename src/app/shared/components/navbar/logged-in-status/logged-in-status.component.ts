@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ApiService } from 'src/app/services/api.service';
+import { RefreshTokenService } from 'src/app/services/refresh-token.service';
 import { Router } from '@angular/router';
 import { SetCurrentUser } from 'src/app/state/current-user.actions';
 import { Store } from '@ngxs/store';
@@ -22,6 +23,7 @@ export class LoggedInStatusComponent implements OnInit {
     private readonly store: Store,
     private readonly apiService: ApiService,
     private readonly router: Router,
+    private readonly refreshTokenService: RefreshTokenService,
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +38,7 @@ export class LoggedInStatusComponent implements OnInit {
 
   async logOut() {
     (await this.apiService.logOut()).subscribe((res) => {
+      this.refreshTokenService.clearSubscriptions();
       this.store.dispatch(new SetCurrentUser(undefined));
       void this.router.navigate([`/`]);
     });

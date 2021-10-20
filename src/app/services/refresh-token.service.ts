@@ -1,8 +1,9 @@
+import { Subscription, interval } from "rxjs";
+
 import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
 import { SetCurrentUser } from "../state/current-user.actions";
 import { Store } from "@ngxs/store";
-import { Subscription } from "rxjs";
 import { User } from "../shared/interfaces/interfaces";
 import { cloneDeep } from 'lodash';
 
@@ -13,34 +14,42 @@ export class RefreshTokenService {
 
     subscriptions: Subscription[] = [];
     currentUser: User;
+    interval = interval(10000);
 
     constructor(private readonly apiService: ApiService, private readonly store: Store) {
         this.subscriptions.push(
             this.store
                 .select((state) => state.currentUser.currentUser)
                 .subscribe((currentUser: User) => {
-                    if (!currentUser) {
-                        this.currentUser = cloneDeep(currentUser);
-                    }
+                    this.currentUser = cloneDeep(currentUser);
                 })
         );
     }
 
     async refreshCookies() {
-        this.refreshToken();
-
-        setInterval(() => {
-            if (this.currentUser) {
-                this.refreshToken();
-            }
-        }, 5000);
+        await this.refreshToken();
+        this.subscriptions.push(
+            this.interval.subscribe(async () => {
+                if (this.currentUser) {
+                    await this.refreshToken();
+                }
+            }),
+        );
     }
 
     async refreshToken() {
-        (await this.apiService.refreshToken()).subscribe(res => {
+        (await this.apiService.refreshToken()).subscribe((res: User) => {
             if (res) {
-                this.store.dispatch(new SetCurrentUser(res as User));
+                if (!this.currentUser) {
+                    this.store.dispatch(new SetCurrentUser(res));
+                }
             }
+        });
+    }
+
+    clearSubscriptions() {
+        this.subscriptions.forEach((sub) => {
+            sub.unsubscribe();
         });
     }
 }

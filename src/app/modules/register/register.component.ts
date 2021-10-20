@@ -4,6 +4,7 @@ import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { MessageService } from "primeng/api";
+import { NotificationsService } from "src/app/services/notifications.service";
 import { RegisterInput } from "src/app/shared/interfaces/interfaces";
 import { Router } from "@angular/router";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
@@ -116,17 +117,18 @@ export class RegisterComponent {
     constructor(
         private readonly apiService: ApiService,
         private readonly router: Router,
+        private readonly notificationsService: NotificationsService
     ) {}
 
     async onSubmit() {
         (await this.apiService.register(this.model as RegisterInput)).subscribe((res) => {
             if (res) {
-                // this.messageService.add({severity: `success`, summary: `Success!`, detail: `Account has been created.`});
+                this.notificationsService.addNotification({severity: `success`, summary: `Success!`, detail: `Account has been created.`});
                 void this.router.navigate([`/log-in`]);
                 return;
             }
         }, () => {
-            // this.messageService.add({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
+            this.notificationsService.addNotification({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
         });
 
     }
