@@ -1,0 +1,31 @@
+<!-- <div class="container" *ngIf="currentUser.organizedTournaments.length > 0; else noData">
+    <p-table
+        [value]="currentUser.suspensions"
+        [paginator]="true"
+        [rows]="2"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="{first}-{last} of {totalRecords}"
+        [rowsPerPageOptions]="[2,5,10]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Reason</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-suspension>
+            <tr>
+                <td>{{ (suspension.suspensionStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>{{ (suspension.suspensionEndDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                <td>{{ suspension.reason || "-" }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div> -->
+
+<!-- <ng-template #noData> -->
+    <app-no-data></app-no-data>
+<!-- </ng-template> -->

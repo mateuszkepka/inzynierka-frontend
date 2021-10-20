@@ -1,0 +1,20 @@
+<div class="container">
+    <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+    >
+        <formly-form
+            [form]="form"
+            [fields]="fields"
+            [model]="currentUser"
+        ></formly-form>
+        <div>
+            <button 
+                type="submit"
+                pButton
+                label="Update data"
+                class=""
+            ></button>
+        </div>
+    </form>
+</div>

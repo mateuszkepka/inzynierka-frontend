@@ -1,0 +1,27 @@
+<div class="container" *ngIf="currentUser; else noData">
+        <div class="flex flex-col gap-4">
+            <span>
+                <b>Username:</b> {{ currentUser.username || "n/a" }}
+            </span>
+            
+            <span>
+                <b>E-mail address:</b> {{ currentUser.email || "n/a" }}
+            </span>
+            
+            <span>
+                <b>Country:</b> {{ currentUser.country || "n/a" }}
+            </span>
+            
+            <span>
+                <b>University:</b> {{ currentUser.university || "n/a" }}
+            </span>
+            
+            <span>
+                <b>Student ID:</b> {{ currentUser.studentId || "n/a" }}
+            </span>
+        </div>
+</div>
+
+<ng-template #noData>
+    <app-no-data></app-no-data>
+</ng-template>

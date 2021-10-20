@@ -19,7 +19,9 @@ export class RefreshTokenService {
             this.store
                 .select((state) => state.currentUser.currentUser)
                 .subscribe((currentUser: User) => {
-                    this.currentUser = cloneDeep(currentUser);
+                    if (!currentUser) {
+                        this.currentUser = cloneDeep(currentUser);
+                    }
                 })
         );
     }
