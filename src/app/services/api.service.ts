@@ -42,6 +42,11 @@ export class ApiService {
         return this.httpClient.get<User>(url, { withCredentials: true }).toPromise();
     }
 
+    async patchUser(user: User) {
+        const url = this.apiUrl + `/users/${user.userId}`;
+        return this.httpClient.put<User>(url, user).toPromise();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                 TOURNAMENTS                                */
     /* -------------------------------------------------------------------------- */

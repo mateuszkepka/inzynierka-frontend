@@ -27,7 +27,6 @@ export class TournamentDetailsComponent implements OnInit {
   async ngOnInit() {
     this.tournament = await this.apiService.getTournamentById(this.tournamentId);
     this.store.dispatch(new SetTournament(this.tournament));
-    console.log(this.tournament);
   }
 
 }

@@ -6,11 +6,12 @@
 <div class="container pt-12" *ngIf="currentUser">
     <p-tabView [activeIndex]="activeTab">
         <p-tabPanel header="Details">
-            <div class="flex justify-between">
+            <div class="flex">
                 <router-outlet
                     (activate)="readRouterOutlet('profileDetails', $event)" 
                     name="profileDetails"
                 ></router-outlet>
+                <div class="flex-grow"></div>
                 <div>
                     <ng-container *ngIf="routerEditModes.profileDetails; else profileDetailsEdit">
                         <button 

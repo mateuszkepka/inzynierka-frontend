@@ -68,11 +68,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   readRouterOutlet(name: string, event: any) {
     const childRouteConfig = event.activatedRoute?.snapshot.routeConfig;
-    console.log(`CHILD ROUTE CONFIG`, childRouteConfig);
     this.routerComponents[name] = event;
     this.routerEditModes[name] = childRouteConfig.path !== ``;
-    console.log(this.routerEditModes[name]);
-    console.log(this.routerComponents[name]);
     this.changeDetectorRef.detectChanges();
   }
 }

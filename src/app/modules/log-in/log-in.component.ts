@@ -58,7 +58,6 @@ export class LogInComponent {
     async onSubmit() {
         (await this.apiService.login(this.model as LogInInput)).subscribe((res) => {
             if (res) {
-                console.log(`RES`, res);
                 this.store.dispatch(new SetCurrentUser(res as User));
                 void this.router.navigate([`/user-dashboard`]);
                 return;
