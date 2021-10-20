@@ -44,9 +44,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
           {
             next: (currentUser: User) => {
               this.currentUser = currentUser;
-            },
-            complete: async () => {
-              await this.getUserDetails();
             }
           }
         ),
@@ -57,13 +54,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
-  }
-
-  async getUserDetails() {
-    const result = await this.apiService.getUserById(this.currentUser.userId);
-    if (!isEqual(this.currentUser, result)) {
-      this.store.dispatch(new SetCurrentUser(result));
-    }
   }
 
   readRouterOutlet(name: string, event: any) {

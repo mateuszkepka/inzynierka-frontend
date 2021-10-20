@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { SetCurrentUser } from 'src/app/state/current-user.actions';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
@@ -71,6 +72,7 @@ export class ProfileDetailsEditComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     private readonly store: Store,
     private readonly apiService: ApiService,
+    private readonly notificationsService: NotificationsService,
   ) { }
 
   ngOnInit(): void {
@@ -90,10 +92,12 @@ export class ProfileDetailsEditComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    // TODO - inform user about success
     const response = await this.apiService.patchUser(this.currentUser);
     if (response) {
       this.store.dispatch(new SetCurrentUser(response));
+      this.notificationsService.addNotification({severity: `success`, summary: `Success!`, detail: `Your data has been updated.`});
+      return;
     }
+    this.notificationsService.addNotification({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
   }
 }

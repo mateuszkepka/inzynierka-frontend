@@ -2,6 +2,7 @@ import * as data from './modules-config.json';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/interfaces';
