@@ -1,0 +1,31 @@
+<div class="container" *ngIf="tournament">
+    <div class="grid grid-cols-2">
+        <div class="flex flex-col gap-4">
+            <p class="font-bold text-2xl">
+                Details
+            </p>
+            <p>
+                Registration start date: {{ tournament.registerStartDate | date:"dd/MM/yyy" }}
+            </p>
+            <p>
+                Registration end date: {{ tournament.registerEndDate | date:"dd/MM/yyy" }}
+            </p>
+            <p>
+                Tournament start date: {{ tournament.tournamentStartDate | date:"dd/MM/yyy" }}
+            </p>
+            <p>
+                Tournament end date: {{ tournament.tournamentEndDate | date:"dd/MM/yyy" }}
+            </p>
+            <p>
+                Number of players: {{ tournament.numberOfPlayers }}
+            </p>
+            <p>
+                Number of teams: {{ tournament.numberOfTeams }}
+            </p>
+        </div>
+        <div>
+            <p class="font-bold text-2xl pb-4">Description</p>
+            {{ tournament.description }}
+        </div>
+    </div>
+</div>

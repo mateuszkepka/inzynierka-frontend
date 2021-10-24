@@ -62,6 +62,7 @@ export class RegisterComponent {
                 placeholder: `Enter password`,
                 required: true,
                 modelField: `password`,
+                showFeedback: true,
             },
         },
         {
@@ -72,7 +73,8 @@ export class RegisterComponent {
                 placeholder: `Repeat password`,
                 required: true,
                 toggleMask: true,
-                modelField: `repeatPassword`
+                modelField: `repeatPassword`,
+                showFeedback: false,
             }
         },
         {
