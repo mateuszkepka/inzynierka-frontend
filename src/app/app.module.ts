@@ -16,6 +16,7 @@ import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
+import { TournamentState } from './state/tournament.state';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { SharedModule } from './shared/shared.module';
     }),
     FormlyPrimeNGModule,
     FormlyCustomFieldsModule,
-    NgxsModule.forRoot([CurrentUserState]),
+    NgxsModule.forRoot([CurrentUserState, TournamentState]),
   ],
   providers: [],
   bootstrap: [AppComponent]

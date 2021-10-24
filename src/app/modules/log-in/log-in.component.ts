@@ -4,6 +4,7 @@ import { LogInInput, User } from "src/app/shared/interfaces/interfaces";
 import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
+import { NotificationsService } from "src/app/services/notifications.service";
 import { RefreshTokenService } from "src/app/services/refresh-token.service";
 import { Router } from "@angular/router";
 import { SetCurrentUser } from "src/app/state/current-user.actions";
@@ -45,6 +46,7 @@ export class LogInComponent {
                 placeholder: `Enter password`,
                 required: true,
                 modelField: `password`,
+                showFeedback: false,
             }
         }
     ];
@@ -54,6 +56,7 @@ export class LogInComponent {
         private readonly store: Store,
         private readonly router: Router,
         private readonly refreshTokenService: RefreshTokenService,
+        private readonly notificationsService: NotificationsService,
     ) {}
 
 
@@ -65,6 +68,8 @@ export class LogInComponent {
                 void this.router.navigate([`/user-dashboard`]);
                 return;
             }
+        }, () => {
+            this.notificationsService.addNotification({ severity: `error`, detail: `Please try again!`, summary: `Something went wrong` });
         });
     }
 }

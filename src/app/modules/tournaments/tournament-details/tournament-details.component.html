@@ -8,9 +8,9 @@
     </div>
 
     <div class="container pt-12">
-        <p-tabView [activeIndex]="1">
+        <p-tabView [activeIndex]="0">
             <p-tabPanel header="Details">
-                details panel
+                <app-tournament-details-tab></app-tournament-details-tab>
             </p-tabPanel>
     
             <p-tabPanel header="Competitors">
@@ -18,7 +18,7 @@
             </p-tabPanel>
     
             <p-tabPanel header="Ladder">
-                Ladder panel
+                <app-tournament-ladder></app-tournament-ladder>
             </p-tabPanel>
         </p-tabView>
     </div>
