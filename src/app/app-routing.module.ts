@@ -42,6 +42,7 @@ const routes: Routes = [
     },
     {
         path: `create-tournament`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/create-tournament/create-tournament.module`).then(
             (m) => m.CreateTournamentModule
         ),

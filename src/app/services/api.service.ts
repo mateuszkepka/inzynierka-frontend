@@ -1,4 +1,4 @@
-import { LogInInput, RegisterInput, Tournament, User } from "../shared/interfaces/interfaces";
+import { CreateTournamentInput, LogInInput, RegisterInput, Tournament, User } from "../shared/interfaces/interfaces";
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -58,5 +58,10 @@ export class ApiService {
     async getTournamentById(id: number) {
         const url = this.apiUrl + `/tournaments/${id}`;
         return this.httpClient.get<Tournament>(url, { withCredentials: true }).toPromise();
+    }
+
+    async createTournament(input: CreateTournamentInput) {
+        const url = this.apiUrl + `/tournaments/create`;
+        return this.httpClient.post<Tournament>(url, input, { withCredentials: true }).toPromise();
     }
 }

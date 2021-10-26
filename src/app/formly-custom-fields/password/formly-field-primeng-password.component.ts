@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+
 import { FieldType } from "@ngx-formly/core";
 
 @Component({
@@ -6,5 +7,5 @@ import { FieldType } from "@ngx-formly/core";
     templateUrl: `./formly-field-primeng-password.component.html`,
     styleUrls: [`./formly-field-primeng-password.component.scss`],
 })
-export class FormlyFieldPrimengPasswordComponent extends FieldType {
+export class FormlyFieldPrimengPasswordComponent extends FieldType{
 }

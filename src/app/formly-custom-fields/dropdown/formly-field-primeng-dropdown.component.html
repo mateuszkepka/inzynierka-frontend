@@ -5,7 +5,7 @@
 </div>
 <p-dropdown
     [options]="to.options"
-    [(ngModel)]="selectedValue"
+    [(ngModel)]="model[to.modelField]"
     [placeholder]="to.placeholder"
     [optionLabel]="to.optionLabel"
     [showClear]="to.showClear"

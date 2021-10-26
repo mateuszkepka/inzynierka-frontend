@@ -1,6 +1,10 @@
+import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
+import { CreateTournamentInput } from "src/app/shared/interfaces/interfaces";
 import { FormGroup } from "@angular/forms";
 import { FormlyFieldConfig } from "@ngx-formly/core";
+import { NotificationsService } from "src/app/services/notifications.service";
+import { Router } from "@angular/router";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 interface GamePreset {
@@ -32,10 +36,21 @@ export class CreateTournamentComponent {
     faTrophy = faTrophy;
 
     form = new FormGroup({});
-    model = { };
+
+    model: CreateTournamentInput = {
+        name: undefined,
+        numberOfPlayers: undefined,
+        numberOfTeams: undefined,
+        registerStartDate: undefined,
+        registerEndDate: undefined,
+        tournamentStartDate: undefined,
+        tournamentEndDate: undefined,
+        description: undefined,
+    };
+
     fields: FormlyFieldConfig[] = [
        {
-           key: `tournamentName`,
+           key: `name`,
            type: `input`,
            templateOptions: {
                label: `Name your tournament`,
@@ -50,6 +65,7 @@ export class CreateTournamentComponent {
                label: `Register start date`,
                placeholder: `Enter register start date`,
                required: true,
+               modelField: `registerStartDate`,
            }
        },
        {
@@ -59,6 +75,7 @@ export class CreateTournamentComponent {
                label: `Register end date`,
                placeholder: `Enter register end date`,
                required: true,
+               modelField: `registerEndDate`,
            }
        },
        {
@@ -68,6 +85,7 @@ export class CreateTournamentComponent {
                label: `Tournament start date`,
                placeholder: `Enter tournament start date`,
                required: true,
+               modelField: `tournamentStartDate`,
            }
        },
        {
@@ -77,6 +95,7 @@ export class CreateTournamentComponent {
                label: `Tournament end date`,
                placeholder: `Enter tournament end date`,
                required: true,
+               modelField: `tournamentEndDate`,
            }
        },
        {
@@ -90,7 +109,7 @@ export class CreateTournamentComponent {
            }
        },
        {
-           key: `numberOfPlayersInTeam`,
+           key: `numberOfPlayers`,
            type: `input`,
            templateOptions: {
                type: `number`,
@@ -105,18 +124,17 @@ export class CreateTournamentComponent {
             templateOptions: {
                 label: `Select games preset`,
                 placeholder: `Select games preset`,
-                required: true,
                 showClear: true,
                 options: this.gamePresets,
                 optionLabel: `name`
             }
         },
         {
-            key: `message`,
+            key: `description`,
             type: `textarea`,
             templateOptions: {
-                label: `Message`,
-                placeholder: `Enter your message`,
+                label: `Description`,
+                placeholder: `Enter your description`,
                 required: true,
                 rows: 10,
             }
@@ -126,7 +144,6 @@ export class CreateTournamentComponent {
               type: `fileUpload`,
               templateOptions: {
                   label: `Upload tournament background theme`,
-                  required: true,
               }
         },
         {
@@ -134,12 +151,33 @@ export class CreateTournamentComponent {
               type: `fileUpload`,
               templateOptions: {
                   label: `Upload tournament logo`,
-                  required: true,
               }
         }
     ];
 
-    onSubmit() {
-        console.log(`CREATING TOURNAMENT...`);
+    constructor(
+        private readonly apiService: ApiService,
+        private readonly router: Router,
+        private readonly notificationsService: NotificationsService
+    ) {}
+
+    async onSubmit() {
+        const response = await this.apiService.createTournament(this.model);
+
+        if (response) {
+            this.notificationsService.addNotification({
+                severity: `success`,
+                summary: `Success!`,
+                detail: `Tournament has been created.`
+            });
+            void this.router.navigate([`/tournaments/${response.tournamentId}`]);
+            return;
+        }
+
+        this.notificationsService.addNotification({
+            severity: `error`,
+            summary: `Error!`,
+            detail: `Something went wrong.`
+        });
     }
 }

@@ -4,9 +4,10 @@
         <span class="ng-star-inserted" aria-hidden="true">*</span>
 </div>
 <p-calendar
-        [(ngModel)]="date" 
+        [(ngModel)]="model[to.modelField]"
         [showIcon]="true" 
         inputId="icon" 
         [placeholder]="to.placeholder" 
         [required]="to.required"
+        dateFormat="yy-mm-dd"
 ></p-calendar>

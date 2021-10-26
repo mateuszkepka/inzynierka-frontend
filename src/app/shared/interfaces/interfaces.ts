@@ -1,3 +1,6 @@
+/* -------------------------------------------------------------------------- */
+/*                               REQUEST INPUTS                               */
+/* -------------------------------------------------------------------------- */
 export interface RegisterInput {
     email: string;
     password: string;
@@ -10,6 +13,17 @@ export interface RegisterInput {
 export interface LogInInput {
     email: string;
     password: string;
+}
+
+export interface CreateTournamentInput {
+    name: string;
+    numberOfPlayers: number;
+    numberOfTeams: number;
+    registerStartDate: Date;
+    registerEndDate: Date;
+    tournamentStartDate: Date;
+    tournamentEndDate: Date;
+    description: string;
 }
 
 /* -------------------------------------------------------------------------- */

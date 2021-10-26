@@ -33,6 +33,11 @@
         "subtitle": "See your performance",
         "link": "profile",
         "activeTab": 3
+    },
+    "createTournament": {
+        "title": "Create torunament",
+        "subtitle": "Start your own tournament",
+        "link": "create-tournament"
     }
 
 }
