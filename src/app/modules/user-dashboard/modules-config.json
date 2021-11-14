@@ -2,7 +2,7 @@
     "playerAccounts": {
         "title": "Gaming accounts",
         "subtitle": "Manage your gaming accounts",
-        "link": "player-accounts"
+        "link": "user-accounts"
     },
     "userTournaments": {
         "title": "Your tournaments",

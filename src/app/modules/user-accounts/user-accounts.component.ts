@@ -1,5 +1,3 @@
-import * as data from './modules-config.json';
-
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Store } from '@ngxs/store';
@@ -8,19 +6,17 @@ import { User } from 'src/app/shared/interfaces/interfaces';
 import { cloneDeep } from 'lodash';
 
 @Component({
-  selector: `app-user-dashboard`,
-  templateUrl: `./user-dashboard.component.html`,
-  styleUrls: [`./user-dashboard.component.scss`]
+  selector: `app-user-accounts`,
+  templateUrl: `./user-accounts.component.html`,
+  styleUrls: [`./user-accounts.component.scss`]
 })
-export class UserDashboardComponent implements OnInit, OnDestroy {
-
+export class UserAccountsComponent implements OnInit, OnDestroy {
   currentUser: User;
   subscriptions: Subscription[] = [];
-  modulesData = data;
 
   constructor(private readonly store: Store) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subscriptions.push(
       this.store
         .select((state) => state.currentUser.currentUser)

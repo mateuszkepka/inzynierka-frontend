@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ApiService } from 'src/app/services/api.service';
 import { RefreshTokenService } from 'src/app/services/refresh-token.service';
@@ -14,8 +14,7 @@ import { cloneDeep } from 'lodash';
   templateUrl: `./logged-in-status.component.html`,
   styleUrls: [`./logged-in-status.component.scss`]
 })
-export class LoggedInStatusComponent implements OnInit {
-
+export class LoggedInStatusComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   currentUser: User;
 
@@ -34,6 +33,12 @@ export class LoggedInStatusComponent implements OnInit {
           this.currentUser = cloneDeep(currentUser);
         }),
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
   async logOut() {

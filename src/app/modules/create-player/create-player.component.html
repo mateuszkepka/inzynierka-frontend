@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="create-player">
+        <span class="create-player-icon">
+            <fa-icon
+                [icon]="faHeadset"
+                size="5x"
+            ></fa-icon>
+        </span>
+
+        <p class="create-player-label">Create player</p>
+
+        <form
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()" 
+            class="create-player-form"
+        >
+            <formly-form
+                [form]="form"
+                [fields]="fields"
+                [model]="model"
+            ></formly-form>
+            <div class="create-player-buttons">
+                <button
+                    type="submit"
+                    pButton
+                    label="Create account"
+                ></button>
+            </div>
+        </form>
+    </div>
+</div>

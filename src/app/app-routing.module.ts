@@ -11,6 +11,22 @@ const routes: Routes = [
             ),
     },
     {
+        path: ``,
+        loadChildren: async () => import(`./modules/profile/profile.module`).then(m => m.ProfileModule),
+    },
+    {
+        path: `user-accounts`,
+        loadChildren: async () => import(`./modules/user-accounts/user-accounts.module`).then(m => m.UserAccountsModule),
+    },
+    {
+        path: `create-player`,
+        loadChildren: async () => import(`./modules/create-player/create-player.module`).then(m => m.CreatePlayerModule),
+    },
+    {
+        path: `create-team`,
+        loadChildren: async () => import(`./modules/create-team/create-team.module`).then(m => m.CreateTeamModule),
+    },
+    {
         path: `organization`,
         loadChildren: async () => import(`./modules/organization/organization.module`).then(
                 (m) => m.OrganizationModule
@@ -59,10 +75,6 @@ const routes: Routes = [
         loadChildren: async () => import(`./modules/user-dashboard/user-dashboard.module`).then(
             (m) => m.UserDashboardModule
         ),
-    },
-    {
-        path: ``,
-        loadChildren: async () => import(`./modules/profile/profile.module`).then(m => m.ProfileModule),
     },
 ];
 

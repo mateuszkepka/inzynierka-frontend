@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="create-team">
+        <span class="create-team-icon">
+            <fa-icon
+                [icon]="faUserFriends"
+                size="5x"
+            ></fa-icon>
+        </span>
+
+        <p class="create-team-label">Create team</p>
+
+        <form
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()" 
+            class="create-team-form"
+        >
+            <formly-form
+                [form]="form"
+                [fields]="fields"
+                [model]="model"
+            ></formly-form>
+            <div class="create-team-buttons">
+                <button
+                    type="submit"
+                    pButton
+                    label="Create team"
+                ></button>
+            </div>
+        </form>
+    </div>
+</div>

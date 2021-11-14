@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* -------------------------------------------------------------------------- */
 /*                               REQUEST INPUTS                               */
 /* -------------------------------------------------------------------------- */
@@ -26,6 +27,18 @@ export interface CreateTournamentInput {
     description: string;
 }
 
+export interface CreatePlayerInput {
+    PUUID: string;
+    accountId: string;
+    summonerId: string;
+    region: string;
+}
+
+export interface CreateTeamInput {
+    name: string;
+    playerId: number;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                NOTIFICATION                                */
 /* -------------------------------------------------------------------------- */
@@ -48,7 +61,7 @@ export interface User {
     studentId: string;
     organizedTournaments: Tournament[];
     suspensions: Suspension[];
-    players: Player[];
+    accounts: Player[];
     tournamentAdmins: TournamentAdmin[];
 }
 
@@ -87,9 +100,9 @@ export interface Player {
     summonerId: string;
     region: string;
     user: User;
+    ownedTeams: Team[];
     // activeRosters: ActiveRoster[];
     // performances: Performance[];
-    // ownedTeams: Team[];
     // games: Game[];
     // teams: Team[];
 }
@@ -97,4 +110,11 @@ export interface Player {
 export interface TournamentAdmin {
     tournament: Tournament;
     user: User;
+}
+
+export interface Team {
+    teamId: number;
+    name: string;
+    creationDate: Date;
+    captain: Player;
 }

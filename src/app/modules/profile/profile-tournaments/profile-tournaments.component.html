@@ -37,5 +37,15 @@
 </div>
 
 <ng-template #noData>
-    <app-no-data></app-no-data>
+    <div class="container flex flex-col items-center">
+        <app-no-data></app-no-data>
+        <p>You haven't organized any tournament</p>
+        <button
+            pButton
+            label="Organize one!"
+            type="button"
+            class="p-button-info"
+            [routerLink]="['/create-tournament']"
+        ></button>
+    </div>
 </ng-template>

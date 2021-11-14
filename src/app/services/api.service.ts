@@ -1,4 +1,14 @@
-import { CreateTournamentInput, LogInInput, RegisterInput, Tournament, User } from "../shared/interfaces/interfaces";
+import {
+    CreatePlayerInput,
+    CreateTeamInput,
+    CreateTournamentInput,
+    LogInInput,
+    Player,
+    RegisterInput,
+    Team,
+    Tournament,
+    User
+} from "../shared/interfaces/interfaces";
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -47,6 +57,24 @@ export class ApiService {
         return this.httpClient.put<User>(url, user).toPromise();
     }
 
+    async getMe() {
+        const url = this.apiUrl + `/users/whoami`;
+        return this.httpClient.get<User>(url, { withCredentials: true }).toPromise();
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                   PLAYER                                   */
+    /* -------------------------------------------------------------------------- */
+    async createPlayer(player: CreatePlayerInput) {
+        const url = this.apiUrl + `/players/create`;
+        return this.httpClient.post(url, player, { withCredentials: true }).toPromise();
+    }
+
+    async getPlayerById(id: number) {
+        const url = this.apiUrl + `/players/${id}`;
+        return this.httpClient.get<Player>(url, { withCredentials: true }).toPromise();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                 TOURNAMENTS                                */
     /* -------------------------------------------------------------------------- */
@@ -63,5 +91,13 @@ export class ApiService {
     async createTournament(input: CreateTournamentInput) {
         const url = this.apiUrl + `/tournaments/create`;
         return this.httpClient.post<Tournament>(url, input, { withCredentials: true }).toPromise();
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                    TEAM                                    */
+    /* -------------------------------------------------------------------------- */
+    async createTeam(input: CreateTeamInput) {
+        const url = this.apiUrl + `/teams/create`;
+        return this.httpClient.post<Team>(url, input, { withCredentials: true }).toPromise();
     }
 }
