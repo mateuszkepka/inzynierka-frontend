@@ -1,7 +1,12 @@
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { NgModule } from '@angular/core';
 import { OrganizationChartModule } from 'primeng/organizationchart';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RegisterForTournamentComponent } from './register-for-tournament/register-for-tournament.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
@@ -16,7 +21,8 @@ import { TournamentsRoutingModule } from './tournaments-routing.module';
     TournamentsComponent,
     TournamentDetailsComponent,
     TournamentDetailsTabComponent,
-    TournamentLadderComponent
+    TournamentLadderComponent,
+    RegisterForTournamentComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +32,10 @@ import { TournamentsRoutingModule } from './tournaments-routing.module';
     ButtonModule,
     TabViewModule,
     OrganizationChartModule,
+    FontAwesomeModule,
+    FormlyModule,
+    FormlyPrimeNGModule,
+    ReactiveFormsModule,
   ]
 })
 export class TournamentsModule { }

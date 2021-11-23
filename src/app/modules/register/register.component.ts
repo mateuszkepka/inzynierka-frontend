@@ -50,7 +50,7 @@ export class RegisterComponent {
             type: `input`,
             templateOptions: {
                 label: `Username`,
-                placeholder: `Enter e-mail`,
+                placeholder: `Enter username`,
                 required: true,
             }
         },

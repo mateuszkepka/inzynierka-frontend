@@ -1,9 +1,13 @@
 import {
+    AddPrizeInput,
     CreatePlayerInput,
     CreateTeamInput,
     CreateTournamentInput,
     LogInInput,
+    ParticipatingTeam,
     Player,
+    Prize,
+    RegisterForTournamentInput,
     RegisterInput,
     Team,
     Tournament,
@@ -91,6 +95,16 @@ export class ApiService {
     async createTournament(input: CreateTournamentInput) {
         const url = this.apiUrl + `/tournaments/create`;
         return this.httpClient.post<Tournament>(url, input, { withCredentials: true }).toPromise();
+    }
+
+    async addPrize(input: AddPrizeInput) {
+        const url = this.apiUrl + `/tournaments/add-prize`;
+        return this.httpClient.post<Prize>(url, input, { withCredentials: true }).toPromise();
+    }
+
+    async registerTeamForTournament(input: RegisterForTournamentInput) {
+        const url = this.apiUrl + `/tournaments/add-team`;
+        return this.httpClient.post<ParticipatingTeam>(url, input, { withCredentials: true }).toPromise();
     }
 
     /* -------------------------------------------------------------------------- */

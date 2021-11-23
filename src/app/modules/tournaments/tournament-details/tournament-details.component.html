@@ -8,6 +8,13 @@
     </div>
 
     <div class="container pt-12">
+        <button
+            pButton
+            label="Register for this tournament"
+            type="button"
+            class="p-button-info mb-4"
+            [routerLink]="['/tournaments/register-for-tournament']"
+        ></button>
         <p-tabView [activeIndex]="0">
             <p-tabPanel header="Details">
                 <app-tournament-details-tab></app-tournament-details-tab>

@@ -25,6 +25,8 @@ export interface CreateTournamentInput {
     tournamentStartDate: Date;
     tournamentEndDate: Date;
     description: string;
+    currency?: string;
+    distribution?: string;
 }
 
 export interface CreatePlayerInput {
@@ -37,6 +39,17 @@ export interface CreatePlayerInput {
 export interface CreateTeamInput {
     name: string;
     playerId: number;
+}
+
+export interface AddPrizeInput {
+    currency: string;
+    distribution: string;
+    tournamentId: number;
+}
+
+export interface RegisterForTournamentInput {
+    tournamentId: number;
+    teamId: number;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -75,7 +88,7 @@ export interface Tournament {
     tournamentStartDate: Date;
     tournamentEndDate: Date;
     description: string;
-    // prize: Prize;
+    prize: Prize;
     // games: Game[];
     // groups: Group[];
     // ladders: Ladder[];
@@ -117,4 +130,18 @@ export interface Team {
     name: string;
     creationDate: Date;
     captain: Player;
+}
+
+export interface Prize {
+    prizeId: number;
+    currency: string;
+    distribution: string;
+}
+
+export interface ParticipatingTeam {
+    participatingTeamId: number;
+    tournament: Tournament;
+    team: Team;
+    signDate: Date;
+    isApproved: boolean;
 }

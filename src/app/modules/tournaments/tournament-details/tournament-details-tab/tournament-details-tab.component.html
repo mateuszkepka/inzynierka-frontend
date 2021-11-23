@@ -22,6 +22,17 @@
             <p>
                 Number of teams: {{ tournament.numberOfTeams }}
             </p>
+            <div *ngIf="tournament.prize" class="flex flex-col gap-4">
+                <p class="font-bold text-2xl">
+                    Prize
+                </p>
+                <p>
+                    Amount: {{ tournament.prize.distribution }}
+                </p>
+                <p>
+                    Currency: {{ tournament.prize.currency }}
+                </p>
+            </div>
         </div>
         <div>
             <p class="font-bold text-2xl pb-4">Description</p>

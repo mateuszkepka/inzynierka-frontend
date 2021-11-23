@@ -1,11 +1,12 @@
+import { AddPrizeInput, CreateTournamentInput, Tournament } from "src/app/shared/interfaces/interfaces";
+import { IconDefinition, faTrophy } from "@fortawesome/free-solid-svg-icons";
+
 import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
-import { CreateTournamentInput } from "src/app/shared/interfaces/interfaces";
 import { FormGroup } from "@angular/forms";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Router } from "@angular/router";
-import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 interface GamePreset {
     name: string;
@@ -33,7 +34,7 @@ export class CreateTournamentComponent {
         }
     ];
 
-    faTrophy = faTrophy;
+    faTrophy: IconDefinition = faTrophy;
 
     form = new FormGroup({});
 
@@ -46,6 +47,8 @@ export class CreateTournamentComponent {
         tournamentStartDate: undefined,
         tournamentEndDate: undefined,
         description: undefined,
+        currency: undefined,
+        distribution: undefined,
     };
 
     fields: FormlyFieldConfig[] = [
@@ -130,6 +133,23 @@ export class CreateTournamentComponent {
             }
         },
         {
+            key: `distribution`,
+            type: `input`,
+            templateOptions: {
+                label: `Prize`,
+                placeholder: `Enter prize`,
+                required: true,
+            }
+        },
+        {
+            key: `currency`,
+            type: `input`,
+            templateOptions: {
+                label: `Currency`,
+                placeholder: `Enter currency`,
+            }
+        },
+        {
             key: `description`,
             type: `textarea`,
             templateOptions: {
@@ -163,8 +183,9 @@ export class CreateTournamentComponent {
 
     async onSubmit() {
         const response = await this.apiService.createTournament(this.model);
+        const addPrizeResponse = await this.addTournamentPrize(response);
 
-        if (response) {
+        if (response && addPrizeResponse) {
             this.notificationsService.addNotification({
                 severity: `success`,
                 summary: `Success!`,
@@ -179,5 +200,15 @@ export class CreateTournamentComponent {
             summary: `Error!`,
             detail: `Something went wrong.`
         });
+    }
+
+    async addTournamentPrize(tournament: Tournament) {
+        const input: AddPrizeInput = {
+            tournamentId: tournament.tournamentId,
+            distribution: this.model.distribution,
+            currency: this.model.currency || `None`,
+        };
+
+        return await this.apiService.addPrize(input);
     }
 }
