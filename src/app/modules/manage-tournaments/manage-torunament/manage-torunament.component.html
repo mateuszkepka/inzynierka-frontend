@@ -1,0 +1,62 @@
+<div class="container" *ngIf="participatingTeams.length > 0; else noData">
+    <p
+        [routerLink]="['/manage-tournaments']"
+        class="hover:underline font-bold cursor-pointer pb-4"
+    >
+        Back to managed tournaments list
+    </p>
+    <h1>Accept teams</h1>
+
+    <p-table
+        [value]="participatingTeams"
+        [paginator]="true"
+        [rows]="2"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="{first}-{last} of {totalRecords}"
+        [rowsPerPageOptions]="[2,5,10]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Team name</th>
+                <th>Sign date</th>
+                <th></th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-participatingTeam>
+            <tr>
+                <td>{{ participatingTeam.team.name || '-' }}</td>
+                <td>{{ (participatingTeam.signDate | date:"dd/MM/YYYY HH:mm") || '-' }}</td>
+                <td *ngIf="!participatingTeam.isApproved; else teamAccepted">
+                    <button
+                        pButton
+                        label="Accept team"
+                        class="p-button-info"
+                        type="button"
+                        (click)="acceptTeam(participatingTeam.participatingTeamId)"
+                    ></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<ng-template #noData>
+    <div class="container flex flex-col items-center">
+        <p
+            [routerLink]="['/manage-tournaments']"
+            class="hover:underline font-bold cursor-pointer pb-4"
+        >
+            Back to managed tournaments list
+        </p>
+        <app-no-data></app-no-data>
+        <p>
+            No teams waiting for acceptance
+        </p>
+    </div>
+</ng-template>
+
+<ng-template #teamAccepted>
+    <td>Team accepted</td>
+</ng-template>

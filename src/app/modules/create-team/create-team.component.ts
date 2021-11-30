@@ -96,7 +96,6 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
   async onSubmit() {
     const response = await this.apiService.createTeam(this.model);
 
-    console.log(response);
     if (response) {
       this.notificationsService.addNotification({
         severity: `success`,

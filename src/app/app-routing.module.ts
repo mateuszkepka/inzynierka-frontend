@@ -15,15 +15,26 @@ const routes: Routes = [
         loadChildren: async () => import(`./modules/profile/profile.module`).then(m => m.ProfileModule),
     },
     {
+        path: `team`,
+        loadChildren: async () => import(`./modules/team/team.module`).then(m => m.TeamModule),
+    },
+    {
+        path: `manage-tournaments`,
+        loadChildren: async () => import(`./modules/manage-tournaments/manage-tournaments.module`).then(m => m.ManageTournamentsModule)
+    },
+    {
         path: `user-accounts`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/user-accounts/user-accounts.module`).then(m => m.UserAccountsModule),
     },
     {
         path: `create-player`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/create-player/create-player.module`).then(m => m.CreatePlayerModule),
     },
     {
         path: `create-team`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/create-team/create-team.module`).then(m => m.CreateTeamModule),
     },
     {

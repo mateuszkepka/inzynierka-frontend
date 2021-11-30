@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Team, User } from 'src/app/shared/interfaces/interfaces';
+import { Player, Team, User } from 'src/app/shared/interfaces/interfaces';
+import { cloneDeep, isEqual } from 'lodash';
 
 import { ApiService } from 'src/app/services/api.service';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import { cloneDeep } from 'lodash';
 
 @Component({
   selector: `app-profile-teams`,
@@ -12,7 +12,7 @@ import { cloneDeep } from 'lodash';
   styleUrls: [`./profile-teams.component.scss`]
 })
 export class ProfileTeamsComponent implements OnInit, OnDestroy {
-  //! TODO: add teams list from user player
+  //! TODO: add teams other teams than owned
   currentUser: User;
   susbscriptions: Subscription[] = [];
   teamsList: Team[] = [];
@@ -49,4 +49,5 @@ export class ProfileTeamsComponent implements OnInit, OnDestroy {
       this.teamsList.push(...player.ownedTeams);
     });
   }
+
 }

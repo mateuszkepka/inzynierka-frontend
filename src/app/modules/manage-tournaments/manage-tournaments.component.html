@@ -1,0 +1,50 @@
+<div class="container" *ngIf="managedTournaments.length > 0; else noData">
+    <p
+        [routerLink]="['/user-dashboard']"
+        class="hover:underline font-bold cursor-pointer pb-4"
+    >
+        Back to user dashboard
+    </p>
+
+    <p-table
+        [value]="managedTournaments"
+        [paginator]="true"
+        [rows]="2"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="{first}-{last} of {totalRecords}"
+        [rowsPerPageOptions]="[2,5,10]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Tournament name</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="body" let-managedTournament>
+            <tr>
+                <td>{{ managedTournament.tournament.name || '-' }}</td>
+                <td>
+                    <button label="Manage" class="p-button-info" type="button" pButton [routerLink]="['/manage-tournaments', managedTournament.tournament.tournamentId]"></button>
+                </td>
+            </tr>
+
+        </ng-template>
+    </p-table>
+</div>
+
+<ng-template #noData>
+    <div class="container flex flex-col items-center">
+        <p
+            [routerLink]="['/user-dashboard']"
+            class="hover:underline font-bold cursor-pointer pb-4"
+        >
+            Back to user dashboard
+        </p>
+        <app-no-data></app-no-data>
+        <p>
+            You are not admin of any tournament
+        </p>
+    </div>
+</ng-template>

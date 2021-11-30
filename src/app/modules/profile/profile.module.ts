@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { TableModule } from 'primeng/table';
     FormlyModule,
     FormlyPrimeNGModule,
     ReactiveFormsModule,
+    TagModule,
   ]
 })
 export class ProfileModule { }

@@ -11,6 +11,7 @@ import {
     RegisterInput,
     Team,
     Tournament,
+    TournamentAdmin,
     User
 } from "../shared/interfaces/interfaces";
 
@@ -107,11 +108,31 @@ export class ApiService {
         return this.httpClient.post<ParticipatingTeam>(url, input, { withCredentials: true }).toPromise();
     }
 
+    async getManagedTournaments() {
+        const url = this.apiUrl + `/tournaments/managed-tournaments`;
+        return this.httpClient.get<TournamentAdmin[]>(url, { withCredentials: true }).toPromise();
+    }
+
+    async getPendingParticipatingTeams(tournamentId: number) {
+        const url = this.apiUrl + `/tournaments/pending-teams/${tournamentId}`;
+        return this.httpClient.get<ParticipatingTeam[]>(url, { withCredentials: true }).toPromise();
+    }
+
+    async acceptTeam(participatingTeamId: number) {
+        const url = this.apiUrl + `/tournaments/accept-team`;
+        return this.httpClient.post<ParticipatingTeam>(url, { participatingTeamId } ,{ withCredentials: true }).toPromise();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                    TEAM                                    */
     /* -------------------------------------------------------------------------- */
     async createTeam(input: CreateTeamInput) {
         const url = this.apiUrl + `/teams/create`;
         return this.httpClient.post<Team>(url, input, { withCredentials: true }).toPromise();
+    }
+
+    async getTeamById(teamId: number) {
+        const url = this.apiUrl + `/teams/${teamId}`;
+        return this.httpClient.get<Team>(url, { withCredentials: true }).toPromise();
     }
 }

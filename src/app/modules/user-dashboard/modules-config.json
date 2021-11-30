@@ -38,6 +38,11 @@
         "title": "Create torunament",
         "subtitle": "Start your own tournament",
         "link": "create-tournament"
+    },
+    "manageTournaments": {
+        "title": "Manage tournaments",
+        "subtitle": "Accept registrations to tournaments",
+        "link": "manage-tournaments"
     }
 
 }

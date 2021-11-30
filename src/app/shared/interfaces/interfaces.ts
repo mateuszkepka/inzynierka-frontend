@@ -121,8 +121,10 @@ export interface Player {
 }
 
 export interface TournamentAdmin {
+    tournamentAdminId: number;
     tournament: Tournament;
-    user: User;
+    isAccepted: boolean;
+    user?: User;
 }
 
 export interface Team {
@@ -141,7 +143,7 @@ export interface Prize {
 export interface ParticipatingTeam {
     participatingTeamId: number;
     tournament: Tournament;
-    team: Team;
-    signDate: Date;
+    team?: Team;
+    signDate?: Date;
     isApproved: boolean;
 }
