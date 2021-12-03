@@ -43,6 +43,11 @@
         "title": "Manage tournaments",
         "subtitle": "Accept registrations to tournaments",
         "link": "manage-tournaments"
+    },
+    "userInvitations": {
+        "title": "Team invitations",
+        "subtitle": "See if you haven't been invited",
+        "link": "user-invitations"
     }
 
 }

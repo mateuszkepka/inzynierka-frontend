@@ -49,5 +49,4 @@ export class ProfileTeamsComponent implements OnInit, OnDestroy {
       this.teamsList.push(...player.ownedTeams);
     });
   }
-
 }

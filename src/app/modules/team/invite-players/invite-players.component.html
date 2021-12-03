@@ -1,0 +1,50 @@
+<div class="container" *ngIf="playersList && currentTeam">
+    <p
+        [routerLink]="['/team', currentTeam.teamId]"
+        class="hover:underline font-bold cursor-pointer pb-4"
+    >
+        Back to '{{ currentTeam.name }}' details
+    </p>
+    <div class="invite-players">
+        <span class="invite-players-icon">
+            <fa-icon
+                [icon]="faUsers"
+                size="5x"
+            ></fa-icon>
+        </span>
+
+        <p class="invite-players-label">Invite players</p>
+
+        <form 
+            class="invite-players-form"
+            (ngSubmit)="onSubmit()"
+        >
+            <p-autoComplete
+                [(ngModel)]="invitationsList"
+                [ngModelOptions]="{ standalone: true }"
+                [suggestions]="results"
+                (completeMethod)="search($event)"
+                [dropdown]="true"
+                [multiple]="true"
+            >
+                <ng-template
+                    let-player
+                    pTemplate="item"
+                >
+                    <p>{{ player.summonerId }}</p>
+                </ng-template>
+                <ng-template
+                    let-player
+                    pTemplate="selectedItem"
+                >
+                    <span>{{ player.summonerId }}</span>
+                </ng-template>
+            </p-autoComplete>
+            <span class="text-sm text-gray-500">Multiple selection field</span>
+
+            <div class="invite-players-buttons">
+                <button type="submit" label="Invite players" pButton class="p-button-info"></button>
+            </div>
+        </form>
+    </div>
+</div>

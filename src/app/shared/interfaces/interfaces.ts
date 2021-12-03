@@ -52,6 +52,11 @@ export interface RegisterForTournamentInput {
     teamId: number;
 }
 
+export interface InvitePlayerInput {
+    playerId: number;
+    teamId: number;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                NOTIFICATION                                */
 /* -------------------------------------------------------------------------- */
@@ -146,4 +151,11 @@ export interface ParticipatingTeam {
     team?: Team;
     signDate?: Date;
     isApproved: boolean;
+}
+
+export interface PlayerTeam {
+    isAccepted: boolean;
+    playerTeamId: number;
+    team: Team;
+    player: Player;
 }

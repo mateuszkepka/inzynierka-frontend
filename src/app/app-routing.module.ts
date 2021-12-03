@@ -15,6 +15,10 @@ const routes: Routes = [
         loadChildren: async () => import(`./modules/profile/profile.module`).then(m => m.ProfileModule),
     },
     {
+        path: `user-invitations`,
+        loadChildren: async () => import(`./modules/user-invitations/user-invitations.module`).then(m => m.UserInvitationsModule),
+    },
+    {
         path: `team`,
         loadChildren: async () => import(`./modules/team/team.module`).then(m => m.TeamModule),
     },

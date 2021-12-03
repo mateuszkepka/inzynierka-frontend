@@ -3,9 +3,11 @@ import {
     CreatePlayerInput,
     CreateTeamInput,
     CreateTournamentInput,
+    InvitePlayerInput,
     LogInInput,
     ParticipatingTeam,
     Player,
+    PlayerTeam,
     Prize,
     RegisterForTournamentInput,
     RegisterInput,
@@ -41,7 +43,7 @@ export class ApiService {
 
     async refreshToken() {
         const url = this.apiUrl + `/auth/refresh`;
-        return await this.httpClient.get(url, { withCredentials: true });
+        return await this.httpClient.get<User>(url, { withCredentials: true }).toPromise();
     }
 
     async logOut() {
@@ -70,6 +72,11 @@ export class ApiService {
     /* -------------------------------------------------------------------------- */
     /*                                   PLAYER                                   */
     /* -------------------------------------------------------------------------- */
+    async getAllPlayers() {
+        const url = this.apiUrl + `/players`;
+        return this.httpClient.get<Player[]>(url, { withCredentials: true }).toPromise();
+    }
+
     async createPlayer(player: CreatePlayerInput) {
         const url = this.apiUrl + `/players/create`;
         return this.httpClient.post(url, player, { withCredentials: true }).toPromise();
@@ -79,6 +86,7 @@ export class ApiService {
         const url = this.apiUrl + `/players/${id}`;
         return this.httpClient.get<Player>(url, { withCredentials: true }).toPromise();
     }
+
 
     /* -------------------------------------------------------------------------- */
     /*                                 TOURNAMENTS                                */
@@ -134,5 +142,20 @@ export class ApiService {
     async getTeamById(teamId: number) {
         const url = this.apiUrl + `/teams/${teamId}`;
         return this.httpClient.get<Team>(url, { withCredentials: true }).toPromise();
+    }
+
+    async invitePlayer(input: InvitePlayerInput) {
+        const url = this.apiUrl + `/teams/create-invitation`;
+        return this.httpClient.post<InvitePlayerInput>(url, input, { withCredentials: true }).toPromise();
+    }
+
+    async getPendingInvitations() {
+        const url = this.apiUrl + `/teams/pending-invitations`;
+        return this.httpClient.get<PlayerTeam[]>(url, { withCredentials: true}).toPromise();
+    }
+
+    async acceptPlayerInvitation(playerTeamId: number) {
+        const url = this.apiUrl + `/teams/accept-invitation`;
+        return this.httpClient.post(url, { playerTeamId }, { withCredentials: true }).toPromise();
     }
 }

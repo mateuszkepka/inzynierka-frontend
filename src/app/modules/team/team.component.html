@@ -10,7 +10,7 @@
     <div class="container pt-12">
         <p-tabView [activeIndex]="0">
             <p-tabPanel header="Players">
-                Players tab
+                <app-team-players-tab [currentTeam]="team"></app-team-players-tab>
             </p-tabPanel>
             <p-tabPanel header="Tournaments">
                 Tournaments tab

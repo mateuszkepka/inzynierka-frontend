@@ -1,0 +1,59 @@
+<div class="container" *ngIf="pendingInvitations && pendingInvitations.length > 0; else noData">
+    <p
+        [routerLink]="['/user-dashboard']"
+        class="hover:underline font-bold cursor-pointer pb-4"
+    >
+        Back to user dashboard
+    </p>
+
+    <p-table
+        [value]="pendingInvitations"
+        [paginator]="true"
+        [rows]="2"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="{first}-{last} of {totalRecords}"
+        [rowPerPageOptions]="[2,5,10]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Team name</th>
+                <th>Account name</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-invitation>
+            <tr>
+                <td>{{ invitation.team.name || '-' }}</td>
+                <td>{{ invitation.player.summonerId || '-' }}</td>
+                <td *ngIf="!invitation.isAccepted; else invitationAccepted">
+                    <button
+                        pButton
+                        class="p-button-info"
+                        type="button"
+                        (click)="acceptInvitation(invitation)"
+                        label="Accept"
+                    >
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<ng-template #noData>
+    <div class="container flex flex-col items-center">
+        <p
+            [routerLink]="['/user-dashboard']"
+            class="self-start hover:underline font-bold cursor-pointer pb-4"
+        >
+            Back to user dashboard
+        </p>
+        <app-no-data></app-no-data>
+        <p>You have no pending invitations</p>
+    </div>
+</ng-template>
+
+<ng-template #invitationAccepted>
+    <td>Invitation accepted</td>
+</ng-template>
