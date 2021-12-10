@@ -9,6 +9,8 @@ import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { InvitePlayersComponent } from './invite-players/invite-players.component';
 import { NgModule } from '@angular/core';
 import { TabViewModule } from 'primeng/tabview';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
 import { TeamComponent } from './team.component';
 import { TeamPlayersTabComponent } from './team-players-tab/team-players-tab.component';
 import { TeamRoutingModule } from './team-routing.module';
@@ -29,7 +31,9 @@ import { TeamRoutingModule } from './team-routing.module';
     FontAwesomeModule,
     FormlyPrimeNGModule,
     ReactiveFormsModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    TableModule,
+    TagModule,
   ]
 })
 export class TeamModule { }

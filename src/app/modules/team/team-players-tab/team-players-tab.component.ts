@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Team, User } from 'src/app/shared/interfaces/interfaces';
+import { Invitation, Team, User } from 'src/app/shared/interfaces/interfaces';
 
+import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
@@ -17,20 +18,27 @@ export class TeamPlayersTabComponent implements OnInit, OnDestroy {
   currentUser: User;
   subscriptions: Subscription[] = [];
   showInviteButton = false;
+  membersList: Invitation[] = [];
 
   constructor(
     private readonly store: Store,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly apiService: ApiService,
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.listenOnCurrentUserChange();
+    await this.getMembersList();
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
+  }
+
+  async getMembersList() {
+    this.membersList = await this.apiService.getTeamMembers(this.currentTeam.teamId);
   }
 
   listenOnCurrentUserChange() {

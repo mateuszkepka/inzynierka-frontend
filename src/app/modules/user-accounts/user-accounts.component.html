@@ -1,4 +1,4 @@
-<div class="container" *ngIf="currentUser.accounts.length > 0; else noData">
+<div class="container" *ngIf="userAccounts.length > 0; else noData">
     <p
         [routerLink]="['/user-dashboard']"
         class="hover:underline font-bold cursor-pointer pb-4"
@@ -6,7 +6,7 @@
         Back to user dashboard
     </p>
     <p-table
-        [value]="currentUser.accounts"
+        [value]="userAccounts"
         [paginator]="true"
         [rows]="2"
         [showCurrentPageReport]="true"
@@ -23,7 +23,7 @@
 
         <ng-template pTemplate="body" let-account>
             <tr>
-                <td>{{ account.summonerId || "-" }}</td>
+                <td>{{ account.summonerName || "-" }}</td>
                 <td>{{ account.region || "-" }}</td>
             </tr>
         </ng-template>

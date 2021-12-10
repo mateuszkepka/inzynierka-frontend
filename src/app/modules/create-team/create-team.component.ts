@@ -26,13 +26,13 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   model: CreateTeamInput = {
-    name: undefined,
-    playerId: undefined,
+    teamName: undefined,
+    captainId: undefined,
   };
 
   fields: FormlyFieldConfig[] = [
     {
-      key: `name`,
+      key: `teamName`,
       type: `input`,
       templateOptions: {
         label: `Name of your team`,
@@ -41,16 +41,16 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
       }
     },
     {
-      key: `playerId`,
+      key: `captainId`,
       type: `dropdown`,
       templateOptions: {
         label: `Select your account`,
         placeholder: `Select account`,
         showClear: true,
         options: this.userAccounts,
-        optionLabel: `name`,
+        optionLabel: `summonerName`,
         optionValue: `playerId`,
-        modelField: `playerId`
+        modelField: `captainId`
       }
     },
     {
@@ -80,9 +80,9 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.store
         .select(state => state.currentUser.currentUser)
-        .subscribe((currentUser: User) => {
+        .subscribe(async (currentUser: User) => {
           this.currentUser = cloneDeep(currentUser);
-          this.setUserAccounts();
+          await this.setUserAccounts();
         }),
     );
   }
@@ -96,7 +96,7 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
   async onSubmit() {
     const response = await this.apiService.createTeam(this.model);
 
-    if (response) {
+    if (response.ok) {
       this.notificationsService.addNotification({
         severity: `success`,
         summary: `Success!`,
@@ -112,12 +112,8 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
     });
   }
 
-  setUserAccounts() {
-    this.currentUser.accounts.forEach((account) => {
-      this.userAccounts.push({
-        name: account.summonerId,
-        playerId: account.playerId,
-      });
-    });
+  async setUserAccounts() {
+    const result = await this.apiService.getUserAccounts(this.currentUser.userId);
+    result.forEach((value) => this.userAccounts.push(value));
   }
 }

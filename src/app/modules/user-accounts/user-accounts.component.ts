@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Player, User } from 'src/app/shared/interfaces/interfaces';
 
+import { ApiService } from 'src/app/services/api.service';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import { User } from 'src/app/shared/interfaces/interfaces';
 import { cloneDeep } from 'lodash';
 
 @Component({
@@ -12,18 +13,24 @@ import { cloneDeep } from 'lodash';
 })
 export class UserAccountsComponent implements OnInit, OnDestroy {
   currentUser: User;
+  userAccounts: Player[] = [];
   subscriptions: Subscription[] = [];
 
-  constructor(private readonly store: Store) { }
+  constructor(private readonly store: Store, private readonly apiService: ApiService) { }
 
   ngOnInit(): void {
     this.subscriptions.push(
       this.store
         .select((state) => state.currentUser.currentUser)
-        .subscribe((currentUser: User) => {
+        .subscribe(async (currentUser: User) => {
           this.currentUser = cloneDeep(currentUser);
+          await this.getUserAccounts();
         })
     );
+  }
+
+  async getUserAccounts() {
+    this.userAccounts = await this.apiService.getUserAccounts(this.currentUser.userId);
   }
 
   ngOnDestroy() {

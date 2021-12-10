@@ -3,7 +3,7 @@
         [routerLink]="['/team', currentTeam.teamId]"
         class="hover:underline font-bold cursor-pointer pb-4"
     >
-        Back to '{{ currentTeam.name }}' details
+        Back to '{{ currentTeam.teamName }}' details
     </p>
     <div class="invite-players">
         <span class="invite-players-icon">
@@ -31,13 +31,13 @@
                     let-player
                     pTemplate="item"
                 >
-                    <p>{{ player.summonerId }}</p>
+                    <p>{{ player.summonerName }}</p>
                 </ng-template>
                 <ng-template
                     let-player
                     pTemplate="selectedItem"
                 >
-                    <span>{{ player.summonerId }}</span>
+                    <span>{{ player.summonerName }}</span>
                 </ng-template>
             </p-autoComplete>
             <span class="text-sm text-gray-500">Multiple selection field</span>

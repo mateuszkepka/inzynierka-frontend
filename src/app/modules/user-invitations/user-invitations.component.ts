@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Invitation, InvitationStatus, ResponseStatus } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
-import { PlayerTeam } from 'src/app/shared/interfaces/interfaces';
 
 @Component({
   selector: `app-user-invitations`,
@@ -11,7 +11,7 @@ import { PlayerTeam } from 'src/app/shared/interfaces/interfaces';
 })
 export class UserInvitationsComponent implements OnInit {
 
-  pendingInvitations: PlayerTeam[] | undefined;
+  pendingInvitations: Invitation[] | undefined;
 
   constructor(
     private readonly apiService: ApiService,
@@ -23,11 +23,11 @@ export class UserInvitationsComponent implements OnInit {
   }
 
   async getPendingInvitations() {
-    this.pendingInvitations = await this.apiService.getPendingInvitations();
+    this.pendingInvitations = await this.apiService.getPendingInvitations({ status: InvitationStatus.Pending });
   }
 
-  async acceptInvitation(invitation: PlayerTeam) {
-    const res = await this.apiService.acceptPlayerInvitation(invitation.playerTeamId).catch(() => false as const);
+  async acceptInvitation(invitation: Invitation, status: ResponseStatus) {
+    const res = await this.apiService.acceptPlayerInvitation(invitation.invitationId, status).catch(() => false as const);
 
     if (!res) {
       this.notificationsService.addNotification({
@@ -38,11 +38,19 @@ export class UserInvitationsComponent implements OnInit {
       return;
     }
 
-    invitation.isAccepted = true;
+    invitation.status = status;
+    let summary = `Invitation accepted`;
+    let detail = `Now you are '${invitation.teamName}' player`;
+
+    if (status === ResponseStatus.Refused) {
+      summary = `Invitation refused`;
+      detail = `You have refused '${invitation.teamName}' invitation`;
+    }
+
     this.notificationsService.addNotification({
       severity: `success`,
-      summary: `Invitation accepted`,
-      detail: `Now you are '${invitation.team.name}' player`
+      summary,
+      detail
     });
   }
 }

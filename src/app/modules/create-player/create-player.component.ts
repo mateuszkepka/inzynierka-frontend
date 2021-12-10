@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
+import { CreatePlayerInput, RegionsLoL } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
-import { CreatePlayerInput } from 'src/app/shared/interfaces/interfaces';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -16,22 +16,22 @@ import { faHeadset } from '@fortawesome/free-solid-svg-icons';
   templateUrl: `./create-player.component.html`,
   styleUrls: [`./create-player.component.scss`]
 })
-export class CreatePlayerComponent {
+export class CreatePlayerComponent implements OnInit {
 
   form = new FormGroup({});
 
+  regions = [];
   faHeadset = faHeadset;
 
   model: CreatePlayerInput = {
-    summonerId: undefined,
-    PUUID: `0`,
-    accountId: `0`,
+    summonerName: undefined,
+    gameId: 1,
     region: undefined,
   };
 
   fields: FormlyFieldConfig[] = [
     {
-      key: `summonerId`,
+      key: `summonerName`,
       type: `input`,
       templateOptions: {
         label: `Summoner Name`,
@@ -41,11 +41,16 @@ export class CreatePlayerComponent {
     },
     {
       key: `region`,
-      type: `input`,
+      type: `dropdown`,
       templateOptions: {
         label: `Region`,
         placeholder: `Enter your account region`,
         required: true,
+        showClear: true,
+        modelField: `region`,
+        options: this.regions,
+        optionLabel: `region`,
+        optionValue: `region`,
       }
     },
   ];
@@ -57,6 +62,10 @@ export class CreatePlayerComponent {
     private readonly store: Store,
   ) { }
 
+  ngOnInit() {
+    Object.keys(RegionsLoL).map((value) => (this.regions.push({ region: value })));
+  }
+
   async onSubmit() {
     const response = await this.apiService.createPlayer(this.model);
 
@@ -66,8 +75,6 @@ export class CreatePlayerComponent {
         summary: `Success!`,
         detail: `Your League of Legends account has been added.`
       });
-      const currentUser = await this.apiService.getMe();
-      this.store.dispatch(new SetCurrentUser(currentUser));
       void this.router.navigate([`/user-accounts`]);
       return;
     }

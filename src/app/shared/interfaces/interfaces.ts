@@ -30,15 +30,14 @@ export interface CreateTournamentInput {
 }
 
 export interface CreatePlayerInput {
-    PUUID: string;
-    accountId: string;
-    summonerId: string;
+    summonerName: string;
+    gameId: number;
     region: string;
 }
 
 export interface CreateTeamInput {
-    name: string;
-    playerId: number;
+    teamName: string;
+    captainId: number;
 }
 
 export interface AddPrizeInput {
@@ -55,6 +54,13 @@ export interface RegisterForTournamentInput {
 export interface InvitePlayerInput {
     playerId: number;
     teamId: number;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               REQUEST PARAMS                               */
+/* -------------------------------------------------------------------------- */
+export interface PendingInvitationsParams {
+    status: string;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -113,6 +119,7 @@ export interface Suspension {
 
 export interface Player {
     playerId: number;
+    summonerName: string;
     PUUID: string;
     accountId: string;
     summonerId: string;
@@ -134,7 +141,7 @@ export interface TournamentAdmin {
 
 export interface Team {
     teamId: number;
-    name: string;
+    teamName: string;
     creationDate: Date;
     captain: Player;
 }
@@ -153,9 +160,40 @@ export interface ParticipatingTeam {
     isApproved: boolean;
 }
 
-export interface PlayerTeam {
-    isAccepted: boolean;
-    playerTeamId: number;
-    team: Team;
-    player: Player;
+export interface Invitation {
+    status: string;
+    invitationId: number;
+    teamName: string;
+    summonerName: string;
+    userId: number;
+    teamId: number;
+    captainId: number;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    ENUM                                    */
+/* -------------------------------------------------------------------------- */
+export enum InvitationStatus {
+    Pending = `pending`,
+    Refused = `refused`,
+    Accepted = `accepted`,
+}
+
+export enum ResponseStatus {
+    Refused = `refused`,
+    Accepted = `accepted`,
+}
+
+export enum RegionsLoL {
+    BR = `BR`,
+    EUNE = `EUNE`,
+    EUW = `EUW`,
+    LAN = `LAN`,
+    LAS = `LAS`,
+    NA = `NA`,
+    OCE = `OCE`,
+    RU = `RU`,
+    TR = `TR`,
+    JP = `JP`,
+    KR = `KR`,
 }

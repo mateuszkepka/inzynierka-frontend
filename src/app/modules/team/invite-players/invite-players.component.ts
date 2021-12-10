@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InvitePlayerInput, Player, Team } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
-import { FormGroup } from '@angular/forms';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { SetCurrentTeam } from 'src/app/state/current-team.actions';
@@ -40,7 +39,6 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.listenOnCurrentTeamChange();
-    await this.getPlayersList();
   }
 
   ngOnDestroy() {
@@ -56,8 +54,11 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
         .subscribe(async (team: Team) => {
           if (team) {
             this.currentTeam = cloneDeep(team);
+            await this.getPlayersList();
+            return;
           }
-          this.getTeam();
+          await this.getTeam();
+          await this.getPlayersList();
         })
     );
   }
@@ -69,13 +70,12 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
   }
 
   async getPlayersList() {
-    // TODO : change for get players who are not in this team
-    this.playersList = await this.apiService.getAllPlayers();
+    this.playersList = await this.apiService.getPlayersToInvite(this.currentTeam.teamId);
   }
 
   search(event: any) {
     const res = this.playersList.filter((player) =>
-      player.summonerId.toLowerCase().startsWith(event.query.toLowerCase())
+      player.summonerName.toLowerCase().startsWith(event.query.toLowerCase())
     );
     this.results = res;
   }
@@ -96,7 +96,7 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
         this.notificationsService.addNotification({
           severity: `success`,
           summary: `Successful invitation`,
-          detail: `Player '${invitation.summonerId}' has been invited`,
+          detail: `Player '${invitation.summonerName}' has been invited`,
         });
         return;
       }

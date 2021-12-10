@@ -20,18 +20,27 @@
                 <th>Team name</th>
                 <th>Account name</th>
                 <th></th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-invitation>
             <tr>
-                <td>{{ invitation.team.name || '-' }}</td>
-                <td>{{ invitation.player.summonerId || '-' }}</td>
-                <td *ngIf="!invitation.isAccepted; else invitationAccepted">
+                <td>{{ invitation.teamName || '-' }}</td>
+                <td>{{ invitation.summonerName || '-' }}</td>
+                <td *ngIf="!(invitation.status === 'pending'); else invitationAccepted">
+                    <button
+                        pButton
+                        class="p-button-danger mr-4"
+                        type="button"
+                        (click)="acceptInvitation(invitation, 'refused')"
+                        label="Refuse"
+                    >
+                    </button>
                     <button
                         pButton
                         class="p-button-info"
                         type="button"
-                        (click)="acceptInvitation(invitation)"
+                        (click)="acceptInvitation(invitation, 'accepted')"
                         label="Accept"
                     >
                     </button>
@@ -55,5 +64,5 @@
 </ng-template>
 
 <ng-template #invitationAccepted>
-    <td>Invitation accepted</td>
+    <td>Replied!</td>
 </ng-template>

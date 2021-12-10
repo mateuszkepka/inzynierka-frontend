@@ -43,7 +43,7 @@ export class ManageTorunamentComponent implements OnInit {
       if (participatingTeam.participatingTeamId === participatingTeamId) {
         this.notificationsService.addNotification({
           severity: `success`,
-          detail: `Team ${participatingTeam.team.name} accepted sucessfully!`,
+          detail: `Team ${participatingTeam.team.teamName} accepted sucessfully!`,
           summary: `Team accepted`
         });
         participatingTeam.isApproved = true;

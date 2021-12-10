@@ -78,15 +78,9 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy {
     });
   }
 
-  setTeamsList() {
-    if (!this.currentUser.accounts.length) {
-      return;
-    }
-
-    this.currentUser.accounts.forEach(async (account) => {
-      const player = await this.apiService.getPlayerById(account.playerId);
-      this.teamsList.push(...player.ownedTeams);
-    });
+  async setTeamsList() {
+    this.teamsList = await this.apiService.getUserTeams(this.currentUser.userId);
+    console.log(this.teamsList);
   }
 
   async onSubmit() {
