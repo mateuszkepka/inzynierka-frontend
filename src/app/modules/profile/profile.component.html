@@ -12,7 +12,7 @@
                     name="profileDetails"
                 ></router-outlet>
                 <div class="flex-grow"></div>
-                <div>
+                <div *ngIf="currentUserId === currentlyLoggedUser.userId">
                     <ng-container *ngIf="routerEditModes.profileDetails; else profileDetailsEdit">
                         <button 
                             class="p-button-primary" 
@@ -36,19 +36,33 @@
         </p-tabPanel>
         
         <p-tabPanel header="Tournaments">
-            <app-profile-tournaments></app-profile-tournaments>
+            <app-profile-tournaments
+                [currentUser]="currentUser" 
+            ></app-profile-tournaments>
         </p-tabPanel>
         
         <p-tabPanel header="Suspensions">
-            <app-profile-suspensions></app-profile-suspensions>
+            <app-profile-suspensions
+                [currentUser]="currentUser"
+            ></app-profile-suspensions>
         </p-tabPanel>
         
         <p-tabPanel header="Performance">
-            <app-profile-performance></app-profile-performance>
+            <app-profile-performance
+                [currentUser]="currentUser"
+            ></app-profile-performance>
         </p-tabPanel>
 
         <p-tabPanel header="Teams">
-            <app-profile-teams></app-profile-teams>
+            <app-profile-teams
+                [currentUser]="currentUser"
+            ></app-profile-teams>
+        </p-tabPanel>
+
+        <p-tabPanel header="Accounts">
+            <app-profile-accounts
+                [currentUser]="currentUser"
+            ></app-profile-accounts>
         </p-tabPanel>
     </p-tabView>
 </div>

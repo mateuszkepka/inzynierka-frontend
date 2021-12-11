@@ -15,8 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     CreateTeamRoutingModule,
-    FormlyModule,
     FontAwesomeModule,
+    FormlyModule,
     FormlyPrimeNGModule,
     ReactiveFormsModule,
     ButtonModule,

@@ -19,13 +19,23 @@
     <ng-template pTemplate="header">
         <tr>
             <th>Summoner Name</th>
-           </tr>
+            <th></th>
+        </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>
         <tr>
             <td>
                 {{ item.summonerName || '-'}} 
                 <p-tag value="Captain" *ngIf="item.playerId === currentTeam.captain.playerId"></p-tag>
+            </td>
+            <td>
+                <button
+                    type="button"
+                    class="p-button-info"
+                    label="See details"
+                    pButton
+                    [routerLink]="['/profile', item.userId]" 
+                ></button>
             </td>
         </tr>
     </ng-template>

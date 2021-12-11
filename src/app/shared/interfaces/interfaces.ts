@@ -56,6 +56,11 @@ export interface InvitePlayerInput {
     teamId: number;
 }
 
+export interface UpdateTeamInput {
+    teamName?: string;
+    captainId?: number;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               REQUEST PARAMS                               */
 /* -------------------------------------------------------------------------- */

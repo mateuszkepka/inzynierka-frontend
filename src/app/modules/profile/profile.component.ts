@@ -2,11 +2,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ApiService } from 'src/app/services/api.service';
-import { SetCurrentUser } from 'src/app/state/current-user.actions';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/shared/interfaces/interfaces';
-import { isEqual } from 'lodash';
 
 @Component({
   selector: `app-profile`,
@@ -14,9 +12,12 @@ import { isEqual } from 'lodash';
   styleUrls: [`./profile.component.scss`]
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+
+  currentlyLoggedUser: User;
   currentUser: User;
   subscriptions: Subscription[] = [];
   activeTab: number;
+  currentUserId: number;
 
   routerComponents: {
     [name: string]: any;
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
     this.activeTab = this.router.getCurrentNavigation().extras.state?.activeTab || 0;
+    this.currentUserId = Number(this.route.snapshot.params.id);
   }
 
   async ngOnInit() {
@@ -41,10 +43,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.store
         .select((state) => state.currentUser.currentUser)
         .subscribe(
-          {
-            next: (currentUser: User) => {
-              this.currentUser = currentUser;
+          async (currentUser: User) => {
+            if (currentUser) {
+              this.currentlyLoggedUser = currentUser;
             }
+            if (currentUser.userId === this.currentUserId) {
+              this.currentUser = currentUser;
+              return;
+            }
+            await this.getCurrentUser();
           }
         ),
     );
@@ -54,6 +61,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
+  }
+
+  async getCurrentUser() {
+    this.currentUser = await this.apiService.getUserById(this.currentUserId);
   }
 
   readRouterOutlet(name: string, event: any) {

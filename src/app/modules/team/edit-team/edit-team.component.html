@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="edit-team">
+        <span class="edit-team-icon">
+            <fa-icon
+                [icon]="faUserFriends"
+                size="5x"
+            ></fa-icon>
+        </span>
+
+        <p class="edit-team-label">Edit team</p>
+
+        <form
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()" 
+            class="edit-team-form"
+        >
+            <formly-form
+                [form]="form"
+                [fields]="fields"
+                [model]="model"
+            ></formly-form>
+            <div class="edit-team-buttons">
+                <button
+                    type="submit"
+                    pButton
+                    label="Save changes"
+                ></button>
+            </div>
+        </form>
+    </div>
+</div>

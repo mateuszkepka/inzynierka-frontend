@@ -1,6 +1,6 @@
-<div class="container" *ngIf="teamsList.length > 0; else noData">
+<div class="container" *ngIf="currentUser.accounts.length > 0; else noData">
     <p-table
-        [value]="teamsList"
+        [value]="currentUser.accounts"
         [paginator]="true"
         [rows]="2"
         [showCurrentPageReport]="true"
@@ -11,25 +11,20 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Name</th>
-                <th>Creation date</th>
-                <th></th>
+                <th>Region</th>
             </tr>
         </ng-template>
 
-        <ng-template pTemplate="body" let-team>
+        <ng-template pTemplate="body" let-account>
             <tr>
                 <td>
                     <div class="flex gap-4">
                         <p>
-                            {{ team.name || "-" }}
+                            {{ account.summonerName || "-" }}
                         </p>
-                        <p-tag value="Captain"></p-tag>
                     </div>
                 </td>
-                <td>{{ (team.creationDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
-                <td>
-                    <button label="See details" class="p-button-info" type="button" pButton [routerLink]="['/team', team.teamId]"></button>
-                </td>
+                <td>{{ account.region || "-" }}</td>
             </tr>
         </ng-template>
     </p-table>
@@ -46,13 +41,14 @@
 <ng-template #noData>
     <div class="container flex flex-col items-center">
         <app-no-data></app-no-data>
-        <p>You aren't registered in any team.</p>
+        <p>No accounts found</p>
         <button
             pButton
             label="Create one!"
             type="button"
             class="p-button-info"
             [routerLink]="['/create-team']"
+            *ngIf="currentlyLoggedUser && currentlyLoggedUser.userId === currentProfileId"
         ></button>
     </div>
 </ng-template>

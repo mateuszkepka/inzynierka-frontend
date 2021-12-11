@@ -8,6 +8,22 @@
     </div>
 
     <div class="container pt-12">
+        <button
+            *ngIf="showManageButtons"
+            type="button"
+            pButton
+            class="p-button-info"
+            label="Edit team data"
+            (click)="navigateToEditTeam()"
+        ></button>
+        <button
+            *ngIf="showManageButtons"
+            type="button"
+            pButton
+            class="p-button-danger ml-4"
+            label="Delete team"
+            (click)="deleteTeam()"
+        ></button>
         <p-tabView [activeIndex]="0">
             <p-tabPanel header="Players">
                 <app-team-players-tab [currentTeam]="team"></app-team-players-tab>

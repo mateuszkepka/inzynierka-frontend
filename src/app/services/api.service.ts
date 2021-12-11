@@ -16,6 +16,7 @@ import {
     Team,
     Tournament,
     TournamentAdmin,
+    UpdateTeamInput,
     User
 } from "../shared/interfaces/interfaces";
 
@@ -164,6 +165,16 @@ export class ApiService {
     async getTeamMembers(teamId: number) {
         const url = this.apiUrl + `/teams/${teamId}/members`;
         return this.httpClient.get<Invitation[]>(url, { withCredentials: true }).toPromise();
+    }
+
+    async updateTeam(teamId: number ,input: UpdateTeamInput) {
+        const url = this.apiUrl + `/teams/${teamId}`;
+        return this.httpClient.patch<Team>(url, input, { observe: `response`, withCredentials: true }).toPromise();
+    }
+
+    async deleteTeam(teamId: number) {
+        const url = this.apiUrl + `/teams/${teamId}`;
+        return this.httpClient.delete<Team>(url, { observe: `response` }).toPromise();
     }
 
     /* -------------------------------------------------------------------------- */

@@ -16,6 +16,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { ProfileAccountsComponent } from './profile-accounts/profile-accounts.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TagModule } from 'primeng/tag';
     ProfileTournamentsComponent,
     ProfileTeamsComponent,
     ProfilePerformanceComponent,
-    ProfileDetailsEditComponent
+    ProfileDetailsEditComponent,
+    ProfileAccountsComponent
   ],
   imports: [
     ProfileRoutingModule,
