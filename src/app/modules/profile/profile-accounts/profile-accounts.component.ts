@@ -1,10 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Player, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import { User } from 'src/app/shared/interfaces/interfaces';
 import { cloneDeep } from 'lodash';
 
 @Component({
@@ -19,6 +19,10 @@ export class ProfileAccountsComponent implements OnInit, OnDestroy {
   currentlyLoggedUserSub: Subscription;
   currentProfileId: number;
 
+  userAccounts: Player[] = [];
+
+  isLoading = false;
+
   constructor(
     private readonly store: Store,
     private readonly apiService: ApiService,
@@ -28,6 +32,7 @@ export class ProfileAccountsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.getUserAccounts();
     this.listenOnCurrentlyLoggedUserChange();
   }
 
@@ -42,6 +47,16 @@ export class ProfileAccountsComponent implements OnInit, OnDestroy {
         this.currentlyLoggedUser = cloneDeep(currentUser);
       }
     });
+  }
+
+  async getUserAccounts() {
+    this.isLoading = true;
+    this.userAccounts = await this.apiService.getUserAccounts(this.currentProfileId)
+        .catch(() => {
+          this.isLoading = false;
+          return [];
+        });
+    this.isLoading = false;
   }
 
 }

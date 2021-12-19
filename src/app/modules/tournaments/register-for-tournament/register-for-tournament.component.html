@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="teamsList">
     <div class="register-for-tournament">
         <span class="register-for-tournament-icon">
             <fa-icon
@@ -19,6 +19,54 @@
                 [fields]="fields"
                 [form]="form"
             ></formly-form>
+            <div *ngIf="model.teamId" class="w-full">
+                <p>Pick your team roster</p>
+                <p-autoComplete
+                    [(ngModel)]="model.roster"
+                    [ngModelOptions]="{ standalone: true }"
+                    [suggestions]="results"
+                    (completeMethod)="search($event)"
+                    [dropdown]="true"
+                    [multiple]="true"
+                >
+                    <ng-template
+                        let-player
+                        pTemplate="item"
+                    >
+                        <p>{{ player.summonerName }}</p>
+                    </ng-template>
+                    <ng-template
+                        let-player
+                        pTemplate="selectedItem"
+                    >
+                        <span>{{ player.summonerName }}</span>
+                    </ng-template>
+                </p-autoComplete>
+
+                
+                <p>Pick your team substitutions</p>
+                <p-autoComplete
+                    [(ngModel)]="model.subs"
+                    [ngModelOptions]="{ standalone: true }"
+                    [suggestions]="results"
+                    (completeMethod)="search($event)"
+                    [dropdown]="true"
+                    [multiple]="true"
+                >
+                    <ng-template
+                        let-player
+                        pTemplate="item"
+                    >
+                        <p>{{ player.summonerName }}</p>
+                    </ng-template>
+                    <ng-template
+                        let-player
+                        pTemplate="selectedItem"
+                    >
+                        <span>{{ player.summonerName }}</span>
+                    </ng-template>
+                </p-autoComplete>
+            </div>
             <div class="register-for-tournament-buttons">
                 <button
                     type="submit"

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, DoCheck, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { Team, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ActivatedRoute } from '@angular/router';
@@ -12,15 +12,17 @@ import { cloneDeep } from 'lodash';
   templateUrl: `./profile-teams.component.html`,
   styleUrls: [`./profile-teams.component.scss`]
 })
-export class ProfileTeamsComponent implements OnInit, OnDestroy {
-  //! TODO: add teams other teams than owned
+export class ProfileTeamsComponent implements OnInit, OnDestroy, DoCheck {
   @Input() currentUser: User;
   currentlyLoggedUser: User;
   teamsList: Team[] = [];
   currentlyLoggedUserSub: Subscription;
   currentProfileId: number;
 
+  isVisible = false;
+
   constructor(
+    private readonly elementRef: ElementRef,
     private readonly store: Store,
     private readonly apiService: ApiService,
     private readonly activatedRoute: ActivatedRoute,
@@ -28,32 +30,32 @@ export class ProfileTeamsComponent implements OnInit, OnDestroy {
     this.currentProfileId = Number(this.activatedRoute.snapshot.params.id);
   }
 
-  ngOnInit() {
-    this.setTeamsList();
+  async ngOnInit() {
+    await this.setTeamsList();
     this.listenOnCurrentlyLoggedUserChange();
   }
 
   ngOnDestroy() {
-      this.currentlyLoggedUserSub.unsubscribe();
+    this.currentlyLoggedUserSub.unsubscribe();
   }
 
-  setTeamsList() {
-    if (!this.currentUser.accounts.length) {
-      return;
-    }
+  ngDoCheck() {
+      this.isVisible = this.elementRef.nativeElement.offsetParent !== null;
+  }
 
-    this.currentUser.accounts.forEach(async (account) => {
-      const player = await this.apiService.getPlayerById(account.playerId);
-      this.teamsList.push(...player.ownedTeams);
-    });
+  async setTeamsList() {
+    this.teamsList = await this.apiService.getUserTeams(this.currentProfileId).catch(() => []);
+    console.log(this.teamsList);
   }
 
   listenOnCurrentlyLoggedUserChange() {
-    this.currentlyLoggedUserSub = this.store.select((state) => state.currentUser.currentUser)
-    .subscribe((currentUser: User) => {
-      if (currentUser) {
-        this.currentlyLoggedUser = cloneDeep(currentUser);
-      }
-    });
+    this.currentlyLoggedUserSub =
+      this.store
+        .select((state) => state.currentUser.currentUser)
+        .subscribe((currentUser: User) => {
+          if (currentUser) {
+            this.currentlyLoggedUser = cloneDeep(currentUser);
+          }
+        });
   }
 }

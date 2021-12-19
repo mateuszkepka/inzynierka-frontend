@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Team, User } from 'src/app/shared/interfaces/interfaces';
+import { Player, Team, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
@@ -20,7 +20,9 @@ export class TeamComponent implements OnInit {
   subscriptions: Subscription[] = [];
   team: Team;
   currentUser: User | undefined;
+  currentUserAccounts: Player[] = [];
   showManageButtons = false;
+  captain: Player;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -34,7 +36,7 @@ export class TeamComponent implements OnInit {
 
   async ngOnInit(){
     this.team = await this.apiService.getTeamById(this.teamId);
-    console.log(this.team);
+    this.captain = await this.apiService.getPlayerById(this.team.captainId);
     this.store.dispatch(new SetCurrentTeam(this.team));
     this.listenOnCurrentUserChange();
   }
@@ -43,18 +45,22 @@ export class TeamComponent implements OnInit {
     this.subscriptions.push(
       this.store
         .select((state) => state.currentUser.currentUser)
-        .subscribe((currentUser: User | undefined) => {
+        .subscribe(async (currentUser: User | undefined) => {
           if (currentUser) {
             this.currentUser = cloneDeep(currentUser);
+            await this.setCurrentUserAccounts();
             this.setShowManageButton();
-            console.log(this.currentUser);
           }
         })
     );
   }
 
   setShowManageButton() {
-    this.showManageButtons = Boolean(this.currentUser.accounts.find((value) => value.playerId === this.team.captain.playerId));
+    this.showManageButtons = Boolean(this.currentUserAccounts.find((value) => value.playerId === this.captain.playerId));
+  }
+
+  async setCurrentUserAccounts() {
+    this.currentUserAccounts = await this.apiService.getUserAccounts(this.currentUser.userId);
   }
 
   navigateToEditTeam() {

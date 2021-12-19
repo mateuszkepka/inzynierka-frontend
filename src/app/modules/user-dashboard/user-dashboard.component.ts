@@ -86,6 +86,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
           title: `Team invitations`,
           subtitle: `See if you haven't been invited`,
           link: `user-invitations`
+      },
+      createTeam: {
+        title: `Create team`,
+        subtitle: `Run your own team`,
+        link: `create-team`
       }
     };
   }

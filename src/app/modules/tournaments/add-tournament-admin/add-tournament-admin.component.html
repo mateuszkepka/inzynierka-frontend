@@ -1,0 +1,51 @@
+<div class="container" *ngIf="usersList && currentTournament">
+    <p
+        [routerLink]="['/tournaments', currentTournament.tournamentId]"
+        class="hover:underline font-bold cursor-pointer pb-4"
+    >
+        Back to '{{ currentTournament.name }}' details
+    </p>
+
+    <div class="add-admin">
+        <span class="add-admin-icon">
+            <fa-icon
+                [icon]="faUsers"
+                size="5x"
+            ></fa-icon>
+        </span>
+
+        <p class="add-admin-label">Invite players</p>
+
+        <form 
+            class="add-admin-form"
+            (ngSubmit)="onSubmit()"
+        >
+            <p-autoComplete
+                [(ngModel)]="adminsList"
+                [ngModelOptions]="{ standalone: true }"
+                [suggestions]="results"
+                (completeMethod)="search($event)"
+                [dropdown]="true"
+                [multiple]="true"
+            >
+                <ng-template
+                    let-user
+                    pTemplate="item"
+                >
+                    <p>{{ user.username }}</p>
+                </ng-template>
+                <ng-template
+                    let-user
+                    pTemplate="selectedItem"
+                >
+                    <span>{{ user.username }}</span>
+                </ng-template>
+            </p-autoComplete>
+            <span class="text-sm text-gray-500">Multiple selection field</span>
+
+            <div class="add-admin-buttons">
+                <button type="submit" label="Invite players" pButton class="p-button-info"></button>
+            </div>
+        </form>
+    </div>
+</div>

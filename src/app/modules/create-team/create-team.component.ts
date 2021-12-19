@@ -27,7 +27,7 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
 
   model: CreateTeamInput = {
     teamName: undefined,
-    captainId: undefined,
+    playerId: undefined,
   };
 
   fields: FormlyFieldConfig[] = [
@@ -41,7 +41,7 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
       }
     },
     {
-      key: `captainId`,
+      key: `playerId`,
       type: `dropdown`,
       templateOptions: {
         label: `Select your account`,
@@ -50,7 +50,7 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
         options: this.userAccounts,
         optionLabel: `summonerName`,
         optionValue: `playerId`,
-        modelField: `captainId`
+        modelField: `playerId`
       }
     },
     {
@@ -102,7 +102,7 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
         summary: `Success!`,
         detail: `Team has been created.`
       });
-      void this.router.navigate([`/profile`]);
+      void this.router.navigate([`/profile/${this.currentUser.userId}`]);
       return;
     }
     this.notificationsService.addNotification({

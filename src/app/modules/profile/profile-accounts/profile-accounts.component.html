@@ -1,42 +1,50 @@
-<div class="container" *ngIf="currentUser.accounts.length > 0; else noData">
-    <p-table
-        [value]="currentUser.accounts"
-        [paginator]="true"
-        [rows]="2"
-        [showCurrentPageReport]="true"
-        responsiveLayout="scroll"
-        currentPageReportTemplate="{first}-{last} of {totalRecords}"
-        [rowsPerPageOptions]="[2,5,10]"
-    >
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Name</th>
-                <th>Region</th>
-            </tr>
-        </ng-template>
-
-        <ng-template pTemplate="body" let-account>
-            <tr>
-                <td>
-                    <div class="flex gap-4">
-                        <p>
-                            {{ account.summonerName || "-" }}
-                        </p>
-                    </div>
-                </td>
-                <td>{{ account.region || "-" }}</td>
-            </tr>
-        </ng-template>
-    </p-table>
-    <button
-        *ngIf="currentlyLoggedUser && currentlyLoggedUser.userId === currentProfileId"
-        pButton
-        label="Create another one!"
-        type="button"
-        class="p-button-info mt-4"
-        [routerLink]="['/create-team']"
-    ></button>
+<div class="container" *ngIf="!isLoading; else loadingSpinner">
+    <div *ngIf="userAccounts.length > 0; else noData">
+        <p-table
+            [value]="userAccounts"
+            [paginator]="true"
+            [rows]="2"
+            [showCurrentPageReport]="true"
+            responsiveLayout="scroll"
+            currentPageReportTemplate="{first}-{last} of {totalRecords}"
+            [rowsPerPageOptions]="[2,5,10]"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Region</th>
+                </tr>
+            </ng-template>
+    
+            <ng-template pTemplate="body" let-account>
+                <tr>
+                    <td>
+                        <div class="flex gap-4">
+                            <p>
+                                {{ account.summonerName || "-" }}
+                            </p>
+                        </div>
+                    </td>
+                    <td>{{ account.region || "-" }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <button
+            *ngIf="currentlyLoggedUser && currentlyLoggedUser.userId === currentProfileId"
+            pButton
+            label="Create another one!"
+            type="button"
+            class="p-button-info mt-4"
+            [routerLink]="['/create-team']"
+        ></button>
+    </div>
 </div>
+
+<ng-template #loadingSpinner>
+    <div class="container flex items-center">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+</ng-template>
 
 <ng-template #noData>
     <div class="container flex flex-col items-center">

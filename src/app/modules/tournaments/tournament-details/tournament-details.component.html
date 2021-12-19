@@ -13,7 +13,7 @@
             label="Register for this tournament"
             type="button"
             class="p-button-info mb-4"
-            [routerLink]="['/tournaments/register-for-tournament']"
+            [routerLink]="['/tournaments', tournamentId,'register-for-tournament']"
         ></button>
         <p-tabView [activeIndex]="0">
             <p-tabPanel header="Details">
@@ -21,11 +21,15 @@
             </p-tabPanel>
     
             <p-tabPanel header="Competitors">
-                Competitors panel
+                <app-tournament-competitors-tab></app-tournament-competitors-tab>
             </p-tabPanel>
     
             <p-tabPanel header="Ladder">
                 <app-tournament-ladder></app-tournament-ladder>
+            </p-tabPanel>
+
+            <p-tabPanel header="Administrators">
+                <app-tournament-administrators-tab></app-tournament-administrators-tab>
             </p-tabPanel>
         </p-tabView>
     </div>

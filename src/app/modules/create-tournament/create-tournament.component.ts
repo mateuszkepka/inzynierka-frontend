@@ -7,6 +7,7 @@ import { FormGroup } from "@angular/forms";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Router } from "@angular/router";
+import { omit } from "lodash";
 
 interface GamePreset {
     name: string;
@@ -47,8 +48,12 @@ export class CreateTournamentComponent {
         tournamentStartDate: undefined,
         tournamentEndDate: undefined,
         description: undefined,
-        currency: undefined,
-        distribution: undefined,
+        gamesPreset: undefined,
+        prize: {
+            currency: undefined,
+            distribution: undefined,
+        },
+        gameId: 1,
     };
 
     fields: FormlyFieldConfig[] = [
@@ -129,11 +134,12 @@ export class CreateTournamentComponent {
                 placeholder: `Select games preset`,
                 showClear: true,
                 options: this.gamePresets,
-                optionLabel: `name`
+                optionLabel: `name`,
+                modelField: `gamesPreset`,
             }
         },
         {
-            key: `distribution`,
+            key: `prize.distribution`,
             type: `input`,
             templateOptions: {
                 label: `Prize`,
@@ -142,7 +148,7 @@ export class CreateTournamentComponent {
             }
         },
         {
-            key: `currency`,
+            key: `prize.currency`,
             type: `input`,
             templateOptions: {
                 label: `Currency`,
@@ -205,8 +211,8 @@ export class CreateTournamentComponent {
     async addTournamentPrize(tournament: Tournament) {
         const input: AddPrizeInput = {
             tournamentId: tournament.tournamentId,
-            distribution: this.model.distribution,
-            currency: this.model.currency || `None`,
+            distribution: this.model.prize.distribution,
+            currency: this.model.prize.currency || `None`,
         };
 
         return await this.apiService.addPrize(input);

@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, SimpleChange, SimpleChanges } from "@angular/core";
+
 import { FieldType } from "@ngx-formly/core";
 
 @Component({

@@ -27,7 +27,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
 
   model: CreateTeamInput = {
     teamName: undefined,
-    captainId: undefined,
+    playerId: undefined,
   };
 
   fields: FormlyFieldConfig[] = [
@@ -41,7 +41,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
       }
     },
     {
-      key: `captainId`,
+      key: `playerId`,
       type: `dropdown`,
       templateOptions: {
         label: `Select your account`,
@@ -50,7 +50,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
         options: this.userAccounts,
         optionLabel: `summonerName`,
         optionValue: `playerId`,
-        modelField: `captainId`
+        modelField: `playerId`
       }
     },
     {
@@ -98,7 +98,8 @@ export class EditTeamComponent implements OnInit, OnDestroy {
   }
   async getTeamData() {
     const team = await this.apiService.getTeamById(this.teamId);
-    this.model.captainId = team.captain.playerId;
+    const captain = await this.apiService.getPlayerById(team.captainId);
+    this.model.playerId = captain.playerId;
     this.model.teamName = team.teamName;
     this.model = cloneDeep(this.model);
   }

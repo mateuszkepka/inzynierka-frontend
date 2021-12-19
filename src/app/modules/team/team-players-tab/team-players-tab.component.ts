@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Invitation, Team, User } from 'src/app/shared/interfaces/interfaces';
+import { Invitation, Player, Team, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
@@ -15,6 +15,9 @@ import { cloneDeep } from 'lodash';
 export class TeamPlayersTabComponent implements OnInit, OnDestroy {
 
   @Input() currentTeam: Team;
+  @Input() captain: Player;
+  @Input() currentUserAccounts: Player[];
+
   currentUser: User;
   subscriptions: Subscription[] = [];
   showInviteButton = false;
@@ -53,7 +56,7 @@ export class TeamPlayersTabComponent implements OnInit, OnDestroy {
   }
 
   setShowInviteButton() {
-    this.showInviteButton = Boolean(this.currentUser.accounts.find((account) => account.playerId === this.currentTeam.captain.playerId));
+    this.showInviteButton = Boolean(this.currentUserAccounts.find((account) => account.playerId === this.captain.playerId));
   }
 
   navigateToInvitePlayers() {

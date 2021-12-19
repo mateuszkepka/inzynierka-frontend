@@ -8,6 +8,7 @@ import { NotificationsService } from "src/app/services/notifications.service";
 import { RegisterInput } from "src/app/shared/interfaces/interfaces";
 import { Router } from "@angular/router";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { omit } from "lodash";
 
 @Component({
     selector: `app-register`,
@@ -123,15 +124,16 @@ export class RegisterComponent {
     ) {}
 
     async onSubmit() {
-        (await this.apiService.register(this.model as RegisterInput)).subscribe((res) => {
-            if (res) {
-                this.notificationsService.addNotification({severity: `success`, summary: `Success!`, detail: `Account has been created.`});
-                void this.router.navigate([`/log-in`]);
-                return;
-            }
-        }, () => {
-            this.notificationsService.addNotification({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
-        });
-
+        const res = await this.apiService.register(
+            omit(
+                this.model, [`repeatPassword`, `acceptTermsOfUse`]
+            ) as RegisterInput
+        );
+        if (res) {
+            this.notificationsService.addNotification({severity: `success`, summary: `Success!`, detail: `Account has been created.`});
+            void this.router.navigate([`/log-in`]);
+            return;
+        }
+        this.notificationsService.addNotification({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
     }
 }

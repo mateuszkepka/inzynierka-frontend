@@ -25,8 +25,12 @@ export interface CreateTournamentInput {
     tournamentStartDate: Date;
     tournamentEndDate: Date;
     description: string;
-    currency?: string;
-    distribution?: string;
+    prize?: {
+        currency?: string;
+        distribution?: string;
+    };
+    gamesPreset?: any;
+    gameId: number;
 }
 
 export interface CreatePlayerInput {
@@ -37,18 +41,20 @@ export interface CreatePlayerInput {
 
 export interface CreateTeamInput {
     teamName: string;
-    captainId: number;
+    playerId: number;
 }
 
 export interface AddPrizeInput {
     currency: string;
     distribution: string;
-    tournamentId: number;
+    tournamentId?: number;
 }
 
 export interface RegisterForTournamentInput {
-    tournamentId: number;
+    tournamentId?: number;
     teamId: number;
+    roster: string[];
+    subs: string[];
 }
 
 export interface InvitePlayerInput {
@@ -66,6 +72,11 @@ export interface UpdateTeamInput {
 /* -------------------------------------------------------------------------- */
 export interface PendingInvitationsParams {
     status: string;
+}
+
+export interface GetUserTournamentsParams {
+    role?: string;
+    status?: string;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -149,6 +160,7 @@ export interface Team {
     teamName: string;
     creationDate: Date;
     captain: Player;
+    captainId?: number;
 }
 
 export interface Prize {
@@ -201,4 +213,16 @@ export enum RegionsLoL {
     TR = `TR`,
     JP = `JP`,
     KR = `KR`,
+}
+
+export enum TournamentStatus {
+    PAST = `past`,
+    ONGOING = `ongoing`,
+    UPCOMING = `upcoming`,
+}
+
+export enum TournamentRoles {
+    TOURNAMENT_ADMIN = `tournament-admin`,
+    PLAYER = `player`,
+    ORGANIZER = `organizer`,
 }
