@@ -1,0 +1,56 @@
+<div class="container" *ngIf="!isLoading && isVisible; else loadingSpinner">
+    <div class="flex flex-row gap-4 pb-4">
+        <p-dropdown
+            [(ngModel)]="status"
+            [options]="statusOptions" 
+            optionLabel="label" 
+            optionValue="status"
+            (onChange)="setMatchesList()"
+        ></p-dropdown>
+    </div>
+    <div *ngIf="matchesList.length > 0; else noData">
+        <p-virtualScroller
+            [value]="matchesList"
+            scrollHeight="500px"
+            [itemSize]="150"
+        >
+            <ng-template pTemplate="item" let-match>
+                <div [routerLink]="['/matches', match.matchId]" class="flex justify-evenly cursor-pointer border-b-2 border-gray-300 py-4">
+                    <span class="self-center">Status: <strong>{{ toProperCase(match.status) }}</strong></span>
+                    
+                    <div class="flex flex-col items-center justify-center">
+                        <p class="text-center text-gray-500 text-sm">
+                            {{ match.matchStartDate | date:'dd/MM/YYYY hh:mm' }}
+                        </p>
+
+                        <div class="flex flex-row items-center gap-4">
+                            <p>
+                                {{ match.firstRoster.team.teamName }}
+                            </p>
+                            <p>vs.</p>
+                            <p>
+                                {{ match.secondRoster.team.teamName }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <span class="self-center">Winner: <strong>{{ match.winner || 'TBA' }}</strong></span>
+
+                </div>
+            </ng-template>
+        </p-virtualScroller>
+    </div>
+</div>
+
+<ng-template #loadingSpinner>
+    <div class="container flex items-center">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+</ng-template>
+
+<ng-template #noData>
+    <div class="container flex flex-col items-center">
+        <app-no-data></app-no-data>
+        <p>You are not a part of any tournament</p>
+    </div>
+</ng-template>

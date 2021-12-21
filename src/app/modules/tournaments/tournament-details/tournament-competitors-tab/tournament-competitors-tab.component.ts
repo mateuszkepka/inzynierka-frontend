@@ -29,7 +29,7 @@ export class TournamentCompetitorsTabComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-      this.isVisible = this.elementRef.nativeElement.offsetParent !== null;
+    this.isVisible = this.elementRef.nativeElement.offsetParent !== null;
   }
 
   async setTeamsList() {

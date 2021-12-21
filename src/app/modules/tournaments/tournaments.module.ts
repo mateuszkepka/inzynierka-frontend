@@ -4,11 +4,13 @@ import { AddTournamentAdminComponent } from './add-tournament-admin/add-tourname
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { DropdownModule } from 'primeng/dropdown';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { NgModule } from '@angular/core';
 import { OrganizationChartModule } from 'primeng/organizationchart';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RegisterForTournamentComponent } from './register-for-tournament/register-for-tournament.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TabViewModule } from 'primeng/tabview';
@@ -18,8 +20,10 @@ import { TournamentCompetitorsTabComponent } from './tournament-details/tourname
 import { TournamentDetailsComponent } from './tournament-details/tournament-details.component';
 import { TournamentDetailsTabComponent } from './tournament-details/tournament-details-tab/tournament-details-tab.component';
 import { TournamentLadderComponent } from './tournament-details/tournament-ladder/tournament-ladder.component';
+import { TournamentMatchesTabComponent } from './tournament-details/tournament-matches-tab/tournament-matches-tab.component';
 import { TournamentsComponent } from './tournaments.component';
 import { TournamentsRoutingModule } from './tournaments-routing.module';
+import {VirtualScrollerModule} from 'primeng/virtualscroller';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { TournamentsRoutingModule } from './tournaments-routing.module';
     RegisterForTournamentComponent,
     TournamentCompetitorsTabComponent,
     TournamentAdministratorsTabComponent,
-    AddTournamentAdminComponent
+    AddTournamentAdminComponent,
+    TournamentMatchesTabComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +50,10 @@ import { TournamentsRoutingModule } from './tournaments-routing.module';
     FormlyPrimeNGModule,
     ReactiveFormsModule,
     FormsModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    ProgressSpinnerModule,
+    DropdownModule,
+    VirtualScrollerModule,
   ]
 })
 export class TournamentsModule { }

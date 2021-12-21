@@ -1,16 +1,37 @@
 <div class="container pt-8" *ngIf="currentUser">
     <h1>Hello, {{ currentUser.username }}</h1>
 
-    <div class="grid grid-cols-2 w-full gap-4">
-        <app-module-card [moduleData]="modulesData.playerAccounts"></app-module-card>
-        <app-module-card [moduleData]="modulesData.userTournaments"></app-module-card>
-        <app-module-card [moduleData]="modulesData.createTournament"></app-module-card>
-        <app-module-card [moduleData]="modulesData.userProfile"></app-module-card>
-        <app-module-card [moduleData]="modulesData.userTeams"></app-module-card>
-        <app-module-card [moduleData]="modulesData.userSuspensions"></app-module-card>
-        <app-module-card [moduleData]="modulesData.userPerformance"></app-module-card>
-        <app-module-card [moduleData]="modulesData.manageTournaments"></app-module-card>
-        <app-module-card [moduleData]="modulesData.userInvitations"></app-module-card>
-        <app-module-card [moduleData]="modulesData.createTeam"></app-module-card>
-    </div>
+    <div class="grid grid-cols-2 w-full gap-4"></div>
+
+    
+    <p-accordion>
+        <p-accordionTab header="Tournaments">
+            <div class="grid grid-cols-2 w-full gap-4">
+                <app-module-card [moduleData]="modulesData.userTournaments"></app-module-card>
+                <app-module-card [moduleData]="modulesData.manageTournaments"></app-module-card>
+                <app-module-card [moduleData]="modulesData.createTournament"></app-module-card>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="Profile / Accounts">
+            <div class="grid grid-cols-2 w-full gap-4">
+                <app-module-card [moduleData]="modulesData.playerAccounts"></app-module-card>
+                <app-module-card [moduleData]="modulesData.userProfile"></app-module-card>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="Teams">
+            <div class="grid grid-cols-2 w-full gap-4">
+                <app-module-card [moduleData]="modulesData.userTeams"></app-module-card>
+                <app-module-card [moduleData]="modulesData.createTeam"></app-module-card>
+                <app-module-card [moduleData]="modulesData.userInvitations"></app-module-card>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="Misc.">
+            <div class="grid grid-cols-2 w-full gap-4">
+                <app-module-card [moduleData]="modulesData.userSuspensions"></app-module-card>
+                <app-module-card [moduleData]="modulesData.userPerformance"></app-module-card>
+                <app-module-card [moduleData]="modulesData.userMatches"></app-module-card>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="Administration (TODO: show only for site admin)"></p-accordionTab>
+    </p-accordion>
 </div>

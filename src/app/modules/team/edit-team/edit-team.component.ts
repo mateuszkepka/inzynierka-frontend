@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CreateTeamInput, User } from 'src/app/shared/interfaces/interfaces';
+import { CreateTeamInput, UpdateTeamInput, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
 import { FormGroup } from '@angular/forms';
@@ -25,9 +25,9 @@ export class EditTeamComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-  model: CreateTeamInput = {
+  model: UpdateTeamInput = {
     teamName: undefined,
-    playerId: undefined,
+    captainId: undefined,
   };
 
   fields: FormlyFieldConfig[] = [
@@ -41,7 +41,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
       }
     },
     {
-      key: `playerId`,
+      key: `captainId`,
       type: `dropdown`,
       templateOptions: {
         label: `Select your account`,
@@ -50,7 +50,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
         options: this.userAccounts,
         optionLabel: `summonerName`,
         optionValue: `playerId`,
-        modelField: `playerId`
+        modelField: `captainId`
       }
     },
     {
@@ -99,7 +99,7 @@ export class EditTeamComponent implements OnInit, OnDestroy {
   async getTeamData() {
     const team = await this.apiService.getTeamById(this.teamId);
     const captain = await this.apiService.getPlayerById(team.captainId);
-    this.model.playerId = captain.playerId;
+    this.model.captainId = captain.playerId;
     this.model.teamName = team.teamName;
     this.model = cloneDeep(this.model);
   }

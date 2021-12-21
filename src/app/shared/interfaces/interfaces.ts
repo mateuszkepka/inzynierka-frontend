@@ -79,6 +79,11 @@ export interface GetUserTournamentsParams {
     status?: string;
 }
 
+export interface GetUserSuspensionsParams {
+    userId: number;
+    status: string;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                NOTIFICATION                                */
 /* -------------------------------------------------------------------------- */
@@ -187,6 +192,25 @@ export interface Invitation {
     captainId: number;
 }
 
+export interface Match {
+    matchId: number;
+    matchStartDate: string;
+    matchEndDate: string;
+    status: string;
+    winner: number;
+    numberOfMaps: number;
+    firstRoster: Roster;
+    secondRoster: Roster;
+}
+
+export interface Roster {
+    participatingTeamId: number;
+    team: {
+        team: number;
+        teamName: string;
+    };
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                    ENUM                                    */
 /* -------------------------------------------------------------------------- */
@@ -225,4 +249,23 @@ export enum TournamentRoles {
     TOURNAMENT_ADMIN = `tournament-admin`,
     PLAYER = `player`,
     ORGANIZER = `organizer`,
+}
+
+export enum SuspensionStatus {
+    ACTIVE = `active`,
+    PAST = `past`,
+}
+
+export enum ReportStatus {
+    UNSEEN = `unseen`,
+    REVIEWED = `reviewed`,
+    RESOLVED = `resolved`,
+}
+
+export enum MatchStatus {
+    SCHEDULED = `scheduled`,
+    POSTPONED = `postponed`,
+    ONGOING = `ongoing`,
+    FINISHED = `finished`,
+    CANCELLED = `cancelled`,
 }

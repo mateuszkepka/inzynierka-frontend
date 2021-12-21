@@ -91,6 +91,12 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         title: `Create team`,
         subtitle: `Run your own team`,
         link: `create-team`
+      },
+      userMatches: {
+        title: `Your matches`,
+        subtitle: `See your match history`,
+        link: `/profile/${this.currentUser.userId}`,
+        activeTab: 6
       }
     };
   }

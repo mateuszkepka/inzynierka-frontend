@@ -10,6 +10,7 @@ import { ProfileAccountsComponent } from './profile-accounts/profile-accounts.co
 import { ProfileComponent } from './profile.component';
 import { ProfileDetailsComponent } from './profile-details/profile-details.component';
 import { ProfileDetailsEditComponent } from './profile-details-edit/profile-details-edit.component';
+import { ProfileMatchesComponent } from './profile-matches/profile-matches.component';
 import { ProfilePerformanceComponent } from './profile-performance/profile-performance.component';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileSuspensionsComponent } from './profile-suspensions/profile-suspensions.component';
@@ -20,6 +21,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { VirtualScrollerModule } from 'primeng/virtualscroller';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { TagModule } from 'primeng/tag';
     ProfileTeamsComponent,
     ProfilePerformanceComponent,
     ProfileDetailsEditComponent,
-    ProfileAccountsComponent
+    ProfileAccountsComponent,
+    ProfileMatchesComponent
   ],
   imports: [
     ProfileRoutingModule,
@@ -45,7 +48,8 @@ import { TagModule } from 'primeng/tag';
     ReactiveFormsModule,
     DropdownModule,
     TagModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    VirtualScrollerModule,
   ]
 })
 export class ProfileModule { }

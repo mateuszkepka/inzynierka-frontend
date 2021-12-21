@@ -1,4 +1,13 @@
 <div class="container" *ngIf="!isLoading && isVisible; else loadingSpinner">
+    <div class="flex flex-row gap-4 pb-4">
+        <p-dropdown
+            [(ngModel)]="status"
+            [options]="statusOptions" 
+            optionLabel="label" 
+            optionValue="status"
+            (onChange)="loadUserSuspensions()"
+        ></p-dropdown>
+    </div>
     <div *ngIf="userSuspensions.length > 0; else noData">
         <p-table
             [value]="userSuspensions"

@@ -7,6 +7,7 @@ import {
     Invitation,
     InvitePlayerInput,
     LogInInput,
+    Match,
     ParticipatingTeam,
     PendingInvitationsParams,
     Player,
@@ -93,6 +94,13 @@ export class ApiService {
         } }).toPromise();
     }
 
+    async getUserMatches(userId: number, status: string) {
+        const url = this.apiUrl + `/users/${userId}/matches`;
+        return this.httpClient.get<Match[]>(url, { withCredentials: true, params: {
+            status
+        } }).toPromise();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                   PLAYER                                   */
     /* -------------------------------------------------------------------------- */
@@ -173,6 +181,16 @@ export class ApiService {
         return this.httpClient.post<TournamentAdmin>(url, { userId }, { withCredentials: true }).toPromise();
     }
 
+    async getAdminsToInvite(tournamentId: number) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}/admins/available`;
+        return this.httpClient.get<User[]>(url, { withCredentials: true }).toPromise();
+    }
+
+    async getTournamentMatches(tournamentId: number, status: string) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}/matches`;
+        return this.httpClient.get<Match[]>(url, { withCredentials: true, params: { status } }).toPromise();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                    TEAM                                    */
     /* -------------------------------------------------------------------------- */
@@ -233,8 +251,8 @@ export class ApiService {
     /* -------------------------------------------------------------------------- */
     /*                                 SUSPENSIONS                                */
     /* -------------------------------------------------------------------------- */
-    async getSuspensionsFiltered(userId: number) {
+    async getSuspensionsFiltered(userId: number, status: string) {
         const url = this.apiUrl + `/suspensions`;
-        return this.httpClient.get<Suspension[]>(url, { withCredentials: true, params: { userId }}).toPromise();
+        return this.httpClient.get<Suspension[]>(url, { withCredentials: true, params: { userId, status }}).toPromise();
     }
 }

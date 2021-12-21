@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Invitation, Player, Team, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
@@ -12,7 +12,7 @@ import { cloneDeep } from 'lodash';
   templateUrl: `./team-players-tab.component.html`,
   styleUrls: [`./team-players-tab.component.scss`]
 })
-export class TeamPlayersTabComponent implements OnInit, OnDestroy {
+export class TeamPlayersTabComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() currentTeam: Team;
   @Input() captain: Player;
@@ -32,6 +32,13 @@ export class TeamPlayersTabComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.listenOnCurrentUserChange();
     await this.getMembersList();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.currentUserAccounts.currentValue) {
+      this.currentUserAccounts = cloneDeep(changes.currentUserAccounts.currentValue);
+      this.setShowInviteButton();
+    }
   }
 
   ngOnDestroy() {

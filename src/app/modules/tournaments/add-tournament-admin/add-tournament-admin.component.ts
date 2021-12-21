@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Tournament, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
@@ -41,9 +41,8 @@ export class AddTournamentAdminComponent implements OnInit {
   }
 
   async getAllUsers() {
-    // TODO get all users
-    const user = await this.apiService.getUserById(1);
-    this.usersList.push(user);
+    const users = await this.apiService.getAdminsToInvite(this.tournamentId);
+    this.usersList.push(...users);
   }
 
   search(event: any) {

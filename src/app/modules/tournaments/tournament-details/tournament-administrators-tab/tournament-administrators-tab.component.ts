@@ -21,6 +21,7 @@ export class TournamentAdministratorsTabComponent implements OnInit, OnDestroy, 
 
   subscriptions: Subscription[] = [];
   isVisible = false;
+  isLoading = false;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -69,11 +70,15 @@ export class TournamentAdministratorsTabComponent implements OnInit, OnDestroy, 
   }
 
   async getAdministratorsList() {
+    this.isLoading = true;
     this.administratorsList = await this.apiService
       .getTournamentAdmins(this.tournamentId)
-      .catch(() => []);
-    console.log(this.administratorsList);
-  }
+      .catch(() => {
+        this.isLoading = false;
+        return [];
+      });
+    this.isLoading = false;
+    }
 
   navigateToAddAdmin() {
     void this.router.navigate([`tournaments/${this.tournamentId}/add-admin`]);

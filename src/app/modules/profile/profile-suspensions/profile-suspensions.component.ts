@@ -1,5 +1,5 @@
 import { Component, DoCheck, ElementRef, Input, OnInit } from '@angular/core';
-import { Suspension, User } from 'src/app/shared/interfaces/interfaces';
+import { GetUserSuspensionsParams, Suspension, SuspensionStatus, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -18,6 +18,10 @@ export class ProfileSuspensionsComponent implements OnInit, DoCheck {
   isVisible = false;
   isLoading = false;
 
+  statusOptions: { status: string; label: string }[];
+
+  status = SuspensionStatus.PAST;
+
   constructor(
     private readonly elementRef: ElementRef,
     private readonly apiService: ApiService,
@@ -27,6 +31,7 @@ export class ProfileSuspensionsComponent implements OnInit, DoCheck {
   }
 
   async ngOnInit() {
+    this.setStatusOptions();
     await this.loadUserSuspensions();
   }
 
@@ -36,11 +41,22 @@ export class ProfileSuspensionsComponent implements OnInit, DoCheck {
 
   async loadUserSuspensions() {
     this.isLoading = true;
-    this.userSuspensions = await this.apiService.getSuspensionsFiltered(this.userId)
+    this.userSuspensions = await this.apiService.getSuspensionsFiltered(this.userId, this.status)
         .catch(() => {
           this.isLoading = false;
           return [];
         });
     this.isLoading = false;
+  }
+
+  setStatusOptions() {
+    this.statusOptions = Object.keys(SuspensionStatus).map((key) => ({
+      status: SuspensionStatus[key],
+      label: this.toProperCase(SuspensionStatus[key])
+    }));
+  }
+
+  toProperCase(text: string) {
+    return text.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase());
   }
 }

@@ -4,7 +4,7 @@
         pButton
         class="p-button-info"
         label="Add administrator"
-        *ngIf="currentUser.userId === currentTournament.organizer"
+        *ngIf="currentUser && currentUser.userId === currentTournament.organizerId"
         (click)="navigateToAddAdmin()"
     ></button>
     <div *ngIf="administratorsList.length > 0; else noData">
@@ -32,6 +32,10 @@
         </p-table>
     </div>
 </div>
+
+<ng-template #progressSpinner>
+    <p-progressSpinner></p-progressSpinner>
+</ng-template>
 
 <ng-template #noData>
     <app-no-data></app-no-data>
