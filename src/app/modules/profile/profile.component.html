@@ -3,7 +3,14 @@
     <p class="text-4xl font-bold">{{ currentUser.username }}</p>
 </div>
 
-<div class="container pt-12" *ngIf="currentUser">
+<div class="container pt-12 flex flex-col" *ngIf="currentUser">
+    <button
+        class="p-button-danger max-w-max self-end" 
+        pButton 
+        label="Report player"
+        *ngIf="currentlyLoggedUser.userId !== currentUserId"
+        (click)="showModal()"
+    ></button>
     <p-tabView [activeIndex]="activeTab">
         <p-tabPanel header="Details">
             <div class="flex">

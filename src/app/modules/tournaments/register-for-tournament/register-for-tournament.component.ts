@@ -33,7 +33,6 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
 
   model = {
     teamId: undefined,
-    tournamentId: undefined,
     roster: [],
     subs: [],
   };
@@ -105,13 +104,20 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
   }
 
   async onSubmit() {
-    this.model.tournamentId = this.tournament.tournamentId;
+    this.model.roster =
+      this.model.roster.map(
+        (value) => ({
+            username: value.user.username,
+            playerId: value.playerId,
+         }));
+    this.model.subs = this.model.subs.map(
+      (value) => ({
+          username: value.user.username,
+          playerId: value.playerId,
+       }));
+
     console.log(this.model);
-
-    this.model.roster = this.model.roster.map((value) => value.summonerName);
-    this.model.subs = this.model.subs.map((value) => value.summonerName);
-
-    const response = await this.apiService.registerTeamForTournament(this.model);
+    const response = await this.apiService.registerTeamForTournament(this.model, this.tournamentId);
 
     if (response) {
       this.notificationsService.addNotification({
@@ -131,6 +137,7 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
   }
 
   search(event: any) {
+    console.log(this.playersList);
     const res = this.playersList.filter((player) =>
       player.summonerName.toLowerCase().startsWith(event.query.toLowerCase())
     );

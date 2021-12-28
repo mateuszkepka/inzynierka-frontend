@@ -24,6 +24,16 @@ export class UserInvitationsComponent implements OnInit {
 
   async getPendingInvitations() {
     this.pendingInvitations = await this.apiService.getPendingInvitations({ status: InvitationStatus.Pending });
+    const promises = this.pendingInvitations.map(async (value) => {
+      const teamName = await this.getTeamName(value.teamId);
+      return {
+        ...value,
+        teamName,
+      };
+    });
+
+    this.pendingInvitations = await Promise.all(promises);
+
   }
 
   async acceptInvitation(invitation: Invitation, status: ResponseStatus) {
@@ -40,11 +50,11 @@ export class UserInvitationsComponent implements OnInit {
 
     invitation.status = status;
     let summary = `Invitation accepted`;
-    let detail = `Now you are '${invitation.teamName}' player`;
+    let detail = `You can start a tournament with a new team!`;
 
     if (status === ResponseStatus.Refused) {
       summary = `Invitation refused`;
-      detail = `You have refused '${invitation.teamName}' invitation`;
+      detail = `Invitation from this team has been refused`;
     }
 
     this.notificationsService.addNotification({
@@ -52,5 +62,11 @@ export class UserInvitationsComponent implements OnInit {
       summary,
       detail
     });
+  }
+
+  async getTeamName(teamId: number) {
+    const res = await this.apiService.getTeamById(teamId);
+    console.log(res);
+    return res.teamName;
   }
 }

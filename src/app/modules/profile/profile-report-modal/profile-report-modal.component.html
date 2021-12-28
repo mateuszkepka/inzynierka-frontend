@@ -1,0 +1,4 @@
+<div class="flex flex-col gap-4">
+    <textarea pInputTextarea [(ngModel)]="reportReason"></textarea>
+    <button type="button" pButton (click)="confirmReport(reportReason)" label="Send report"></button>
+</div>

@@ -14,6 +14,7 @@ import {
     Prize,
     RegisterForTournamentInput,
     RegisterInput,
+    Report,
     ResponseStatus,
     Suspension,
     Team,
@@ -145,8 +146,8 @@ export class ApiService {
         return this.httpClient.post<Prize>(url, input, { withCredentials: true }).toPromise();
     }
 
-    async registerTeamForTournament(input: RegisterForTournamentInput) {
-        const url = this.apiUrl + `/tournaments/${input.tournamentId}/teams`;
+    async registerTeamForTournament(input: RegisterForTournamentInput, tournamentId: number) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}/teams`;
         input = omit(input, [`tournamentId`]);
         return this.httpClient.post<ParticipatingTeam>(url, input, { withCredentials: true }).toPromise();
     }
@@ -254,5 +255,14 @@ export class ApiService {
     async getSuspensionsFiltered(userId: number, status: string) {
         const url = this.apiUrl + `/suspensions`;
         return this.httpClient.get<Suspension[]>(url, { withCredentials: true, params: { userId, status }}).toPromise();
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                   REPORTS                                  */
+    /* -------------------------------------------------------------------------- */
+    async createReport(userId: number, description: string) {
+        const url = this.apiUrl + `/reports`;
+        return this.httpClient.post<Report[]>(url, { userId, description } ,{ withCredentials: true }).toPromise();
+
     }
 }

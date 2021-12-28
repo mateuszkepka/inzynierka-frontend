@@ -184,12 +184,10 @@ export interface ParticipatingTeam {
 
 export interface Invitation {
     status: string;
-    invitationId: number;
-    teamName: string;
-    summonerName: string;
-    userId: number;
     teamId: number;
-    captainId: number;
+    invitationId: number;
+    playerId: InvitationPlayer;
+    summonerName?: string;
 }
 
 export interface Match {
@@ -209,6 +207,26 @@ export interface Roster {
         team: number;
         teamName: string;
     };
+}
+
+export interface Report {
+    reportId?: number;
+    status?: string;
+    reportDate?: Date;
+    description?: string;
+    responseDate?: Date;
+    reportingUser?: User;
+    reportedUser?: User;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              HELPER INTERFACES                             */
+/* -------------------------------------------------------------------------- */
+export interface InvitationPlayer {
+    playerId: number;
+    region: string;
+    summonerName: string;
+    user: User;
 }
 
 /* -------------------------------------------------------------------------- */

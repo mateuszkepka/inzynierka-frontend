@@ -26,8 +26,8 @@
         <ng-template pTemplate="body" let-invitation>
             <tr>
                 <td>{{ invitation.teamName || '-' }}</td>
-                <td>{{ invitation.summonerName || '-' }}</td>
-                <td *ngIf="!(invitation.status === 'pending'); else invitationAccepted">
+                <td>{{ invitation.playerId.summonerName || '-' }}</td>
+                <td *ngIf="invitation.status === 'pending'; else invitationAccepted">
                     <button
                         pButton
                         class="p-button-danger mr-4"
