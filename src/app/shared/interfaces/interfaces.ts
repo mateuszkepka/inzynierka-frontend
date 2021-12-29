@@ -67,6 +67,18 @@ export interface UpdateTeamInput {
     captainId?: number;
 }
 
+export interface GetReportsFilteredInput {
+    status?: string;
+    reportedId?: number;
+    reportingId?: number;
+}
+
+export interface CreateSuspensionInput {
+    userId?: number;
+    reason?: string;
+    endDate?: string;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               REQUEST PARAMS                               */
 /* -------------------------------------------------------------------------- */

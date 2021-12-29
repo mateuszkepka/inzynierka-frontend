@@ -1,8 +1,10 @@
 import {
     AddPrizeInput,
     CreatePlayerInput,
+    CreateSuspensionInput,
     CreateTeamInput,
     CreateTournamentInput,
+    GetReportsFilteredInput,
     GetUserTournamentsParams,
     Invitation,
     InvitePlayerInput,
@@ -257,12 +259,33 @@ export class ApiService {
         return this.httpClient.get<Suspension[]>(url, { withCredentials: true, params: { userId, status }}).toPromise();
     }
 
+    async createSuspension(input: CreateSuspensionInput) {
+        const url = this.apiUrl + `/suspensions`;
+        return this.httpClient.post<Suspension>(url, input, { withCredentials: true }).toPromise();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                   REPORTS                                  */
     /* -------------------------------------------------------------------------- */
     async createReport(userId: number, description: string) {
         const url = this.apiUrl + `/reports`;
-        return this.httpClient.post<Report[]>(url, { userId, description } ,{ withCredentials: true }).toPromise();
-
+        return this.httpClient.post<Report[]>(url, { userId, description }, { withCredentials: true }).toPromise();
     }
+
+    async getReportsFiltered(input: GetReportsFilteredInput) {
+        const url = this.apiUrl + `/reports`;
+        return this.httpClient.get<Report[]>(url, { withCredentials: true, params: { ...input }}).toPromise();
+    }
+
+    async getReportById(reportId: number) {
+        const url = this.apiUrl + `/reports/${reportId}`;
+        return this.httpClient.get<Report>(url, { withCredentials: true }).toPromise();
+    }
+
+    async updateReport(status: string, reportId: number) {
+        const url = this.apiUrl + `/reports/${reportId}`;
+        return this.httpClient.patch<Report>(url, { status } ,{ withCredentials: true }).toPromise();
+    }
+
+
 }

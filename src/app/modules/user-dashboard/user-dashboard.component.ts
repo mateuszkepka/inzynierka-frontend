@@ -97,6 +97,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         subtitle: `See your match history`,
         link: `/profile/${this.currentUser.userId}`,
         activeTab: 6
+      },
+      manageReports: {
+        title: `Manage reports`,
+        subtitle: `Review reports made by players`,
+        link: `/manage-reports`
       }
     };
   }

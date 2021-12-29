@@ -32,6 +32,10 @@
                 <app-module-card [moduleData]="modulesData.userMatches"></app-module-card>
             </div>
         </p-accordionTab>
-        <p-accordionTab header="Administration (TODO: show only for site admin)"></p-accordionTab>
+        <p-accordionTab header="Administration (TODO: show only for site admin)">
+            <div class="grid grid-cols-2 w-full gap-4">
+                <app-module-card [moduleData]="modulesData.manageReports"></app-module-card>
+            </div>
+        </p-accordionTab>
     </p-accordion>
 </div>

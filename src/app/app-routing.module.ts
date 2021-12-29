@@ -91,6 +91,12 @@ const routes: Routes = [
             (m) => m.UserDashboardModule
         ),
     },
+    {
+        path: `manage-reports`,
+        loadChildren: async () => import(`./modules/manage-reports/manage-reports.module`).then(
+            (m) => m.ManageReportsModule
+        ),
+    }
 ];
 
 @NgModule({

@@ -65,7 +65,6 @@ export class TournamentMatchesTabComponent implements OnInit, OnDestroy, DoCheck
       await this.apiService
         .getTournamentMatches(this.tournamentId, this.status)
         .catch(() => []);
-    console.log(this.matchesList);
   }
 
   setStatusOptions() {

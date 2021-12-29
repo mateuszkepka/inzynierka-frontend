@@ -1,0 +1,9 @@
+<div class="flex flex-col gap-4">
+    <p-calendar
+        [(ngModel)]="endDate"
+        [inline]="true"
+        [todayButtonStyleClass]="'todayButton'"
+    ></p-calendar>
+    <textarea pInputTextarea [(ngModel)]="reason" placeholder="Suspension reason"></textarea>
+    <button type="button" pButton (click)="confirmReport(endDate, reason)" label="Send report"></button>
+</div>
