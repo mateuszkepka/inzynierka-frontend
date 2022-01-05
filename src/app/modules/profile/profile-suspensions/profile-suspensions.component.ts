@@ -41,7 +41,7 @@ export class ProfileSuspensionsComponent implements OnInit, DoCheck {
 
   async loadUserSuspensions() {
     this.isLoading = true;
-    this.userSuspensions = await this.apiService.getSuspensionsFiltered(this.userId, this.status)
+    this.userSuspensions = await this.apiService.getSuspensionsFiltered({userId: this.userId, status: this.status})
         .catch(() => {
           this.isLoading = false;
           return [];

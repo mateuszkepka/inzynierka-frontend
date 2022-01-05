@@ -5,6 +5,7 @@ import {
     CreateTeamInput,
     CreateTournamentInput,
     GetReportsFilteredInput,
+    GetSuspensionsParams,
     GetUserTournamentsParams,
     Invitation,
     InvitePlayerInput,
@@ -22,6 +23,7 @@ import {
     Team,
     Tournament,
     TournamentAdmin,
+    UpdateSuspensionInput,
     UpdateTeamInput,
     User
 } from "../shared/interfaces/interfaces";
@@ -254,14 +256,19 @@ export class ApiService {
     /* -------------------------------------------------------------------------- */
     /*                                 SUSPENSIONS                                */
     /* -------------------------------------------------------------------------- */
-    async getSuspensionsFiltered(userId: number, status: string) {
+    async getSuspensionsFiltered(params: GetSuspensionsParams) {
         const url = this.apiUrl + `/suspensions`;
-        return this.httpClient.get<Suspension[]>(url, { withCredentials: true, params: { userId, status }}).toPromise();
+        return this.httpClient.get<Suspension[]>(url, { withCredentials: true, params: { ...params }}).toPromise();
     }
 
     async createSuspension(input: CreateSuspensionInput) {
         const url = this.apiUrl + `/suspensions`;
         return this.httpClient.post<Suspension>(url, input, { withCredentials: true }).toPromise();
+    }
+
+    async updateSuspension(input: UpdateSuspensionInput, suspensionId: number) {
+        const url = this.apiUrl + `/suspensions/${suspensionId}`;
+        return this.httpClient.patch<Suspension>(url, input, { withCredentials: true }).toPromise();
     }
 
     /* -------------------------------------------------------------------------- */

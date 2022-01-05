@@ -1,7 +1,7 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, DoCheck, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Match, MatchStatus, Tournament } from 'src/app/shared/interfaces/interfaces';
 
-import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
@@ -27,6 +27,7 @@ export class TournamentMatchesTabComponent implements OnInit, OnDestroy, DoCheck
 
   constructor(
     private readonly store: Store,
+    private readonly router: Router,
     private readonly apiService: ApiService,
     private readonly elementRef: ElementRef,
     private readonly activatedRoute: ActivatedRoute,
@@ -76,5 +77,9 @@ export class TournamentMatchesTabComponent implements OnInit, OnDestroy, DoCheck
 
   toProperCase(text: string) {
     return text.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase());
+  }
+
+  navigateToMatch(matchId: number) {
+    void this.router.navigate([`/matches/${matchId}`]);
   }
 }

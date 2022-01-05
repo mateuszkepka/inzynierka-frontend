@@ -79,6 +79,12 @@ export interface CreateSuspensionInput {
     endDate?: string;
 }
 
+export interface UpdateSuspensionInput {
+    endDate: Date | string;
+    reason: string;
+    suspensionId?: number;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               REQUEST PARAMS                               */
 /* -------------------------------------------------------------------------- */
@@ -94,6 +100,11 @@ export interface GetUserTournamentsParams {
 export interface GetUserSuspensionsParams {
     userId: number;
     status: string;
+}
+
+export interface GetSuspensionsParams {
+    userId?: number;
+    status?: string;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -144,10 +155,12 @@ export interface Tournament {
 
 export interface Suspension {
     suspensionId: number;
-    suspensionStartDate: Date;
-    suspensionEndDate: Date;
+    startDate: Date;
+    endDate: Date;
     reason: string;
-    user: User;
+    userId: number;
+    adminId: number;
+    username?: string;
 }
 
 export interface Player {

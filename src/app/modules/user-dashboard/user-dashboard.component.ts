@@ -102,6 +102,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         title: `Manage reports`,
         subtitle: `Review reports made by players`,
         link: `/manage-reports`
+      },
+      manageSuspensions: {
+        title: `Manage suspensions`,
+        subtitle: `See and manage all the suspensions`,
+        link: `/manage-suspensions`
       }
     };
   }

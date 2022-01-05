@@ -96,6 +96,18 @@ const routes: Routes = [
         loadChildren: async () => import(`./modules/manage-reports/manage-reports.module`).then(
             (m) => m.ManageReportsModule
         ),
+    },
+    {
+        path: `manage-suspensions`,
+        loadChildren: async () => import(`./modules/manage-suspensions/manage-suspensions.module`).then(
+            (m) => m.ManageSuspensionsModule
+        ),
+    },
+    {
+        path: `matches`,
+        loadChildren: async () => import(`./modules/matches/matches.module`).then(
+            (m) => m.MatchesModule
+        ),
     }
 ];
 

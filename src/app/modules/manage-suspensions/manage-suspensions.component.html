@@ -1,0 +1,70 @@
+<div class="container">
+    <p
+        [routerLink]="['/user-dashboard']"
+        class="hover:underline font-bold cursor-pointer pb-4"
+    >
+        Back to user dashboard
+    </p>
+
+    <div class="flex flex-row gap-4 pb-4">
+        <p-dropdown
+            [(ngModel)]="filters.status"
+            [options]="statusOptions" 
+            optionLabel="label" 
+            optionValue="status"
+            (onChange)="getSuspensions()"
+        ></p-dropdown>
+    </div>
+    <p-table 
+        *ngIf="suspensions.length > 0; else noData"
+        [value]="suspensions"
+        [paginator]="true"
+        [rows]="2"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="{first}-{last} of {totalRecords}"
+        [rowsPerPageOptions]="[10,15,20]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Suspension start date</th>
+                <th>Suspension end date</th>
+                <th>Suspended user</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="body" let-suspension>
+            <tr>
+                <td>{{ (suspension.startDate | date:"dd/MM/yyyy hh:mm") || '-' }}</td>
+                <td>{{ (suspension.endDate | date:"dd/MM/yyyy hh:mm") || '-' }}</td>
+                <td>{{ suspension.username || '-' }}</td>
+                <td>
+                    <button 
+                        label="Manage" 
+                        class="p-button-info" 
+                        type="button" 
+                        pButton
+                        (click)="showModal(suspension)"
+                    ></button>
+                </td>
+            </tr>
+
+        </ng-template>
+    </p-table>
+</div>
+
+<ng-template #noData>
+    <div class="container flex flex-col items-center">
+        <p
+            [routerLink]="['/user-dashboard']"
+            class="hover:underline font-bold cursor-pointer pb-4"
+        >
+            Back to user dashboard
+        </p>
+        <app-no-data></app-no-data>
+        <p>
+            No suspensions
+        </p>
+    </div>
+</ng-template>

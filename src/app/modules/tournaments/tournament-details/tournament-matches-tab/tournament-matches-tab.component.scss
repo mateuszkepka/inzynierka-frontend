@@ -1,0 +1,14 @@
+.match-row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 0.25fr 0.5fr 0.25fr;
+    align-items: center;
+    justify-items: center;
+    height: 100px;
+    border-bottom: 1px solid #777777;
+}
+
+.match-row:hover {
+    cursor: pointer;
+    background: rgba(200,200,200, 0.5);
+}

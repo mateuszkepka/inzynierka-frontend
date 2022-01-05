@@ -12,10 +12,9 @@
         <p-virtualScroller
             [value]="matchesList"
             scrollHeight="500px"
-            [itemSize]="150"
         >
             <ng-template pTemplate="item" let-match>
-                <div [routerLink]="['/matches', match.matchId]" class="flex justify-evenly cursor-pointer border-b-2 border-gray-300 py-4">
+                <div (click)="navigateToMatch(match.matchId)" class="match-row">
                     <span class="self-center">Status: <strong>{{ toProperCase(match.status) }}</strong></span>
                     
                     <div class="flex flex-col items-center justify-center">

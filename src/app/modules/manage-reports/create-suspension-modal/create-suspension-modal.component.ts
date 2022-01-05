@@ -19,8 +19,4 @@ export class CreateSuspensionModalComponent {
   confirmReport(endDate: Date, reason: string) {
     this.ref.close({ userId: this.config.data.userId, endDate: endDate.toISOString(), reason });
   }
-
-  onModelChange() {
-    console.log(this.endDate);
-  }
 }
