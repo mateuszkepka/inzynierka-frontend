@@ -61,7 +61,6 @@ export class TeamComponent implements OnInit {
 
   async setCurrentUserAccounts() {
     this.currentUserAccounts = await this.apiService.getUserAccounts(this.currentUser.userId);
-    console.log(this.currentUserAccounts);
   }
 
   navigateToEditTeam() {

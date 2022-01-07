@@ -13,17 +13,93 @@
             (ngSubmit)="onSubmit()"
             class="register-form"
         >
-            <formly-form
-                [model]="model"
-                [form]="form"
-                [fields]="fields"
-                [options]="formOptions"
-            ></formly-form>
+        <span class="p-float-label w-full">
+            <input
+                formControlName="email"
+                id="email"
+                type="text" 
+                pInputText 
+                [required]="true"
+            />
+            <label for="email">E-mail Address <abbr>*</abbr></label>
+        </span>
+
+        <span class="p-float-label w-full mt-4">
+            <input
+                formControlName="username"
+                id="username"
+                type="text" 
+                pInputText 
+                [required]="true"
+            />
+            <label for="username">Username<abbr>*</abbr></label>
+        </span>
+
+        <span class="p-float-label w-full mt-4">
+            <p-password
+                formControlName="password"
+                [toggleMask]="true"
+                id="password"
+            >
+            </p-password>
+            <label for="password">Password <abbr>*</abbr></label>
+        </span>
+
+        <span class="p-float-label w-full mt-4">
+            <p-password
+                formControlName="repeatPassword"
+                [toggleMask]="true"
+                id="repeatPassword"
+            >
+            </p-password>
+            <label for="repeatPassword">Repeat password <abbr>*</abbr></label>
+        </span>
+
+        <small class="p-error" *ngIf="form.controls.repeatPassword.touched && form.controls.repeatPassword.value !== form.controls.password.value">
+            Passwords not matching
+        </small>
+
+        <span class="p-float-label w-full mt-4">
+            <input
+                formControlName="university"
+                id="university"
+                type="text" 
+                pInputText 
+                [required]="true"
+            />
+            <label for="university">University <abbr>*</abbr></label>
+        </span>
+
+        <span class="p-float-label w-full mt-4">
+            <input
+                formControlName="country"
+                id="country"
+                type="text" 
+                pInputText 
+                [required]="true"
+            />
+            <label for="country">Country <abbr>*</abbr></label>
+        </span>
+
+        <span class="p-float-label w-full mt-4">
+            <input
+                formControlName="studentId"
+                id="studentId"
+                type="text" 
+                pInputText 
+                [required]="true"
+            />
+            <label for="studentId">Student ID Number<abbr>*</abbr></label>
+        </span>
+        <span class="field w-full mt-4">
+            <p-checkbox value="form.controls.terms.value" formControlName="terms" name="groupname" label="Accept terms of use"></p-checkbox>
+        </span>
             <div class="register-buttons">
                 <button
                     type="submit"
                     pButton
                     label="Submit"
+                    [disabled]="!form.valid"
                 ></button>
             </div>
         </form>

@@ -66,7 +66,6 @@ export class UserInvitationsComponent implements OnInit {
 
   async getTeamName(teamId: number) {
     const res = await this.apiService.getTeamById(teamId);
-    console.log(res);
     return res.teamName;
   }
 }

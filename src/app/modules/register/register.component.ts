@@ -1,8 +1,8 @@
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { FormlyFieldConfig, FormlyFormOptions } from "@ngx-formly/core";
 
 import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
-import { FormGroup } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { RegisterInput } from "src/app/shared/interfaces/interfaces";
@@ -18,104 +18,16 @@ import { omit } from "lodash";
 export class RegisterComponent {
     faUserCircle = faUserCircle;
 
-    form = new FormGroup({});
-
-    model = {
-        email: ``,
-        username: ``,
-        country: ``,
-        university: ``,
-        password: ``,
-        repeatPassword: ``,
-        studentId: ``
-    };
-
-    formOptions: FormlyFormOptions = {
-        formState: {
-            model: this.model,
-        }
-    };
-
-    fields: FormlyFieldConfig[] = [
-        {
-            key: `email`,
-            type: `input`,
-            templateOptions: {
-                label: `E-mail Address`,
-                placeholder: `Enter e-mail`,
-                required: true,
-            }
-        },
-        {
-            key: `username`,
-            type: `input`,
-            templateOptions: {
-                label: `Username`,
-                placeholder: `Enter username`,
-                required: true,
-            }
-        },
-        {
-            key: `password`,
-            type: `password`,
-            templateOptions: {
-                label: `Password`,
-                placeholder: `Enter password`,
-                required: true,
-                modelField: `password`,
-                showFeedback: true,
-            },
-        },
-        {
-            key: `password-repeat`,
-            type: `password`,
-            templateOptions: {
-                label: `Repeat password`,
-                placeholder: `Repeat password`,
-                required: true,
-                toggleMask: true,
-                modelField: `repeatPassword`,
-                showFeedback: false,
-            }
-        },
-        {
-            key: `country`,
-            type: `input`,
-            templateOptions: {
-                label: `Country`,
-                placeholder: `Enter your country`,
-                required: true,
-            }
-        },
-        {
-            key: `university`,
-            type: `input`,
-            templateOptions: {
-                label: `University`,
-                placeholder: `Enter your university`,
-                required: false,
-            }
-        },
-        {
-            key: `studentId`,
-            type: `input`,
-            templateOptions: {
-                label: `Student ID Number`,
-                placeholder: `Enter your student ID number`,
-                required: false,
-            }
-        },
-        {
-            key: `acceptTermsOfUse`,
-            type: `checkbox`,
-            templateOptions: {
-                label: `Accept Terms Of Use`,
-                description: `In order to proceed, please accept terms`,
-                pattern: `true`,
-                required: true
-            }
-        }
-    ];
+    form = new FormGroup({
+        email: new FormControl(``, [Validators.required, Validators.email]),
+        username: new FormControl(``, [Validators.required]),
+        country: new FormControl(``, [Validators.required]),
+        university: new FormControl(``, [Validators.required]),
+        password: new FormControl(``, [Validators.required]),
+        repeatPassword: new FormControl(``, [Validators.required, this.repeatPasswordValidator()]),
+        studentId: new FormControl(``, [Validators.required]),
+        terms: new FormControl(false, [Validators.required])
+    });
 
     constructor(
         private readonly apiService: ApiService,
@@ -126,7 +38,7 @@ export class RegisterComponent {
     async onSubmit() {
         const res = await this.apiService.register(
             omit(
-                this.model, [`repeatPassword`, `acceptTermsOfUse`]
+                this.form.value, [`repeatPassword`, `terms`]
             ) as RegisterInput
         );
         if (res) {
@@ -135,5 +47,15 @@ export class RegisterComponent {
             return;
         }
         this.notificationsService.addNotification({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
+    }
+
+    repeatPasswordValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            if (!this.form) {
+                return;
+            }
+            const valid = control.value !== this.form.value.password;
+            return valid ? { notMatchingPassword: { value: control.value } } : null;
+        };
     }
 }

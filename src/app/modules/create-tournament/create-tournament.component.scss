@@ -20,7 +20,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-width: 60%;
+        width: 60%;
+        gap: 1rem;
 
         formly-form {
             display: flex;
@@ -42,7 +43,17 @@
     width: 100%;
 }
 
+::ng-deep .p-inputnumber-input,
+::ng-deep .p-inputnumber,
+::ng-deep p-inputnumber {
+    display: block !important;
+}
+
 .p-button {
     width: 100%;
     margin: 1rem 0;
+}
+
+abbr {
+    color: red;
 }

@@ -116,7 +116,6 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
           playerId: value.playerId,
        }));
 
-    console.log(this.model);
     const response = await this.apiService.registerTeamForTournament(this.model, this.tournamentId);
 
     if (response) {
@@ -137,7 +136,6 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
   }
 
   search(event: any) {
-    console.log(this.playersList);
     const res = this.playersList.filter((player) =>
       player.summonerName.toLowerCase().startsWith(event.query.toLowerCase())
     );

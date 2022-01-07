@@ -1,13 +1,12 @@
-import { AddPrizeInput, CreateTournamentInput, Tournament } from "src/app/shared/interfaces/interfaces";
+import { AddPrizeInput, Tournament } from "src/app/shared/interfaces/interfaces";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { IconDefinition, faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 import { ApiService } from "src/app/services/api.service";
-import { Component } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { FormlyFieldConfig } from "@ngx-formly/core";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Router } from "@angular/router";
-import { omit } from "lodash";
+import { Subscription } from "rxjs";
 
 interface GamePreset {
     name: string;
@@ -19,7 +18,13 @@ interface GamePreset {
     templateUrl: `./create-tournament.component.html`,
     styleUrls: [`./create-tournament.component.scss`]
 })
-export class CreateTournamentComponent {
+export class CreateTournamentComponent implements OnInit, OnDestroy {
+    registerStartMinDate = new Date();
+    registerEndMinDate = new Date();
+    tournamentStartMinDate = new Date();
+    tournamentEndMinDate = new Date();
+
+    subscriptions: Subscription[] = [];
     gamePresets: GamePreset[] = [
         {
             name: `Preset 1`,
@@ -37,158 +42,32 @@ export class CreateTournamentComponent {
 
     faTrophy: IconDefinition = faTrophy;
 
-    form = new FormGroup({});
-
-    model: CreateTournamentInput = {
-        name: undefined,
-        numberOfPlayers: undefined,
-        numberOfTeams: undefined,
-        registerStartDate: undefined,
-        registerEndDate: undefined,
-        tournamentStartDate: undefined,
-        tournamentEndDate: undefined,
-        description: undefined,
-        gamesPreset: undefined,
-        prize: {
-            currency: undefined,
-            distribution: undefined,
-        },
-        gameId: 1,
-    };
-
-    fields: FormlyFieldConfig[] = [
-       {
-           key: `name`,
-           type: `input`,
-           templateOptions: {
-               label: `Name your tournament`,
-               placeholder: `Enter your tournament name`,
-               required: true,
-           }
-       },
-       {
-           key: `registerStartDate`,
-           type: `datepicker`,
-           templateOptions: {
-               label: `Register start date`,
-               placeholder: `Enter register start date`,
-               required: true,
-               modelField: `registerStartDate`,
-           }
-       },
-       {
-           key: `registerEndDate`,
-           type: `datepicker`,
-           templateOptions: {
-               label: `Register end date`,
-               placeholder: `Enter register end date`,
-               required: true,
-               modelField: `registerEndDate`,
-           }
-       },
-       {
-           key: `tournamentStartDate`,
-           type: `datepicker`,
-           templateOptions: {
-               label: `Tournament start date`,
-               placeholder: `Enter tournament start date`,
-               required: true,
-               modelField: `tournamentStartDate`,
-           }
-       },
-       {
-           key: `tournamentEndDate`,
-           type: `datepicker`,
-           templateOptions: {
-               label: `Tournament end date`,
-               placeholder: `Enter tournament end date`,
-               required: true,
-               modelField: `tournamentEndDate`,
-           }
-       },
-       {
-           key: `numberOfTeams`,
-           type: `input`,
-           templateOptions: {
-               type: `number`,
-               label: `Number of teams`,
-               placeholder: `Enter number of teams`,
-               required: true,
-           }
-       },
-       {
-           key: `numberOfPlayers`,
-           type: `input`,
-           templateOptions: {
-               type: `number`,
-               label: `Number of players in teams`,
-               placeholder: `Enter number of players in team`,
-               required: true,
-           }
-       },
-       {
-            key: `gamesPreset`,
-            type: `dropdown`,
-            templateOptions: {
-                label: `Select games preset`,
-                placeholder: `Select games preset`,
-                showClear: true,
-                options: this.gamePresets,
-                optionLabel: `name`,
-                modelField: `gamesPreset`,
-            }
-        },
-        {
-            key: `prize.distribution`,
-            type: `input`,
-            templateOptions: {
-                label: `Prize`,
-                placeholder: `Enter prize`,
-                required: true,
-            }
-        },
-        {
-            key: `prize.currency`,
-            type: `input`,
-            templateOptions: {
-                label: `Currency`,
-                placeholder: `Enter currency`,
-            }
-        },
-        {
-            key: `description`,
-            type: `textarea`,
-            templateOptions: {
-                label: `Description`,
-                placeholder: `Enter your description`,
-                required: true,
-                rows: 10,
-            }
-        },
-        {
-              key: `torunamentBackgroundTheme`,
-              type: `fileUpload`,
-              templateOptions: {
-                  label: `Upload tournament background theme`,
-              }
-        },
-        {
-              key: `torunamentLogo`,
-              type: `fileUpload`,
-              templateOptions: {
-                  label: `Upload tournament logo`,
-              }
-        }
-    ];
+    form = new FormGroup({
+        name: new FormControl(``, [Validators.required]),
+        numberOfPlayers: new FormControl(null, [Validators.required]),
+        numberOfTeams: new FormControl(null, [Validators.required]),
+        registerStartDate: new FormControl(``, [Validators.required]),
+        registerEndDate: new FormControl(``, [Validators.required]),
+        tournamentStartDate: new FormControl(``, [Validators.required]),
+        tournamentEndDate: new FormControl(``, [Validators.required]),
+        description: new FormControl(``, [Validators.required]),
+        gamesPreset: new FormControl(``, [Validators.required]),
+        prize: new FormGroup({
+            currency: new FormControl(``, [Validators.required]),
+            distribution: new FormControl(``, [Validators.required]),
+        }),
+        gameId: new FormControl(1, [Validators.required]),
+    });
 
     constructor(
         private readonly apiService: ApiService,
         private readonly router: Router,
         private readonly notificationsService: NotificationsService
-    ) {}
+    ) {
+    }
 
     async onSubmit() {
-        const response = await this.apiService.createTournament(this.model);
+        const response = await this.apiService.createTournament(this.form.value);
         const addPrizeResponse = await this.addTournamentPrize(response);
 
         if (response && addPrizeResponse) {
@@ -208,13 +87,48 @@ export class CreateTournamentComponent {
         });
     }
 
+    ngOnInit() {
+        this.subscriptions.push(
+            this.form.controls
+                .registerStartDate
+                .valueChanges
+                .subscribe((val) => this.setRegisterEndMinDate(val)),
+            this.form.controls
+                .registerEndDate
+                .valueChanges
+                .subscribe((val) => this.setTournamentStartMinDate(val)),
+            this.form.controls
+                .tournamentStartDate
+                .valueChanges
+                .subscribe((val) => this.setTournamentEndMinDate(val)),
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach((sub) => {
+            sub.unsubscribe();
+        });
+    }
+
     async addTournamentPrize(tournament: Tournament) {
         const input: AddPrizeInput = {
             tournamentId: tournament.tournamentId,
-            distribution: this.model.prize.distribution,
-            currency: this.model.prize.currency || `None`,
+            distribution: this.form.value.prize.distribution,
+            currency: this.form.value.prize.currency || `None`,
         };
 
         return await this.apiService.addPrize(input);
+    }
+
+    setRegisterEndMinDate(date: Date) {
+        this.registerEndMinDate = date;
+    }
+
+    setTournamentStartMinDate(date: Date) {
+        this.tournamentStartMinDate = date;
+    }
+
+    setTournamentEndMinDate(date: Date) {
+        this.tournamentEndMinDate = date;
     }
 }

@@ -71,7 +71,6 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
 
   async getPlayersList() {
     this.playersList = await this.apiService.getPlayersToInvite(this.currentTeam.teamId);
-    console.log(this.playersList, `PLAYERS LIST`);
   }
 
   search(event: any) {

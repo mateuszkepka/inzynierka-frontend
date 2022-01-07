@@ -14,16 +14,220 @@
             (ngSubmit)="onSubmit()" 
             class="create-tournament-form"
         >
-            <formly-form
-                [form]="form"
-                [fields]="fields"
-                [model]="model"
-            ></formly-form>
+            <span class="p-float-label w-full">
+                <input
+                    formControlName="name"
+                    id="name"
+                    type="text" 
+                    pInputText 
+                    [required]="true"
+                />
+                <label for="name">Name your tournament <abbr>*</abbr></label>
+            </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.name.touched && form.controls.name.invalid"
+            >
+                Value required
+            </small>
+
+            <div class="p-field w-full">
+                <label for="registerStartDate">Register start date <abbr>*</abbr></label>
+                <p-calendar
+                    formControlName="registerStartDate"
+                    [showIcon]="true" 
+                    inputId="registerStartDate" 
+                    placeholder="Enter register start date" 
+                    [required]="true"
+                    dateFormat="yy-mm-dd"
+                    showTime="true"
+                    hourFormat="24"
+                    [minDate]="registerStartMinDate"
+                ></p-calendar>
+            </div>
+
+            <div class="p-field w-full">
+                <label for="registerEndDate">Register end date <abbr>*</abbr></label>
+                <p-calendar
+                    formControlName="registerEndDate"
+                    [showIcon]="true" 
+                    inputId="registerEndDate" 
+                    placeholder="Enter register end date" 
+                    [required]="true"
+                    dateFormat="yy-mm-dd"
+                    showTime="true"
+                    hourFormat="24"
+                    [minDate]="registerEndMinDate"
+                    [disabled]="!form.value.registerStartDate"
+                ></p-calendar>
+            </div>
+
+            <div class="p-field w-full">
+                <label for="tournamentStartDate">Tournament start date <abbr>*</abbr></label>
+                <p-calendar
+                    formControlName="tournamentStartDate"
+                    [showIcon]="true" 
+                    inputId="tournamentStartDate" 
+                    placeholder="Enter tournament start date" 
+                    [required]="true"
+                    dateFormat="yy-mm-dd"
+                    showTime="true"
+                    hourFormat="24"
+                    [minDate]="tournamentStartMinDate"
+                    [disabled]="!form.value.registerEndDate"
+                ></p-calendar>
+            </div>
+
+            <div class="p-field w-full">
+                <label for="tournamentEndDate">Tournament end date <abbr>*</abbr></label>
+                <p-calendar
+                    formControlName="tournamentEndDate"
+                    [showIcon]="true" 
+                    inputId="tournamentEndDate" 
+                    placeholder="Enter register end date" 
+                    [required]="true"
+                    dateFormat="yy-mm-dd"
+                    showTime="true"
+                    hourFormat="24"
+                    [minDate]="tournamentEndMinDate"
+                    [disabled]="!form.value.tournamentStartDate"
+                ></p-calendar>
+            </div>
+
+            <span class="p-field w-full flex flex-col">
+                <label for="numberOfTeams">Number of teams <abbr>*</abbr></label>
+                <p-inputNumber
+                    formControlName="numberOfTeams" 
+                    mode="decimal" 
+                    inputId="numberOfTeams" 
+                    [useGrouping]="false"
+                >
+                </p-inputNumber>
+            </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.numberOfTeams.touched && form.controls.numberOfTeams.invalid"
+            >
+                Value required
+            </small>
+
+            <span class="p-field w-full flex flex-col">
+                <label for="numberOfPlayers">Number of players <abbr>*</abbr></label>
+                <p-inputNumber
+                    formControlName="numberOfPlayers" 
+                    mode="decimal" 
+                    inputId="numberOfPlayers" 
+                    [useGrouping]="false"
+                >
+                </p-inputNumber>
+            </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.numberOfPlayers.touched && form.controls.numberOfPlayers.invalid"
+            >
+                Value required
+            </small>
+
+            <span class="p-field w-full">
+                <label for="gamesPreset">Select games preset <abbr>*</abbr></label>
+                <p-dropdown
+                    inputId="gamesPreset"
+                    [options]="gamePresets"
+                    formControlName="gamesPreset"
+                    [placeholder]="'Select games preset'"
+                    [optionLabel]="'name'"
+                    [optionValue]="'value'"
+                    [showClear]="true"
+                ></p-dropdown>
+            </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.gamesPreset.touched && form.controls.gamesPreset.invalid"
+            >
+                Value required
+            </small>
+
+            <div formGroupName="prize" class="w-full">
+                <span class="p-float-label w-full mt-2">
+                    <input
+                        formControlName="distribution"
+                        id="distribution"
+                        type="text" 
+                        pInputText 
+                        [required]="true"
+                    />
+                    <label for="name">Prize <abbr>*</abbr></label>
+                </span>
+            </div>
+
+            <div formGroupName="prize" class="w-full">
+                <span class="p-float-label w-full mt-2">
+                    <input
+                        formControlName="currency"
+                        id="currency"
+                        type="text" 
+                        pInputText 
+                        [required]="true"
+                    />
+                    <label for="currency">Currency <abbr>*</abbr></label>
+                </span>
+                
+            </div>
+
+            <span class="p-field w-full">
+                <label for="description">Description <abbr>*</abbr></label>
+                <textarea
+                    id="description" 
+                    pInputTextarea 
+                    formControlName="description"
+                ></textarea>
+            </span>
+
+            <span class="p-field w-full">
+                <label> Tournament logo <abbr>*</abbr></label>
+                <p-fileUpload
+                    name="file-upload"
+                    url="./upload.html"
+                    multiple="false"
+                    accept="image/*"
+                    maxFileSize="10000000"
+                >
+                    <!-- <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                            <li *ngFor="let file of uploadedFiles">
+                                {{ file.name }} - {{ file.size }} bytes
+                            </li>
+                        </ul>
+                    </ng-template> -->
+                </p-fileUpload>
+            </span>
+
+            
+            <span class="p-field w-full">
+                <label>Tournament background <abbr>*</abbr></label>
+                <p-fileUpload
+                    name="file-upload"
+                    url="./upload.html"
+                    multiple="false"
+                    accept="image/*"
+                    maxFileSize="10000000"
+                >
+                    <!-- <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                            <li *ngFor="let file of uploadedFiles">
+                                {{ file.name }} - {{ file.size }} bytes
+                            </li>
+                        </ul>
+                    </ng-template> -->
+                </p-fileUpload>
+            </span>
+
             <div class="create-tournament-buttons">
                 <button 
                     type="submit"
                     pButton
                     label="Create tournament"
+                    [disabled]="!form.valid"
                 ></button>
             </div>
         </form>
