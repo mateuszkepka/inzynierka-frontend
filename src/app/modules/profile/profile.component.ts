@@ -30,6 +30,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       [name: string]: boolean;
   } = {};
 
+  avatarToShow: any;
+  backgroundToShow: any;
+  isAvatarLoading = false;
+  isBackgroundLoading = false;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -54,9 +59,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
             }
             if (currentUser.userId === this.currentUserId) {
               this.currentUser = currentUser;
+              await this.getImages();
               return;
             }
             await this.getCurrentUser();
+            await this.getImages();
           }
         ),
     );
@@ -71,6 +78,48 @@ export class ProfileComponent implements OnInit, OnDestroy {
   async getCurrentUser() {
     this.currentUser = await this.apiService.getUserById(this.currentUserId);
   }
+
+  getImages() {
+    this.getAvatar();
+    this.getBackground();
+  }
+
+  getAvatar() {
+    this.isAvatarLoading = true;
+    this.apiService
+      .getUploadedAvatar(this.currentUser.userProfileImage)
+      .subscribe(data => {
+        this.createImageFromBlob(data, `avatarToShow`);
+        this.isAvatarLoading = false;
+      },
+      () =>{
+        this.isAvatarLoading = false;
+      });
+  }
+
+  getBackground() {
+    this.isBackgroundLoading = true;
+    this.apiService
+      .getUploadedBackground(this.currentUser.userProfileBackground)
+      .subscribe(data => {
+        this.createImageFromBlob(data, `backgroundToShow`);
+        this.isBackgroundLoading = false;
+      },
+      () => {
+        this.isBackgroundLoading = false;
+      });
+  }
+
+  createImageFromBlob(image: Blob, field: string) {
+    const reader = new FileReader();
+    reader.addEventListener(`load`, () => {
+       this[field] = reader.result;
+    }, false);
+
+    if (image) {
+       reader.readAsDataURL(image);
+    }
+ }
 
   readRouterOutlet(name: string, event: any) {
     const childRouteConfig = event.activatedRoute?.snapshot.routeConfig;

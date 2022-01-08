@@ -36,7 +36,8 @@
     }
 }
 
-::ng-deep .p-inputtext {
+::ng-deep .p-inputtext,
+::ng-deep .p-password {
     width: 100%;
 }
 

@@ -3,6 +3,7 @@ import * as passwordValidation from './validators/password';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { CurrentTeamState } from './state/current-team.state';
 import { CurrentUserState } from './state/current-user.state';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormlyCustomFieldsModule } from './formly-custom-fields/formly-custom-fields.module';
@@ -49,7 +50,7 @@ import { TournamentState } from './state/tournament.state';
     }),
     FormlyPrimeNGModule,
     FormlyCustomFieldsModule,
-    NgxsModule.forRoot([CurrentUserState, TournamentState]),
+    NgxsModule.forRoot([CurrentUserState, TournamentState, CurrentTeamState]),
   ],
   providers: [],
   bootstrap: [AppComponent]

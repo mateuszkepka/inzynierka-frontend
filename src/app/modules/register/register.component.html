@@ -24,7 +24,7 @@
             <label for="email">E-mail Address <abbr>*</abbr></label>
         </span>
 
-        <span class="p-float-label w-full mt-4">
+        <span class="p-float-label w-full mt-6">
             <input
                 formControlName="username"
                 id="username"
@@ -35,20 +35,18 @@
             <label for="username">Username<abbr>*</abbr></label>
         </span>
 
-        <span class="p-float-label w-full mt-4">
+        <span class="p-float-label w-full mt-6">
             <p-password
                 formControlName="password"
-                [toggleMask]="true"
                 id="password"
             >
             </p-password>
             <label for="password">Password <abbr>*</abbr></label>
         </span>
 
-        <span class="p-float-label w-full mt-4">
+        <span class="p-float-label w-full mt-6">
             <p-password
                 formControlName="repeatPassword"
-                [toggleMask]="true"
                 id="repeatPassword"
             >
             </p-password>
@@ -59,7 +57,7 @@
             Passwords not matching
         </small>
 
-        <span class="p-float-label w-full mt-4">
+        <span class="p-float-label w-full mt-6">
             <input
                 formControlName="university"
                 id="university"
@@ -70,7 +68,7 @@
             <label for="university">University <abbr>*</abbr></label>
         </span>
 
-        <span class="p-float-label w-full mt-4">
+        <span class="p-float-label w-full mt-6">
             <input
                 formControlName="country"
                 id="country"
@@ -81,7 +79,7 @@
             <label for="country">Country <abbr>*</abbr></label>
         </span>
 
-        <span class="p-float-label w-full mt-4">
+        <span class="p-float-label w-full mt-6">
             <input
                 formControlName="studentId"
                 id="studentId"
@@ -90,6 +88,35 @@
                 [required]="true"
             />
             <label for="studentId">Student ID Number<abbr>*</abbr></label>
+        </span>
+
+        <span class="p-field w-full mt-6">
+            <label>Profile avatar</label>
+            <p-fileUpload
+                name="file-upload"
+                multiple="false"
+                accept="image/*"
+                maxFileSize="10000000"
+                [showUploadButton]="false"
+                (onSelect)="selectAvatar($event)"
+                (onRemove)="removeAvatar()"
+            >
+            </p-fileUpload>
+        </span>
+
+        <span class="p-field w-full mt-6">
+            <label>Profile background</label>
+            <p-fileUpload
+                name="file-upload"
+                multiple="false"
+                accept="image/*"
+                maxFileSize="10000000"
+                [showUploadButton]="false"
+                (onSelect)="selectBackgroundImage($event)"
+                (onRemove)="removeBackgroundImage()"
+                (onClear)="removeBackgroundImage()"
+            >
+            </p-fileUpload>
         </span>
         <span class="field w-full mt-4">
             <p-checkbox value="form.controls.terms.value" formControlName="terms" name="groupname" label="Accept terms of use"></p-checkbox>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { RefreshTokenService } from './services/refresh-token.service';
@@ -8,7 +8,7 @@ import { RefreshTokenService } from './services/refresh-token.service';
   templateUrl: `./app.component.html`,
   styleUrls: [`./app.component.scss`]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = `inzynierka-frontend`;
 
   constructor(
@@ -18,5 +18,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.refreshTokenService.refreshCookies();
+  }
+
+  ngOnDestroy(): void {
+      this.refreshTokenService.clearSubscriptions();
   }
 }

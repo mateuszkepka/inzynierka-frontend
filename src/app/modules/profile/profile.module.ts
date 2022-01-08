@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { FileUploadModule } from 'primeng/fileupload';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -55,7 +56,8 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
     ProgressSpinnerModule,
     VirtualScrollerModule,
     DynamicDialogModule,
-    InputTextareaModule
+    InputTextareaModule,
+    FileUploadModule,
   ],
 })
 export class ProfileModule { }

@@ -32,5 +32,4 @@ export class LottieHeaderComponent implements OnInit {
       path: this.lottiePath,
     };
   }
-
 }

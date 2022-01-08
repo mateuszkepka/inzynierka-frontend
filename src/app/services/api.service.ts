@@ -27,9 +27,10 @@ import {
     UpdateTeamInput,
     User
 } from "../shared/interfaces/interfaces";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { omit } from "lodash";
 
 @Injectable({
@@ -104,6 +105,30 @@ export class ApiService {
         return this.httpClient.get<Match[]>(url, { withCredentials: true, params: {
             status
         } }).toPromise();
+    }
+
+    async uploadUserAvatar(data: FormData, user: User) {
+        const url = this.apiUrl + `/users/${user.userId}/upload-user-image`;
+        return this.httpClient.post(url, data, {
+            observe: `response`
+        }).toPromise();
+    }
+
+    async uploadUserBackground(data: FormData, user: User) {
+        const url = this.apiUrl + `/users/${user.userId}/upload-user-background`;
+        return this.httpClient.post(url, data, {
+            observe: `response`,
+        }).toPromise();
+    }
+
+    getUploadedAvatar(imagePath: string): Observable<Blob> {
+        const url = this.apiUrl + `/users/avatar/${imagePath}`;
+        return this.httpClient.get(url, { responseType: `blob` });
+    }
+
+    getUploadedBackground(imagePath: string): Observable<Blob> {
+        const url = this.apiUrl + `/users/background/${imagePath}`;
+        return this.httpClient.get(url, { responseType: `blob` });
     }
 
     /* -------------------------------------------------------------------------- */

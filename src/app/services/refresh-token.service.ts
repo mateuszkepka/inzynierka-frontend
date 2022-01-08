@@ -52,13 +52,16 @@ export class RefreshTokenService {
             }
             return;
         }
-        this.store.dispatch(new SetCurrentUser(undefined));
-        this.notificationsService.addNotification({
-            severity: `info`,
-            summary: `Session expired`,
-            detail: `You have been logged out, please log in again`,
-        });
-        void this.router.navigate([`/`]);
+
+        if (this.currentUser) {
+            this.store.dispatch(new SetCurrentUser(undefined));
+            this.notificationsService.addNotification({
+                severity: `info`,
+                summary: `Session expired`,
+                detail: `You have been logged out, please log in again`,
+            });
+            void this.router.navigate([`/`]);
+        }
     }
 
     clearSubscriptions() {

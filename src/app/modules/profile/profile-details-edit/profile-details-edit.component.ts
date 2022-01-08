@@ -1,6 +1,6 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -21,6 +21,9 @@ export class ProfileDetailsEditComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   form = new FormGroup({});
   currentUser: User;
+
+  avatarFormData = new FormData();
+  backgroundFormData = new FormData();
 
   fields: FormlyFieldConfig[] =[
     {
@@ -71,6 +74,7 @@ export class ProfileDetailsEditComponent implements OnInit, OnDestroy {
   constructor(
     public activatedRoute: ActivatedRoute,
     private readonly store: Store,
+    private readonly router: Router,
     private readonly apiService: ApiService,
     private readonly notificationsService: NotificationsService,
   ) { }
@@ -99,5 +103,71 @@ export class ProfileDetailsEditComponent implements OnInit, OnDestroy {
       return;
     }
     this.notificationsService.addNotification({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
+  }
+
+  async sendAvatar() {
+    if (!this.avatarFormData.has(`image`)) {
+        return;
+    }
+    const sendAvatarResponse = await this.apiService.uploadUserAvatar(this.avatarFormData, this.currentUser);
+    let severity = `success`;
+    let detail = `Avatar has been uploaded!`;
+    let summary = `Success!`;
+
+    if (!sendAvatarResponse.ok) {
+        severity = `error`;
+        detail = sendAvatarResponse.statusText;
+        summary = `Error while uploading avatar`;
+    }
+    this.showNotification(severity, detail, summary);
+
+    if (sendAvatarResponse.ok) {
+      this.store.dispatch(new SetCurrentUser(sendAvatarResponse.body as User));
+      void this.router.navigate([{outlets: { profileDetails: [] }}], { relativeTo: this.activatedRoute.parent });
+    }
+  }
+
+  async sendBackground() {
+      if (!this.backgroundFormData.has(`image`)) {
+          return;
+      }
+      const sendBackgroundResponse = await this.apiService.uploadUserBackground(this.backgroundFormData, this.currentUser);
+      let severity = `success`;
+      let detail = `Background has been uploaded!`;
+      let summary = `Success!`;
+
+      if (!sendBackgroundResponse.ok) {
+          severity = `error`;
+          detail = sendBackgroundResponse.statusText;
+          summary = `Error while uploading background`;
+      }
+
+      this.showNotification(severity, detail, summary);
+
+      if (sendBackgroundResponse.ok) {
+        this.store.dispatch(new SetCurrentUser(sendBackgroundResponse.body as User));
+        void this.router.navigate([{outlets: { profileDetails: [] }}], { relativeTo: this.activatedRoute.parent });
+      }
+  }
+
+
+  selectAvatar(event: any) {
+    this.avatarFormData.append(`image`, event.currentFiles[0]);
+  }
+
+  removeAvatar() {
+      this.avatarFormData.delete(`image`);
+  }
+
+  selectBackgroundImage(event: any) {
+      this.backgroundFormData.append(`image`, event.currentFiles[0]);
+  }
+
+  removeBackgroundImage() {
+      this.backgroundFormData.delete(`image`);
+  }
+
+  showNotification(severity: string, detail: string, summary: string) {
+    this.notificationsService.addNotification({severity, summary, detail});
   }
 }

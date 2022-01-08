@@ -131,6 +131,8 @@ export interface User {
     suspensions: Suspension[];
     accounts: Player[];
     tournamentAdmins: TournamentAdmin[];
+    userProfileBackground?: string;
+    userProfileImage?: string;
 }
 
 export interface Tournament {
