@@ -79,18 +79,16 @@
             </div>
 
             <div class="p-field w-full">
-                <label for="tournamentEndDate">Tournament end date <abbr>*</abbr></label>
+                <label for="endingHour">Tournament end date <abbr>*</abbr></label>
                 <p-calendar
-                    formControlName="tournamentEndDate"
+                    formControlName="endingHour"
                     [showIcon]="true" 
-                    inputId="tournamentEndDate" 
-                    placeholder="Enter register end date" 
+                    inputId="endingHour" 
+                    placeholder="Enter ending hour" 
                     [required]="true"
-                    dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
-                    [minDate]="tournamentEndMinDate"
-                    [disabled]="!form.value.tournamentStartDate"
+                    [timeOnly]="true"
                 ></p-calendar>
             </div>
 
@@ -128,21 +126,38 @@
                 Value required
             </small>
 
+            <span class="p-field w-full flex flex-col">
+                <label for="numberOfMaps">Number of maps<abbr>*</abbr></label>
+                <p-inputNumber
+                    formControlName="numberOfMaps" 
+                    mode="decimal" 
+                    inputId="numberOfMaps" 
+                    [useGrouping]="false"
+                >
+                </p-inputNumber>
+            </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.numberOfMaps.touched && form.controls.numberOfMaps.invalid"
+            >
+                Value required
+            </small>
+
             <span class="p-field w-full">
-                <label for="gamesPreset">Select games preset <abbr>*</abbr></label>
+                <label for="format">Select games preset <abbr>*</abbr></label>
                 <p-dropdown
-                    inputId="gamesPreset"
+                    inputId="format"
                     [options]="gamePresets"
-                    formControlName="gamesPreset"
+                    formControlName="format"
                     [placeholder]="'Select games preset'"
                     [optionLabel]="'name'"
-                    [optionValue]="'value'"
+                    [optionValue]="'name'"
                     [showClear]="true"
                 ></p-dropdown>
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.gamesPreset.touched && form.controls.gamesPreset.invalid"
+                *ngIf="form.controls.format.touched && form.controls.format.invalid"
             >
                 Value required
             </small>

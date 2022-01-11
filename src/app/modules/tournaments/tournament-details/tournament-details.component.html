@@ -4,6 +4,8 @@
         <div class="flex flex-col gap-4">
             <p class="text-4xl font-bold">{{ tournament.name }}</p>
             {{ (tournament.tournamentStartDate | date:"dd/MM/yyyy") || "n/a" }} - {{ (tournament.tournamentEndDate | date:"dd/MM/yyyy") || "n/a" }}
+            <p><strong>Checked in: </strong> {{ checkedIn || "n/a" }}</p>
+            <p><strong>Signed in: </strong> {{ tournamentTeams.length || "n/a" }}</p>
         </div>
     </div>
 
@@ -14,6 +16,18 @@
             type="button"
             class="p-button-info mb-4"
             [routerLink]="['/tournaments', tournamentId,'register-for-tournament']"
+            *ngIf="isRegistrationActive"
+        ></button>
+        
+        <button
+            pButton 
+            label="Check in"
+            type="button" 
+            class="p-button-info mb-4 ml-4"
+            appIsUserCaptain
+            [tournament]="tournament"
+            [tournamentTeams]="tournamentTeams"
+            (click)="sendCheckInRequest()"
         ></button>
         <p-tabView [activeIndex]="0">
             <p-tabPanel header="Details">
@@ -28,7 +42,11 @@
                 <app-tournament-matches-tab></app-tournament-matches-tab>
             </p-tabPanel>
     
-            <p-tabPanel header="Ladder">
+            <p-tabPanel header="Ladder" *ngIf="tournament && tournament.format.includes('Ladder')">
+                <app-tournament-ladder></app-tournament-ladder>
+            </p-tabPanel>
+
+            <p-tabPanel header="Groups" *ngIf="tournament && tournament.format.includes('Robin')">
                 <app-tournament-ladder></app-tournament-ladder>
             </p-tabPanel>
 

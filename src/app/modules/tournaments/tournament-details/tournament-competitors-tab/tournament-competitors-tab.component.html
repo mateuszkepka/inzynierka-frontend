@@ -12,7 +12,31 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th>Team Name</th>
+                    <th>Verification</th>
+                    <th></th>
                 </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-team>
+                <tr>
+                    <td>{{ team.team.teamName || '-' }}</td>
+                    <td class="flex flex-col">
+                        {{ team.status | firstLetterUpperCase }}
+                        <p>
+                            <strong>Verification date: </strong>{{ (team.verificationDate | date:'dd/MM/YYYY') || 'n/a' }}
+                        </p>
+                    </td>
+                    <td>
+                        <button 
+                            label="See details" 
+                            class="p-button-info" 
+                            type="button" 
+                            pButton 
+                            [routerLink]="['/team', team.team.teamId]"
+                        ></button>
+                    </td>
+                </tr>
+    
             </ng-template>
         </p-table>
     </div>

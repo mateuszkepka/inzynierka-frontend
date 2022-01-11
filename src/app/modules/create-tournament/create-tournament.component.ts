@@ -1,4 +1,4 @@
-import { AddPrizeInput, Tournament } from "src/app/shared/interfaces/interfaces";
+import { AddPrizeInput, CreateTournamentInput, Format, Tournament } from "src/app/shared/interfaces/interfaces";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { IconDefinition, faTrophy } from "@fortawesome/free-solid-svg-icons";
@@ -7,11 +7,7 @@ import { ApiService } from "src/app/services/api.service";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
-
-interface GamePreset {
-    name: string;
-    value: string;
-}
+import { omit } from "lodash";
 
 @Component({
     selector: `app-create-tournament`,
@@ -25,20 +21,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     tournamentEndMinDate = new Date();
 
     subscriptions: Subscription[] = [];
-    gamePresets: GamePreset[] = [
-        {
-            name: `Preset 1`,
-            value: `pre-1`,
-        },
-        {
-            name: `Preset 2`,
-            value: `pre-2`,
-        },
-        {
-            name: `Preset 3`,
-            value: `pre-3`,
-        }
-    ];
+    gamePresets: Format[] = [];
 
     faTrophy: IconDefinition = faTrophy;
 
@@ -46,12 +29,13 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         name: new FormControl(``, [Validators.required]),
         numberOfPlayers: new FormControl(null, [Validators.required]),
         numberOfTeams: new FormControl(null, [Validators.required]),
+        numberOfMaps: new FormControl(null, [Validators.required]),
         registerStartDate: new FormControl(``, [Validators.required]),
         registerEndDate: new FormControl(``, [Validators.required]),
         tournamentStartDate: new FormControl(``, [Validators.required]),
-        tournamentEndDate: new FormControl(``, [Validators.required]),
+        endingHour: new FormControl(null, [Validators.required]),
         description: new FormControl(``, [Validators.required]),
-        gamesPreset: new FormControl(``, [Validators.required]),
+        format: new FormControl(``, [Validators.required]),
         prize: new FormGroup({
             currency: new FormControl(``, [Validators.required]),
             distribution: new FormControl(``, [Validators.required]),
@@ -67,7 +51,12 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     }
 
     async onSubmit() {
-        const response = await this.apiService.createTournament(this.form.value);
+        const requestBody = {
+            ...omit(this.form.value, [`endingHour`]),
+            endingHour: this.form.value.endingHour.getHours(),
+            endingMinutes: this.form.value.endingHour.getMinutes(),
+        };
+        const response = await this.apiService.createTournament(requestBody as CreateTournamentInput);
         const addPrizeResponse = await this.addTournamentPrize(response);
 
         if (response && addPrizeResponse) {
@@ -87,7 +76,8 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        await this.getGamePresets();
         this.subscriptions.push(
             this.form.controls
                 .registerStartDate
@@ -108,6 +98,10 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach((sub) => {
             sub.unsubscribe();
         });
+    }
+
+    async getGamePresets() {
+        this.gamePresets = await this.apiService.getFormats();
     }
 
     async addTournamentPrize(tournament: Tournament) {

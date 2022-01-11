@@ -1,8 +1,8 @@
 import { Component, DoCheck, ElementRef, OnInit } from '@angular/core';
+import { Team, TournamentTeam } from 'src/app/shared/interfaces/interfaces';
 
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
-import { Team } from 'src/app/shared/interfaces/interfaces';
 
 @Component({
   selector: `app-tournament-competitors-tab`,
@@ -11,7 +11,7 @@ import { Team } from 'src/app/shared/interfaces/interfaces';
 })
 export class TournamentCompetitorsTabComponent implements OnInit, DoCheck {
   // TODO: FINISH TEMPLATE
-  teamsList: Team[];
+  teamsList: TournamentTeam[];
   tournamentId: number;
 
   isVisible = false;
@@ -34,8 +34,10 @@ export class TournamentCompetitorsTabComponent implements OnInit, DoCheck {
 
   async setTeamsList() {
     this.teamsList = await this.apiService
-      .getTournamentTeams(this.tournamentId, true)
+      .getTournamentTeams(this.tournamentId)
       .catch(() => []);
+
+    console.log(this.teamsList);
   }
 
 }

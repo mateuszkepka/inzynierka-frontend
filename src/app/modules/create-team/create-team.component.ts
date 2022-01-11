@@ -26,13 +26,13 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   model: CreateTeamInput = {
-    teamName: undefined,
+    name: undefined,
     playerId: undefined,
   };
 
   fields: FormlyFieldConfig[] = [
     {
-      key: `teamName`,
+      key: `name`,
       type: `input`,
       templateOptions: {
         label: `Name of your team`,

@@ -4,6 +4,7 @@ import {
     CreateSuspensionInput,
     CreateTeamInput,
     CreateTournamentInput,
+    Format,
     GetReportsFilteredInput,
     GetSuspensionsParams,
     GetUserTournamentsParams,
@@ -23,6 +24,7 @@ import {
     Team,
     Tournament,
     TournamentAdmin,
+    TournamentTeam,
     UpdateSuspensionInput,
     UpdateTeamInput,
     User
@@ -153,9 +155,9 @@ export class ApiService {
     /* -------------------------------------------------------------------------- */
     /*                                 TOURNAMENTS                                */
     /* -------------------------------------------------------------------------- */
-    async getAllTournaments() {
+    async getAllTournaments(status: string) {
         const url = this.apiUrl + `/tournaments`;
-        return this.httpClient.get<Tournament[]>(url).toPromise();
+        return this.httpClient.get<Tournament[]>(url, { params: { status }}).toPromise();
     }
 
     async getTournamentById(id: number) {
@@ -196,9 +198,9 @@ export class ApiService {
         return this.httpClient.post<ParticipatingTeam>(url, { participatingTeamId } ,{ withCredentials: true }).toPromise();
     }
 
-    async getTournamentTeams(tournamentId: number, approved: boolean) {
+    async getTournamentTeams(tournamentId: number) {
         const url = this.apiUrl + `/tournaments/${tournamentId}/teams`;
-        return this.httpClient.get<Team[]>(url, { withCredentials: true, params: { approved }}).toPromise();
+        return this.httpClient.get<TournamentTeam[]>(url, { withCredentials: true }).toPromise();
     }
 
     async getTournamentAdmins(tournamentId: number) {
@@ -219,6 +221,11 @@ export class ApiService {
     async getTournamentMatches(tournamentId: number, status: string) {
         const url = this.apiUrl + `/tournaments/${tournamentId}/matches`;
         return this.httpClient.get<Match[]>(url, { withCredentials: true, params: { status } }).toPromise();
+    }
+
+    async checkInTorunament(tournamentId: number, teamId: number) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}/teams/${teamId}`;
+        return this.httpClient.post(url, {}, { withCredentials: true, observe: `response` }).toPromise();
     }
 
     /* -------------------------------------------------------------------------- */
@@ -317,6 +324,14 @@ export class ApiService {
     async updateReport(status: string, reportId: number) {
         const url = this.apiUrl + `/reports/${reportId}`;
         return this.httpClient.patch<Report>(url, { status } ,{ withCredentials: true }).toPromise();
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                   FORMAT                                   */
+    /* -------------------------------------------------------------------------- */
+    async getFormats() {
+        const url = this.apiUrl + `/formats`;
+        return this.httpClient.get<Format[]>(url, { withCredentials: true }).toPromise();
     }
 
 

@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { Tournament, TournamentStatus } from "src/app/shared/interfaces/interfaces";
 
 import { ApiService } from "src/app/services/api.service";
 import { LottieHeaderTexts } from "src/app/shared/components/lottie-header/lottie-header.component";
-import { Tournament } from "src/app/shared/interfaces/interfaces";
+import { cloneDeep } from "lodash";
 
 @Component({
     selector: `app-tournaments`,
@@ -13,16 +14,42 @@ export class TournamentsComponent implements OnInit {
     lottiePath = `/assets/animations/podium.json`;
     tournaments: Tournament[];
 
+    statusOptions: { status: string; label: string }[];
+
+    status = TournamentStatus.ONGOING;
+
     headerTexts: LottieHeaderTexts = {
         upperBoldText: `Lorem ipsum`,
         lowerNormalText:  `Lorem ipsum`
     };
 
     constructor(
-        private readonly apiService: ApiService
+        private readonly apiService: ApiService,
     ) {}
 
     async ngOnInit() {
-        this.tournaments = await this.apiService.getAllTournaments();
+        this.setTournamentStatuses();
+        await this.getTournaments();
+    }
+
+    async getTournaments() {
+        const tournaments = await this.apiService.getAllTournaments(this.status);
+        const promises = tournaments.map(async (tournament) => {
+            const res = await this.apiService.getTournamentTeams(tournament.tournamentId);
+            const checkedIn = res.filter((team) => team.status === `checked`);
+            return {...tournament, checkedIn: checkedIn.length };
+        });
+        this.tournaments = await Promise.all(promises);
+    }
+
+    setTournamentStatuses() {
+        this.statusOptions = Object.keys(TournamentStatus).map((key) => ({
+          status: TournamentStatus[key],
+          label: this.toProperCase(TournamentStatus[key])
+        }));
+    }
+
+    toProperCase(text: string) {
+        return text.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase());
     }
 }

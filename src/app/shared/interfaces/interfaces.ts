@@ -20,10 +20,12 @@ export interface CreateTournamentInput {
     name: string;
     numberOfPlayers: number;
     numberOfTeams: number;
+    numberOfMaps: number;
     registerStartDate: Date;
     registerEndDate: Date;
     tournamentStartDate: Date;
-    tournamentEndDate: Date;
+    endingHour: number;
+    endingMinutes: number;
     description: string;
     prize?: {
         currency?: string;
@@ -40,7 +42,7 @@ export interface CreatePlayerInput {
 }
 
 export interface CreateTeamInput {
-    teamName: string;
+    name: string;
     playerId: number;
 }
 
@@ -153,6 +155,8 @@ export interface Tournament {
     // tournamentAdmins: TournamentAdmin[];
     // preset: Preset;
     organizer: User;
+    checkedIn?: number;
+    format?: string;
 }
 
 export interface Suspension {
@@ -246,6 +250,12 @@ export interface Report {
     reportedUser?: User;
 }
 
+export interface Format {
+    formatId: number;
+    name: string;
+    description: string;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                              HELPER INTERFACES                             */
 /* -------------------------------------------------------------------------- */
@@ -254,6 +264,26 @@ export interface InvitationPlayer {
     region: string;
     summonerName: string;
     user: User;
+}
+
+export interface TeamPlayer {
+    playerId: number;
+    username: string;
+}
+
+export interface TournamentTeamData {
+    teamId: number;
+    teamName: string;
+}
+export interface TournamentTeam {
+    checkInDate: Date;
+    participatingTeamId: number;
+    roster: TeamPlayer[];
+    signDate: Date;
+    status: string;
+    subs: TeamPlayer[];
+    team: TournamentTeamData;
+    verificationDate: Date;
 }
 
 /* -------------------------------------------------------------------------- */

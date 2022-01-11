@@ -1,7 +1,9 @@
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { FirstLetterUpperCasePipe } from './pipes/first-letter-upper-case.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FooterComponent } from './components/footer/footer.component';
+import { IsUserCaptainDirective } from './directives/is-user-captain.directive';
 import { LoggedInStatusComponent } from './components/navbar/logged-in-status/logged-in-status.component';
 import { LottieHeaderComponent } from './components/lottie-header/lottie-header.component';
 import { LottieModule } from 'ngx-lottie';
@@ -24,7 +26,9 @@ const playerFactory = () => player;
     PromoComponent,
     LoggedInStatusComponent,
     NoDataComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    FirstLetterUpperCasePipe,
+    IsUserCaptainDirective
   ],
   imports: [
     CommonModule,
@@ -42,6 +46,8 @@ const playerFactory = () => player;
     PromoComponent,
     NoDataComponent,
     NotificationsComponent,
+    FirstLetterUpperCasePipe,
+    IsUserCaptainDirective
   ]
 })
 export class SharedModule { }
