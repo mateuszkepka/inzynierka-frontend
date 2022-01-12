@@ -22,9 +22,15 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   tournamentTeams: TournamentTeam[] = [];
   checkedIn: number;
   isRegistrationActive = false;
+  isCheckInActive = false;
 
   currentUser: User;
   subscriptions: Subscription[] = [];
+
+  avatarToShow: any;
+  backgroundToShow: any;
+  isAvatarLoading = false;
+  isBackgroundLoading = false;
 
   constructor(
     private readonly apiService: ApiService,
@@ -38,10 +44,12 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.listenOnCurrentUserChange();
     this.tournament = await this.apiService.getTournamentById(this.tournamentId);
-    this.setIsRegistrationActive();
-    this.tournamentTeams = await this.apiService.getTournamentTeams(this.tournamentId);
+    await this.getTournamentTeams();
     this.setCheckedIn();
+    this.setIsRegistrationActive();
+    this.setIsCheckInActive();
     this.store.dispatch(new SetTournament(this.tournament));
+    await this.getImages();
   }
 
   ngOnDestroy(): void {
@@ -60,12 +68,14 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     const userTeams = await this.apiService.getUserTeams(this.currentUser.userId);
 
     const accountsIds = userAccounts.map((value) => value.playerId);
-    const ownedTeams = userTeams.map((value) => {
-      if (accountsIds.includes(value.captainId)) {
+    const promises = userTeams.map(async (value) => {
+      const team = await this.apiService.getTeamById(value.teamId);
+
+      if (accountsIds.includes(team.captainId)) {
         return value;
       }
     });
-
+    const ownedTeams = await Promise.all(promises);
     const ownedTeamsIds = ownedTeams.map((value) => value.teamId);
 
     const foundTournamentTeam = this.tournamentTeams.find((value) => ownedTeamsIds.includes(value.team.teamId));
@@ -78,6 +88,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
         summary: `Checked in!`,
         detail: `You have successfully checked in ${foundTournamentTeam.team.teamName}!`
       });
+      await this.getTournamentTeams();
       return;
     }
   }
@@ -98,6 +109,63 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
 
     const diff = differenceInMilliseconds(now, registerStartDate);
 
-    this.isRegistrationActive = diff > 0;
+    this.isRegistrationActive = diff > 0 && this.checkedIn !== this.tournament.numberOfTeams;
   }
+
+  setIsCheckInActive() {
+    const now = new Date();
+    const checkInOpenDate = new Date(this.tournament.checkInOpenDate);
+    const checkInCloseDate = new Date(this.tournament.checkInCloseDate);
+
+    const diffStart = differenceInMilliseconds(now, checkInOpenDate);
+    const diffEnd = differenceInMilliseconds(now, checkInCloseDate);
+
+    this.isCheckInActive = diffStart > 0 && diffEnd < 0;
+  }
+
+  async getTournamentTeams() {
+    this.tournamentTeams = await this.apiService.getTournamentTeams(this.tournamentId).catch(() => []);
+  }
+
+  getImages() {
+    this.getAvatar();
+    this.getBackground();
+  }
+
+  getAvatar() {
+    this.isAvatarLoading = true;
+    this.apiService
+      .getUploadedTournamentAvatar(this.tournament.tournamentProfileImage)
+      .subscribe(data => {
+        this.createImageFromBlob(data, `avatarToShow`);
+        this.isAvatarLoading = false;
+      },
+      () =>{
+        this.isAvatarLoading = false;
+      });
+  }
+
+  getBackground() {
+    this.isBackgroundLoading = true;
+    this.apiService
+      .getUploadedTournamentBackground(this.tournament.tournamentProfileBackground)
+      .subscribe(data => {
+        this.createImageFromBlob(data, `backgroundToShow`);
+        this.isBackgroundLoading = false;
+      },
+      () => {
+        this.isBackgroundLoading = false;
+      });
+  }
+
+  createImageFromBlob(image: Blob, field: string) {
+    const reader = new FileReader();
+    reader.addEventListener(`load`, () => {
+       this[field] = reader.result;
+    }, false);
+
+    if (image) {
+       reader.readAsDataURL(image);
+    }
+ }
 }

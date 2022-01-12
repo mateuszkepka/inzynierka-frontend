@@ -13,6 +13,7 @@ import { cloneDeep } from 'lodash';
 export class TournamentDetailsTabComponent implements OnInit, OnDestroy {
   tournament: Tournament;
   subscriptions: Subscription[] = [];
+  endingHour: Date;
 
   constructor(
     private readonly store: Store,
@@ -24,6 +25,9 @@ export class TournamentDetailsTabComponent implements OnInit, OnDestroy {
         .select((state) => state.tournament.tournament)
         .subscribe((tournament: Tournament) => {
           this.tournament = cloneDeep(tournament);
+          if (this.tournament) {
+            this.setEndingHour();
+          }
         }),
     );
   }
@@ -34,4 +38,11 @@ export class TournamentDetailsTabComponent implements OnInit, OnDestroy {
     });
   }
 
+  setEndingHour() {
+    this.endingHour = new Date();
+    this.endingHour.setHours(this.tournament.endingHour);
+    this.endingHour.setMinutes(this.tournament.endingMinutes);
+    this.endingHour.setSeconds(0);
+    this.endingHour.setMilliseconds(0);
+  }
 }

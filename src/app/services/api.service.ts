@@ -228,6 +228,32 @@ export class ApiService {
         return this.httpClient.post(url, {}, { withCredentials: true, observe: `response` }).toPromise();
     }
 
+    async uploadTournamentAvatar(data: FormData, tournamentId: number) {
+        const url = this.apiUrl + `/tournaments/upload-tournament-image/${tournamentId}`;
+        return this.httpClient.post(url, data, {
+            observe: `response`,
+            withCredentials: true,
+        }).toPromise();
+    }
+
+    async uploadTournamentBackground(data: FormData, tournamentId: number) {
+        const url = this.apiUrl + `/tournaments/upload-tournament-background/${tournamentId}`;
+        return this.httpClient.post(url, data, {
+            observe: `response`,
+            withCredentials: true,
+        }).toPromise();
+    }
+
+    getUploadedTournamentAvatar(imagePath: string): Observable<Blob> {
+        const url = this.apiUrl + `/tournaments/tournament-profile/${imagePath}`;
+        return this.httpClient.get(url, { responseType: `blob` });
+    }
+
+    getUploadedTournamentBackground(imagePath: string): Observable<Blob> {
+        const url = this.apiUrl + `/tournaments/tournament-background/${imagePath}`;
+        return this.httpClient.get(url, { responseType: `blob` });
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                    TEAM                                    */
     /* -------------------------------------------------------------------------- */
@@ -259,6 +285,32 @@ export class ApiService {
     async deleteTeam(teamId: number) {
         const url = this.apiUrl + `/teams/${teamId}`;
         return this.httpClient.delete<Team>(url, { observe: `response` }).toPromise();
+    }
+
+    async uploadTeamAvatar(data: FormData, teamId: number) {
+        const url = this.apiUrl + `/teams/upload-team-image/${teamId}`;
+        return this.httpClient.post(url, data, {
+            observe: `response`,
+            withCredentials: true,
+        }).toPromise();
+    }
+
+    async uploadTeamBackground(data: FormData, teamId: number) {
+        const url = this.apiUrl + `/teams/upload-team-background/${teamId}`;
+        return this.httpClient.post(url, data, {
+            observe: `response`,
+            withCredentials: true,
+        }).toPromise();
+    }
+
+    getUploadedTeamAvatar(imagePath: string): Observable<Blob> {
+        const url = this.apiUrl + `/teams/team-profile/${imagePath}`;
+        return this.httpClient.get(url, { responseType: `blob` });
+    }
+
+    getUploadedTeamBackground(imagePath: string): Observable<Blob> {
+        const url = this.apiUrl + `/teams/team-background/${imagePath}`;
+        return this.httpClient.get(url, { responseType: `blob` });
     }
 
     /* -------------------------------------------------------------------------- */

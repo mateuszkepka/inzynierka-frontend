@@ -4,6 +4,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { EditTeamComponent } from './edit-team/edit-team.component';
+import { FileUploadModule } from 'primeng/fileupload';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyPrimeNGModule } from '@ngx-formly/primeng';
@@ -38,6 +39,7 @@ import { TeamRoutingModule } from './team-routing.module';
     TagModule,
     FormlyModule,
     FormlyPrimeNGModule,
+    FileUploadModule
   ]
 })
 export class TeamModule { }

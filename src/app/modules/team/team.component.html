@@ -1,9 +1,17 @@
 <div *ngIf="team && captain">
-    <div class="bg-gray-300 w-full h-96 p-8 flex items-center gap-20">
-        <div class="border-2 w-40 h-40 border-black"></div>
-        <div class="flex flex-col gap-4">
-            <p class="text-4xl font-bold">{{ team.teamName }}</p>
-            <p class="font-bold">Captain: {{ captain.summonerName }}</p>
+    <div class="relative bg-gray-300 w-full flex items-center gap-20">
+        <img 
+            [src]="backgroundToShow" 
+            alt="background" 
+            *ngIf="backgroundToShow && !isBackgroundLoading" 
+            class="team-background-image"
+        />
+        <div class="absolute flex flex-row items-center left-20 gap-20">
+            <img [src]="avatarToShow" alt="avatar" *ngIf="avatarToShow && !isAvatarLoading; else noImage" class="z-10 w-40 h-40">
+            <div class="flex flex-col gap-4">
+                <p class="text-4xl font-bold">{{ team.teamName }}</p>
+                <p class="font-bold">Captain: {{ captain.summonerName }}</p>
+            </div>
         </div>
     </div>
 
@@ -38,3 +46,7 @@
         </p-tabView>
     </div>
 </div>
+
+<ng-template #noImage>
+    <div class="border-2 w-40 h-40 border-black"></div>
+</ng-template>

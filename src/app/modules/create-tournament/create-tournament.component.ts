@@ -25,6 +25,9 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
 
     faTrophy: IconDefinition = faTrophy;
 
+    avatarFormData = new FormData();
+    backgroundFormData = new FormData();
+
     form = new FormGroup({
         name: new FormControl(``, [Validators.required]),
         numberOfPlayers: new FormControl(null, [Validators.required]),
@@ -47,8 +50,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         private readonly apiService: ApiService,
         private readonly router: Router,
         private readonly notificationsService: NotificationsService
-    ) {
-    }
+    ) {}
 
     async onSubmit() {
         const requestBody = {
@@ -65,6 +67,8 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
                 summary: `Success!`,
                 detail: `Tournament has been created.`
             });
+
+            await this.sendImages(response);
             void this.router.navigate([`/tournaments/${response.tournamentId}`]);
             return;
         }
@@ -125,4 +129,67 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     setTournamentEndMinDate(date: Date) {
         this.tournamentEndMinDate = date;
     }
+
+
+  selectAvatar(event: any) {
+    this.avatarFormData.append(`image`, event.currentFiles[0]);
+  }
+
+  removeAvatar() {
+      this.avatarFormData.delete(`image`);
+  }
+
+  selectBackgroundImage(event: any) {
+      this.backgroundFormData.append(`image`, event.currentFiles[0]);
+  }
+
+  removeBackgroundImage() {
+      this.backgroundFormData.delete(`image`);
+  }
+
+  async sendImages(createdTeam) {
+    await this.sendAvatar(createdTeam);
+    await this.sendBackground(createdTeam);
+}
+
+  async sendAvatar(createdTournament: Tournament) {
+    if (!this.avatarFormData.has(`image`)) {
+        return;
+    }
+    const sendAvatarResponse = await this.apiService.uploadTournamentAvatar(this.avatarFormData, createdTournament.tournamentId);
+    let severity = `success`;
+    let detail = `Avatar has been uploaded!`;
+    let summary = `Success!`;
+
+    if (!sendAvatarResponse.ok) {
+        severity = `error`;
+        detail = sendAvatarResponse.statusText;
+        summary = `Error while uploading avatar`;
+    }
+
+    this.showNotification(severity, detail, summary);
+  }
+
+  async sendBackground(createdTournament: Tournament) {
+      if (!this.backgroundFormData.has(`image`)) {
+          return;
+      }
+      const sendBackgroundResponse = await this.apiService
+        .uploadTournamentBackground(this.backgroundFormData, createdTournament.tournamentId);
+      let severity = `success`;
+      let detail = `Background has been uploaded!`;
+      let summary = `Success!`;
+
+      if (!sendBackgroundResponse.ok) {
+          severity = `error`;
+          detail = sendBackgroundResponse.statusText;
+          summary = `Error while uploading background`;
+      }
+
+      this.showNotification(severity, detail, summary);
+  }
+
+  showNotification(severity: string, detail: string, summary: string) {
+    this.notificationsService.addNotification({severity, summary, detail});
+  }
 }

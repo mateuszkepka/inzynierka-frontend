@@ -13,6 +13,17 @@
             <p>
                 Tournament start date: {{ tournament.tournamentStartDate | date:"dd/MM/yyyy hh:mm" }}
             </p>
+            
+            <p>
+                Check-in open date: {{ tournament.checkInOpenDate | date:"dd/MM/yyyy hh:mm" }}
+            </p>
+            
+            <p>
+                Check-in close date: {{ tournament.checkInCloseDate | date:"dd/MM/yyyy hh:mm" }}
+            </p>
+            <p>
+                Ending hour: {{ (endingHour | date:"hh:mm") || "-" }}
+            </p>
             <p>
                 Number of players: {{ tournament.numberOfPlayers }}
             </p>

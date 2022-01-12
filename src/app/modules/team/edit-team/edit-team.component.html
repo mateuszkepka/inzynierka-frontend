@@ -19,6 +19,35 @@
                 [fields]="fields"
                 [model]="model"
             ></formly-form>
+            <span class="p-field w-full mt-6">
+                <label>Profile avatar</label>
+                <p-fileUpload
+                    name="file-upload"
+                    multiple="false"
+                    accept="image/*"
+                    maxFileSize="10000000"
+                    [showUploadButton]="false"
+                    (onSelect)="selectAvatar($event)"
+                    (onRemove)="removeAvatar()"
+                    (onClear)="removeAvatar()"
+                >
+                </p-fileUpload>
+            </span>
+    
+            <span class="p-field w-full mt-6">
+                <label>Profile background</label>
+                <p-fileUpload
+                    name="file-upload"
+                    multiple="false"
+                    accept="image/*"
+                    maxFileSize="10000000"
+                    [showUploadButton]="false"
+                    (onSelect)="selectBackgroundImage($event)"
+                    (onRemove)="removeBackgroundImage()"
+                    (onClear)="removeBackgroundImage()"
+                >
+                </p-fileUpload>
+            </span>
             <div class="edit-team-buttons">
                 <button
                     type="submit"

@@ -16,7 +16,7 @@ export class TournamentsComponent implements OnInit {
 
     statusOptions: { status: string; label: string }[];
 
-    status = TournamentStatus.ONGOING;
+    status = TournamentStatus.UPCOMING;
 
     headerTexts: LottieHeaderTexts = {
         upperBoldText: `Lorem ipsum`,
@@ -35,7 +35,7 @@ export class TournamentsComponent implements OnInit {
     async getTournaments() {
         const tournaments = await this.apiService.getAllTournaments(this.status);
         const promises = tournaments.map(async (tournament) => {
-            const res = await this.apiService.getTournamentTeams(tournament.tournamentId);
+            const res = await this.apiService.getTournamentTeams(tournament.tournamentId).catch(() => []);
             const checkedIn = res.filter((team) => team.status === `checked`);
             return {...tournament, checkedIn: checkedIn.length };
         });

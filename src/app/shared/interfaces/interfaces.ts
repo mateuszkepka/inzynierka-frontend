@@ -65,7 +65,7 @@ export interface InvitePlayerInput {
 }
 
 export interface UpdateTeamInput {
-    teamName?: string;
+    name?: string;
     captainId?: number;
 }
 
@@ -157,6 +157,12 @@ export interface Tournament {
     organizer: User;
     checkedIn?: number;
     format?: string;
+    checkInOpenDate?: Date;
+    checkInCloseDate?: Date;
+    endingHour?: number;
+    endingMinutes?: number;
+    tournamentProfileBackground?: string;
+    tournamentProfileImage?: string;
 }
 
 export interface Suspension {
@@ -197,6 +203,8 @@ export interface Team {
     creationDate: Date;
     captain: Player;
     captainId?: number;
+    teamProfileImage: string;
+    teamProfileBackground: string;
 }
 
 export interface Prize {

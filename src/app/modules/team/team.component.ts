@@ -24,6 +24,11 @@ export class TeamComponent implements OnInit {
   showManageButtons = false;
   captain: Player;
 
+  avatarToShow: any;
+  backgroundToShow: any;
+  isAvatarLoading = false;
+  isBackgroundLoading = false;
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly apiService: ApiService,
@@ -39,6 +44,7 @@ export class TeamComponent implements OnInit {
     this.captain = await this.apiService.getPlayerById(this.team.captainId);
     this.store.dispatch(new SetCurrentTeam(this.team));
     this.listenOnCurrentUserChange();
+    await this.getImages();
   }
 
   listenOnCurrentUserChange() {
@@ -85,4 +91,46 @@ export class TeamComponent implements OnInit {
       detail: `Something went wrong.`
     });
   }
+
+  getImages() {
+    this.getAvatar();
+    this.getBackground();
+  }
+
+  getAvatar() {
+    this.isAvatarLoading = true;
+    this.apiService
+      .getUploadedTeamAvatar(this.team.teamProfileImage)
+      .subscribe(data => {
+        this.createImageFromBlob(data, `avatarToShow`);
+        this.isAvatarLoading = false;
+      },
+      () =>{
+        this.isAvatarLoading = false;
+      });
+  }
+
+  getBackground() {
+    this.isBackgroundLoading = true;
+    this.apiService
+      .getUploadedTeamBackground(this.team.teamProfileBackground)
+      .subscribe(data => {
+        this.createImageFromBlob(data, `backgroundToShow`);
+        this.isBackgroundLoading = false;
+      },
+      () => {
+        this.isBackgroundLoading = false;
+      });
+  }
+
+  createImageFromBlob(image: Blob, field: string) {
+    const reader = new FileReader();
+    reader.addEventListener(`load`, () => {
+       this[field] = reader.result;
+    }, false);
+
+    if (image) {
+       reader.readAsDataURL(image);
+    }
+ }
 }
