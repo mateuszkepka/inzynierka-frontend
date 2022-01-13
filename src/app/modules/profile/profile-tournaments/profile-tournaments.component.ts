@@ -53,6 +53,7 @@ export class ProfileTournamentsComponent implements OnInit, DoCheck {
       }
     );
     this.isLoading = false;
+    console.log(this.userTournaments);
   }
 
   setRolesOptions() {

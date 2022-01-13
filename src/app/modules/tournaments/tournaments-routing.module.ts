@@ -4,6 +4,7 @@ import { AddTournamentAdminComponent } from "./add-tournament-admin/add-tourname
 import { NgModule } from "@angular/core";
 import { RegisterForTournamentComponent } from "./register-for-tournament/register-for-tournament.component";
 import { TournamentDetailsComponent } from "./tournament-details/tournament-details.component";
+import { TournamentEditComponent } from "./tournament-edit/tournament-edit.component";
 import { TournamentsComponent } from "./tournaments.component";
 
 const routes: Routes = [
@@ -14,6 +15,10 @@ const routes: Routes = [
     {
         path: `:id`,
         component: TournamentDetailsComponent
+    },
+    {
+        path: `:id/edit`,
+        component: TournamentEditComponent
     },
     {
         path: `:id/register-for-tournament`,

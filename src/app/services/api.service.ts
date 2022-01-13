@@ -27,6 +27,7 @@ import {
     TournamentTeam,
     UpdateSuspensionInput,
     UpdateTeamInput,
+    UpdateTournamentInput,
     User
 } from "../shared/interfaces/interfaces";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
@@ -252,6 +253,11 @@ export class ApiService {
     getUploadedTournamentBackground(imagePath: string): Observable<Blob> {
         const url = this.apiUrl + `/tournaments/tournament-background/${imagePath}`;
         return this.httpClient.get(url, { responseType: `blob` });
+    }
+
+    async updateTournament(input: UpdateTournamentInput, tournamentId: number) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}`;
+        return this.httpClient.patch(url, input, { withCredentials: true, observe: `response` }).toPromise();
     }
 
     /* -------------------------------------------------------------------------- */

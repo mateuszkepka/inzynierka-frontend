@@ -1,18 +1,18 @@
 <div class="container">
-    <div class="create-tournament">
-        <span class="create-tournament-icon">
+    <div class="edit-tournament">
+        <span class="edit-tournament-icon">
             <fa-icon
                 [icon]="faTrophy"
                 size="5x" 
             ></fa-icon>
         </span>
 
-        <p class="create-tournament-label">Create tournament</p>
+        <p class="edit-tournament-label">Edit tournament</p>
 
         <form 
             [formGroup]="form" 
             (ngSubmit)="onSubmit()" 
-            class="create-tournament-form"
+            class="edit-tournament-form"
         >
             <span class="p-float-label w-full">
                 <input
@@ -42,7 +42,8 @@
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
-                    [minDate]="registerStartMinDate"
+                    [minDate]="nowDate"
+                    [disabled]="differenceInMilliseconds(form.value.registerStartDate, nowDate) < 0"
                 ></p-calendar>
             </div>
 
@@ -57,8 +58,8 @@
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
-                    [minDate]="registerEndMinDate"
-                    [disabled]="!form.value.registerStartDate"
+                    [minDate]="form.value.registerStartDate"
+                    [disabled]="differenceInMilliseconds(form.value.registerEndDate, nowDate) < 0"
                 ></p-calendar>
             </div>
 
@@ -73,8 +74,8 @@
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
-                    [minDate]="tournamentStartMinDate"
-                    [disabled]="!form.value.registerEndDate"
+                    [minDate]="form.value.registerEndDate"
+                    [disabled]="differenceInMilliseconds(form.value.tournamentStartDate, nowDate) < 0"
                 ></p-calendar>
             </div>
 
@@ -103,6 +104,12 @@
                     [showClear]="true"
                 ></p-dropdown>
             </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.format.touched && form.controls.format.invalid"
+            >
+                Value required
+            </small>
 
             <span 
                 class="p-field w-full flex flex-col"
@@ -154,9 +161,7 @@
                 Value required
             </small>
 
-            <span 
-                class="p-field w-full flex flex-col"
-            >
+            <span class="p-field w-full flex flex-col">
                 <label for="numberOfPlayers">Number of players <abbr>*</abbr></label>
                 <p-inputNumber
                     formControlName="numberOfPlayers" 
@@ -175,15 +180,13 @@
 
             <span class="p-field w-full flex flex-col">
                 <label for="numberOfMaps">Number of maps<abbr>*</abbr></label>
-                <p-dropdown
-                    inputId="numberOfMaps"
-                    [options]="mapsNumbers"
-                    formControlName="numberOfMaps"
-                    [placeholder]="'Select number of maps'"
-                    [optionLabel]="'value'"
-                    [optionValue]="'value'"
-                    [showClear]="true"
-                ></p-dropdown>
+                <p-inputNumber
+                    formControlName="numberOfMaps" 
+                    mode="decimal" 
+                    inputId="numberOfMaps" 
+                    [useGrouping]="false"
+                >
+                </p-inputNumber>
             </span>
             <small 
                 class="p-error" 
@@ -192,14 +195,7 @@
                 Value required
             </small>
 
-            <small 
-                class="p-error" 
-                *ngIf="form.controls.format.touched && form.controls.format.invalid"
-            >
-                Value required
-            </small>
-
-            <div formGroupName="prize" class="w-full">
+            <!-- <div formGroupName="prize" class="w-full">
                 <span class="p-float-label w-full mt-2">
                     <input
                         formControlName="distribution"
@@ -223,8 +219,7 @@
                     />
                     <label for="currency">Currency <abbr>*</abbr></label>
                 </span>
-                
-            </div>
+            </div> -->
 
             <span class="p-field w-full">
                 <label for="description">Description <abbr>*</abbr></label>
@@ -235,43 +230,48 @@
                 ></textarea>
             </span>
 
+            <div class="edit-tournament-buttons">
+                <button 
+                    type="submit"
+                    pButton
+                    label="Edit tournament"
+                    [disabled]="!form.valid"
+                ></button>
+            </div>
+
             <span class="p-field w-full mt-6">
-                <label>Profile avatar</label>
+                <label>Tournament avatar</label>
                 <p-fileUpload
                     name="file-upload"
                     multiple="false"
                     accept="image/*"
                     maxFileSize="10000000"
-                    [showUploadButton]="false"
+                    [showUploadButton]="true"
+                    customUpload="true"
+                    (uploadHandler)="sendAvatar()"
                     (onSelect)="selectAvatar($event)"
                     (onRemove)="removeAvatar()"
+                    (onClear)="removeAvatar()"
                 >
                 </p-fileUpload>
             </span>
     
             <span class="p-field w-full mt-6">
-                <label>Profile background</label>
+                <label>Tournament background</label>
                 <p-fileUpload
                     name="file-upload"
                     multiple="false"
                     accept="image/*"
                     maxFileSize="10000000"
-                    [showUploadButton]="false"
+                    [showUploadButton]="true"
+                    customUpload="true"
+                    (uploadHandler)="sendBackground()"
                     (onSelect)="selectBackgroundImage($event)"
                     (onRemove)="removeBackgroundImage()"
                     (onClear)="removeBackgroundImage()"
                 >
                 </p-fileUpload>
             </span>
-
-            <div class="create-tournament-buttons">
-                <button 
-                    type="submit"
-                    pButton
-                    label="Create tournament"
-                    [disabled]="!form.valid"
-                ></button>
-            </div>
         </form>
     </div>
 </div>

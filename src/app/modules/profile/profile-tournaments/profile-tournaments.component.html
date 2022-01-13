@@ -48,6 +48,15 @@
                             class="p-button-info"
                             [routerLink]="['/tournaments', organizedTournament.tournamentId]"
                         ></button>
+
+                        <button 
+                            pButton 
+                            label="Edit tournament data"
+                            type="button" 
+                            class="p-button-info ml-4"
+                            [routerLink]="['/tournaments', organizedTournament.tournamentId, 'edit']"
+                            *ngIf="userId === currentUser.userId && searchParams.role === 'organizer'"
+                        ></button>
                     </td>
                 </tr>
             </ng-template>

@@ -25,6 +25,45 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
 
     faTrophy: IconDefinition = faTrophy;
 
+    mapsNumbers = [
+        {
+            value: 1
+        },
+        {
+            value: 3
+        },
+        {
+            value: 5
+        },
+    ];
+
+    numberOfTeams = [
+        {
+            value: 2
+        },
+        {
+            value: 4
+        },
+        {
+            value: 8
+        },
+        {
+            value: 16
+        },
+        {
+            value: 32
+        },
+        {
+            value: 64
+        },
+        {
+            value: 128
+        },
+        {
+            value: 256
+        },
+    ];
+
     avatarFormData = new FormData();
     backgroundFormData = new FormData();
 
@@ -36,6 +75,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         registerStartDate: new FormControl(``, [Validators.required]),
         registerEndDate: new FormControl(``, [Validators.required]),
         tournamentStartDate: new FormControl(``, [Validators.required]),
+        numberOfGroups: new FormControl(null),
         endingHour: new FormControl(null, [Validators.required]),
         description: new FormControl(``, [Validators.required]),
         format: new FormControl(``, [Validators.required]),
@@ -53,11 +93,20 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     ) {}
 
     async onSubmit() {
-        const requestBody = {
+        let requestBody = {
             ...omit(this.form.value, [`endingHour`]),
             endingHour: this.form.value.endingHour.getHours(),
             endingMinutes: this.form.value.endingHour.getMinutes(),
         };
+
+        if (this.form.value.format === `Single Elimination Ladder` || this.form.value.format === `Double Elimination Ladder`) {
+            requestBody = {
+                ...omit(this.form.value, [`numberOfGroups`, `endingHour`]),
+                endingHour: this.form.value.endingHour.getHours(),
+                endingMinutes: this.form.value.endingHour.getMinutes(),
+            };
+
+        }
         const response = await this.apiService.createTournament(requestBody as CreateTournamentInput);
         const addPrizeResponse = await this.addTournamentPrize(response);
 
@@ -95,6 +144,12 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
                 .tournamentStartDate
                 .valueChanges
                 .subscribe((val) => this.setTournamentEndMinDate(val)),
+            this.form.controls
+                .format
+                .valueChanges
+                .subscribe(() => {
+                    this.form.controls.numberOfTeams.setValue(null);
+                }),
         );
     }
 
@@ -130,7 +185,6 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         this.tournamentEndMinDate = date;
     }
 
-
   selectAvatar(event: any) {
     this.avatarFormData.append(`image`, event.currentFiles[0]);
   }
@@ -147,9 +201,9 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
       this.backgroundFormData.delete(`image`);
   }
 
-  async sendImages(createdTeam) {
-    await this.sendAvatar(createdTeam);
-    await this.sendBackground(createdTeam);
+  async sendImages(createdTournament) {
+    await this.sendAvatar(createdTournament);
+    await this.sendBackground(createdTournament);
 }
 
   async sendAvatar(createdTournament: Tournament) {

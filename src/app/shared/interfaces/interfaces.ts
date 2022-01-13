@@ -24,13 +24,28 @@ export interface CreateTournamentInput {
     registerStartDate: Date;
     registerEndDate: Date;
     tournamentStartDate: Date;
-    endingHour: number;
-    endingMinutes: number;
+    endingHour?: number;
+    endingMinutes?: number;
     description: string;
     prize?: {
         currency?: string;
         distribution?: string;
     };
+    gamesPreset?: any;
+    gameId: number;
+}
+
+export interface UpdateTournamentInput {
+    name: string;
+    numberOfPlayers: number;
+    numberOfTeams: number;
+    numberOfMaps: number;
+    registerStartDate: Date;
+    registerEndDate: Date;
+    tournamentStartDate: Date;
+    endingHour: number;
+    endingMinutes: number;
+    description: string;
     gamesPreset?: any;
     gameId: number;
 }
@@ -163,6 +178,7 @@ export interface Tournament {
     endingMinutes?: number;
     tournamentProfileBackground?: string;
     tournamentProfileImage?: string;
+    numberOfMaps?: number;
 }
 
 export interface Suspension {
