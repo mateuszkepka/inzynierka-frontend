@@ -1,1 +1,47 @@
-<p>tournament-groups-tab works!</p>
+<ng-container *ngIf="groupStandings && groupStandings.length > 0; else noData">
+    <div *ngFor="let group of groupStandings">
+        <p class="text-3xl py-4">Group {{ group.name }}</p>
+        <p-table
+            [value]="group.standings"
+            [paginator]="false"
+            [rows]="group.standings.length"
+            [showCurrentPageReport]="true"
+            responsiveLayout="scroll"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Place</th>
+                    <th>Points</th>
+                    <th>Team name</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-standing>
+                <tr>
+                    <td>
+                        {{ standing.place }}
+                    </td>
+                    <td>
+                        {{ standing.points }}
+                    </td>
+                    <td>{{ standing.team.teamName || '-' }}</td>
+                    <td>
+                        <button 
+                            label="See details" 
+                            class="p-button-info" 
+                            type="button" 
+                            pButton 
+                            [routerLink]="['/team', standing.team.teamId]"
+                        ></button>
+                    </td>
+                </tr>
+    
+            </ng-template>
+        </p-table>
+    </div>
+</ng-container>
+
+<ng-template #noData>
+    <app-no-data></app-no-data>
+</ng-template>

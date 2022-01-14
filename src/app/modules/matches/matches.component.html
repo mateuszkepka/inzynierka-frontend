@@ -1,1 +1,48 @@
-<p>matches works!</p>
+<ng-container *ngIf="match">
+    <div class="container">
+        <div class="flex flex-col w-full items-center">
+            <p>
+                {{ (match.matchStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}
+            </p>
+    
+            <div class="flex flex-row gap-8">
+                <p class="text-3xl">
+                    {{ match.firstRoster.team.teamName || "-" }}
+                </p>
+                <p class="text-2xl">
+                    vs.
+                </p>
+                <p class="text-3xl">
+                    {{ match.secondRoster.team.teamName || "-" }}
+                </p>
+            </div>
+            <p><strong>Match status: </strong>{{ match.status || "-" }}</p>
+        </div>
+
+        <div class="grid grid-cols-2 pt-12">
+            <div>
+                <p class="text-2xl">Team {{ match.firstRoster.team.teamName }} roster</p>
+                <p class="py-4" *ngFor="let player of match.firstRoster.roster">
+                    {{ player.username }}
+                </p>
+            </div>
+            <div>
+                <p class="text-2xl">Team {{ match.firstRoster.team.teamName }} roster</p>
+                <p class="py-4" *ngFor="let player of match.secondRoster.roster">
+                    {{ player.username }}
+                </p>
+            </div>
+        </div>
+        
+        <div>
+            <p class="text-2xl py-12">Maps</p>
+            <div *ngIf="match.maps.length > 0; else noMatches">
+                MATCHES PLAYED
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #noMatches>
+    <p class="text-2xl">No maps played</p>
+</ng-template>

@@ -254,6 +254,8 @@ export interface Match {
     numberOfMaps: number;
     firstRoster: Roster;
     secondRoster: Roster;
+    tournamentId: number;
+    groupId: number;
 }
 
 export interface Roster {
@@ -278,6 +280,20 @@ export interface Format {
     formatId: number;
     name: string;
     description: string;
+}
+export interface Group {
+    groupId: number;
+    name: string;
+    standings: GroupStanding[];
+}
+export interface GroupStanding {
+    groupStandingId: number;
+    place: number;
+    points: number;
+    team: {
+        teamId: number;
+        teamName: string;
+    };
 }
 
 /* -------------------------------------------------------------------------- */

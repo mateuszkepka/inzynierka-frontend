@@ -8,6 +8,7 @@ import {
     GetReportsFilteredInput,
     GetSuspensionsParams,
     GetUserTournamentsParams,
+    GroupStanding,
     Invitation,
     InvitePlayerInput,
     LogInInput,
@@ -30,8 +31,8 @@ import {
     UpdateTournamentInput,
     User
 } from "../shared/interfaces/interfaces";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
 
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { omit } from "lodash";
@@ -260,6 +261,11 @@ export class ApiService {
         return this.httpClient.patch(url, input, { withCredentials: true, observe: `response` }).toPromise();
     }
 
+    async getTournamentStandings(tournamentId: number) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}/standings`;
+        return this.httpClient.get<GroupStanding[]>(url, { withCredentials: true }).toPromise();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                    TEAM                                    */
     /* -------------------------------------------------------------------------- */
@@ -392,5 +398,11 @@ export class ApiService {
         return this.httpClient.get<Format[]>(url, { withCredentials: true }).toPromise();
     }
 
-
+    /* -------------------------------------------------------------------------- */
+    /*                                    MATCH                                   */
+    /* -------------------------------------------------------------------------- */
+    async getMatchById(matchId: number) {
+        const url = this.apiUrl + `/matches/${matchId}`;
+        return this.httpClient.get<Match>(url, { withCredentials: true }).toPromise();
+    }
 }
