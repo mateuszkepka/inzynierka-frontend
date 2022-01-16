@@ -46,8 +46,8 @@ export interface UpdateTournamentInput {
     endingHour: number;
     endingMinutes: number;
     description: string;
-    gamesPreset?: any;
     gameId: number;
+    format?: string;
 }
 
 export interface CreatePlayerInput {
@@ -66,10 +66,14 @@ export interface AddPrizeInput {
     distribution: string;
     tournamentId?: number;
 }
+export interface UpdatePrizeInput {
+    currency: string;
+    distribution: string;
+}
 
 export interface RegisterForTournamentInput {
     tournamentId?: number;
-    teamId: number;
+    teamId?: number;
     roster: string[];
     subs: string[];
 }
@@ -148,8 +152,9 @@ export interface User {
     suspensions: Suspension[];
     accounts: Player[];
     tournamentAdmins: TournamentAdmin[];
-    userProfileBackground?: string;
-    userProfileImage?: string;
+    backgroundPicture?: string;
+    profilePicture?: string;
+    roles?: string[];
 }
 
 export interface Tournament {
@@ -163,22 +168,17 @@ export interface Tournament {
     tournamentEndDate: Date;
     description: string;
     prize: Prize;
-    // games: Game[];
-    // groups: Group[];
-    // ladders: Ladder[];
-    // matches: Match[];
-    // tournamentAdmins: TournamentAdmin[];
-    // preset: Preset;
     organizer: User;
     checkedIn?: number;
-    format?: string;
+    formatId?: string;
     checkInOpenDate?: Date;
     checkInCloseDate?: Date;
     endingHour?: number;
     endingMinutes?: number;
-    tournamentProfileBackground?: string;
-    tournamentProfileImage?: string;
+    backgroundPicture?: string;
+    profilePicture?: string;
     numberOfMaps?: number;
+    numberOfGroups?: number;
 }
 
 export interface Suspension {
@@ -200,10 +200,6 @@ export interface Player {
     region: string;
     user: User;
     ownedTeams: Team[];
-    // activeRosters: ActiveRoster[];
-    // performances: Performance[];
-    // games: Game[];
-    // teams: Team[];
 }
 
 export interface TournamentAdmin {
@@ -219,8 +215,8 @@ export interface Team {
     creationDate: Date;
     captain: Player;
     captainId?: number;
-    teamProfileImage: string;
-    teamProfileBackground: string;
+    profilePicture: string;
+    backgroundPicture: string;
 }
 
 export interface Prize {
@@ -355,7 +351,7 @@ export enum RegionsLoL {
 }
 
 export enum TournamentStatus {
-    PAST = `past`,
+    FINISHED = `finished`,
     ONGOING = `ongoing`,
     UPCOMING = `upcoming`,
 }
@@ -380,7 +376,15 @@ export enum ReportStatus {
 export enum MatchStatus {
     SCHEDULED = `scheduled`,
     POSTPONED = `postponed`,
-    ONGOING = `ongoing`,
+    RESOLVING = `resolving`,
+    UNRESOLVED = `unresolved`,
     FINISHED = `finished`,
     CANCELLED = `cancelled`,
+}
+
+export enum ParticipationStatus {
+    SIGNED = `signed`,
+    VERIFIED = `verified`,
+    UNVERIFIED = `unverified`,
+    CHECKED_IN = `checked`,
 }

@@ -36,8 +36,6 @@ export class TournamentCompetitorsTabComponent implements OnInit, DoCheck {
     this.teamsList = await this.apiService
       .getTournamentTeams(this.tournamentId)
       .catch(() => []);
-
-    console.log(this.teamsList);
   }
 
 }

@@ -78,7 +78,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
           link: `create-tournament`
       },
       manageTournaments: {
-          title: `Manage tournaments`,
+          title: `Manage tournament registrations`,
           subtitle: `Accept registrations to tournaments`,
           link: `manage-tournaments`
       },
@@ -107,6 +107,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         title: `Manage suspensions`,
         subtitle: `See and manage all the suspensions`,
         link: `/manage-suspensions`
+      },
+      resolveMatches: {
+        title: `Resolve matches`,
+        subtitle: `Send your match results`,
+        link: `/resolve-matches`
       }
     };
   }

@@ -26,15 +26,22 @@
 
         <ng-template pTemplate="body" let-participatingTeam>
             <tr>
-                <td>{{ participatingTeam.team.name || '-' }}</td>
+                <td>{{ participatingTeam.team.teamName || '-' }}</td>
                 <td>{{ (participatingTeam.signDate | date:"dd/MM/YYYY HH:mm") || '-' }}</td>
-                <td *ngIf="!participatingTeam.isApproved; else teamAccepted">
+                <td *ngIf="participatingTeam.status !== 'verified' || participatingTeam.status !== 'unverified'; else teamAccepted">
                     <button
                         pButton
-                        label="Accept team"
+                        label="Verify team"
                         class="p-button-info"
                         type="button"
-                        (click)="acceptTeam(participatingTeam.participatingTeamId)"
+                        (click)="acceptTeam(participatingTeam, 'verified')"
+                    ></button>
+                    <button
+                        pButton
+                        label="Unverify team"
+                        class="p-button-danger ml-2"
+                        type="button"
+                        (click)="acceptTeam(participatingTeam, 'unverified')"
                     ></button>
                 </td>
             </tr>

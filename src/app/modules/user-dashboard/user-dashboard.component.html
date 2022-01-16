@@ -10,6 +10,7 @@
                 <app-module-card [moduleData]="modulesData.userTournaments"></app-module-card>
                 <app-module-card [moduleData]="modulesData.manageTournaments"></app-module-card>
                 <app-module-card [moduleData]="modulesData.createTournament"></app-module-card>
+                <app-module-card [moduleData]="modulesData.resolveMatches"></app-module-card>
             </div>
         </p-accordionTab>
         <p-accordionTab header="Profile / Accounts">
@@ -32,7 +33,9 @@
                 <app-module-card [moduleData]="modulesData.userMatches"></app-module-card>
             </div>
         </p-accordionTab>
-        <p-accordionTab header="Administration (TODO: show only for site admin)">
+        <p-accordionTab
+            *appRequiredRole="'admin'" 
+            header="Administration">
             <div class="grid grid-cols-2 w-full gap-4">
                 <app-module-card [moduleData]="modulesData.manageReports"></app-module-card>
                 <app-module-card [moduleData]="modulesData.manageSuspensions"></app-module-card>

@@ -1,0 +1,18 @@
+<ng-container *ngIf="matches.length > 0; else noData">
+
+</ng-container>
+
+<ng-template #noData>
+    <div class="container flex flex-col items-center">
+        <p
+            [routerLink]="['/user-dashboard']"
+            class="hover:underline font-bold cursor-pointer pb-4"
+        >
+            Back to user dashboard
+        </p>
+        <app-no-data></app-no-data>
+        <p>
+            You have no matches to resolve
+        </p>
+    </div>
+</ng-template>

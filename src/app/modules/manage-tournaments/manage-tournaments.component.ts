@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Tournament, TournamentAdmin, User } from 'src/app/shared/interfaces/interfaces';
+import { Tournament, TournamentAdmin, TournamentRoles, TournamentStatus, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
 import { Store } from '@ngxs/store';
@@ -13,7 +13,7 @@ import { cloneDeep } from 'lodash';
 })
 export class ManageTournamentsComponent implements OnInit, OnDestroy {
   currentUser: User;
-  managedTournaments: TournamentAdmin[] = [];
+  managedTournaments: Tournament[] = [];
   subscriptions: Subscription[] = [];
 
   constructor(
@@ -45,6 +45,12 @@ export class ManageTournamentsComponent implements OnInit, OnDestroy {
   }
 
   async getManagedTournaments() {
-    this.managedTournaments = await this.apiService.getManagedTournaments();
+    this.managedTournaments = await this.apiService.getUserTournaments(
+      this.currentUser.userId,
+      {
+        role: TournamentRoles.TOURNAMENT_ADMIN,
+        status: TournamentStatus.UPCOMING
+      }
+    );
   }
 }

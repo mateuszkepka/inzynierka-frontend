@@ -18,11 +18,11 @@
     <p-table 
         [value]="tournaments"
         [paginator]="true"
-        [rows]="2"
         [showCurrentPageReport]="true"
+        rows="5"
         responsiveLayout="scroll"
         currentPageReportTemplate="{first}-{last} of {totalRecords}"
-        [rowsPerPageOptions]="[2,3,5]"
+        [rowsPerPageOptions]="[5,10,15]"
     >
         <ng-template pTemplate="header">
             <tr>

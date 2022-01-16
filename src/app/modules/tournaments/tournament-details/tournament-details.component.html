@@ -10,14 +10,14 @@
             <img [src]="avatarToShow" alt="avatar" *ngIf="avatarToShow && !isAvatarLoading; else noImage" class="z-10 w-40 h-40">
             <div class="flex flex-col gap-4">
                 <p class="text-4xl font-bold">{{ tournament.name }}</p>
-                {{ (tournament.tournamentStartDate | date:"dd/MM/yyyy") || "n/a" }} - {{ (tournament.tournamentEndDate | date:"dd/MM/yyyy") || "n/a" }}
+                {{ (tournament.tournamentStartDate | date:"dd/MM/yyyy") || "n/a" }}
                 <p><strong>Checked in: </strong> {{ checkedIn || "n/a" }}</p>
                 <p><strong>Signed in: </strong> {{ tournamentTeams.length || "n/a" }}</p>
             </div>
         </div>
     </div>
 
-    <div class="container pt-12">
+    <div class="container py-6">
         <button
             pButton
             label="Register for this tournament"
@@ -51,11 +51,11 @@
                 <app-tournament-matches-tab></app-tournament-matches-tab>
             </p-tabPanel>
     
-            <p-tabPanel header="Ladder" *ngIf="tournament && tournament.format.includes('Ladder')">
+            <p-tabPanel header="Ladder" *ngIf="tournament && tournament.formatId.includes('Ladder')">
                 <app-tournament-ladder></app-tournament-ladder>
             </p-tabPanel>
 
-            <p-tabPanel header="Groups" *ngIf="tournament && tournament.format.includes('Robin')">
+            <p-tabPanel header="Groups" *ngIf="tournament && tournament.formatId.includes('Robin')">
                 <app-tournament-groups-tab></app-tournament-groups-tab>
             </p-tabPanel>
 

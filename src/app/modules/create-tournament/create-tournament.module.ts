@@ -14,6 +14,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import { NgModule } from '@angular/core';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [CreateTournamentComponent],
@@ -32,6 +33,7 @@ import { NgModule } from '@angular/core';
     DropdownModule,
     InputTextareaModule,
     FileUploadModule,
+    TooltipModule,
   ]
 })
 export class CreateTournamentModule { }

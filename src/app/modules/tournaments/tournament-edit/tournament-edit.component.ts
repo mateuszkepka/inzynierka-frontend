@@ -1,13 +1,13 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CreateTournamentInput, Format, Tournament, UpdateTournamentInput } from 'src/app/shared/interfaces/interfaces';
+import { CreateTournamentInput, Format, Tournament, UpdatePrizeInput, UpdateTournamentInput } from 'src/app/shared/interfaces/interfaces';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { differenceInMilliseconds, parseISO } from 'date-fns';
 
 import { ApiService } from 'src/app/services/api.service';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { Subscription } from 'rxjs';
-import { differenceInMilliseconds } from 'date-fns';
 import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { omit } from 'lodash';
 
@@ -70,22 +70,25 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
   ];
 
   differenceInMilliseconds = differenceInMilliseconds;
+  parseISO = parseISO;
 
   form = new FormGroup({
     name: new FormControl(``, [Validators.required]),
     numberOfPlayers: new FormControl(null, [Validators.required]),
     numberOfTeams: new FormControl(null, [Validators.required]),
     numberOfMaps: new FormControl(null, [Validators.required]),
+    numberOfGroups: new FormControl(null, [Validators.required]),
     registerStartDate: new FormControl(``, [Validators.required]),
     registerEndDate: new FormControl(``, [Validators.required]),
     tournamentStartDate: new FormControl(``, [Validators.required]),
     endingHour: new FormControl(null, [Validators.required]),
     description: new FormControl(``, [Validators.required]),
     format: new FormControl(``, [Validators.required]),
-    // prize: new FormGroup({
-    //     currency: new FormControl(``, [Validators.required]),
-    //     distribution: new FormControl(``, [Validators.required]),
-    // }),
+  });
+
+  prizeForm = new FormGroup({
+    currency: new FormControl(null, [Validators.required]),
+    distribution: new FormControl(null, [Validators.required]),
   });
 
   constructor(
@@ -104,9 +107,11 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
 
   async onSubmit() {
     const requestBody = {
-        ...omit(this.form.value, [`endingHour`, `numberOfMaps`, `endingMinutes`, `format`]),
-        // endingHour: this.form.value.endingHour.getHours(),
-        // endingMinutes: this.form.value.endingHour.getMinutes(),
+        ...omit(this.form.value, [`endingHour`, `formatId`]),
+        endingHour: this.form.value.endingHour.getHours(),
+        endingMinutes: this.form.value.endingHour.getMinutes(),
+        format: this.form.value.formatId,
+
     };
     const response = await this.apiService.updateTournament(requestBody as UpdateTournamentInput, this.tournamentId);
 
@@ -151,12 +156,18 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
       numberOfPlayers: this.currentTournament.numberOfPlayers,
       numberOfTeams: this.currentTournament.numberOfTeams,
       numberOfMaps: this.currentTournament.numberOfMaps,
+      numberOfGroups: this.currentTournament.numberOfGroups,
       registerStartDate: new Date(this.currentTournament.registerStartDate),
       registerEndDate: new Date(this.currentTournament.registerEndDate),
       tournamentStartDate: new Date(this.currentTournament.tournamentStartDate),
       endingHour,
       description: this.currentTournament.description,
-      format: this.currentTournament.format,
+      format: this.currentTournament.formatId,
+    });
+
+    this.prizeForm.setValue({
+      distribution: this.currentTournament.prize.distribution,
+      currency: this.currentTournament.prize.currency,
     });
   }
 
@@ -220,5 +231,26 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
 
   showNotification(severity: string, detail: string, summary: string) {
     this.notificationsService.addNotification({severity, summary, detail});
+  }
+
+  async submitPrizeUpdate() {
+    const response = await this.apiService.updatePrize(this.prizeForm.value as UpdatePrizeInput, this.tournamentId);
+
+    if (response.ok) {
+        this.notificationsService.addNotification({
+            severity: `success`,
+            summary: `Success!`,
+            detail: `Prize has been updated.`
+        });
+
+        void this.router.navigate([`/tournaments/${this.tournamentId}`]);
+        return;
+    }
+
+    this.notificationsService.addNotification({
+        severity: `error`,
+        summary: `Error!`,
+        detail: response.statusText
+    });
   }
 }

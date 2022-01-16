@@ -54,7 +54,7 @@ export class IsUserCaptainDirective implements OnDestroy, OnInit {
 
     const accountsIds = userAccounts.map((value) => value.playerId);
 
-    const promises = userTeams.map(async (value) => {
+    const promises = userTeams.filter(async (value) => {
       const team = await this.apiService.getTeamById(value.teamId);
       if (accountsIds.includes(team.captainId)) {
         return value;

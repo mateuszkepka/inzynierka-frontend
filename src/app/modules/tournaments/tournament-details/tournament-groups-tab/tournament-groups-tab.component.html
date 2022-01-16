@@ -1,7 +1,7 @@
 <ng-container *ngIf="groupStandings && groupStandings.length > 0; else noData">
-    <div *ngFor="let group of groupStandings">
-        <p class="text-3xl py-4">Group {{ group.name }}</p>
-        <p-table
+    <p-tabView [activeIndex]="0">
+        <p-tabPanel *ngFor="let group of groupStandings" [header]="'Group ' + group.name">
+            <p-table
             [value]="group.standings"
             [paginator]="false"
             [rows]="group.standings.length"
@@ -39,7 +39,9 @@
     
             </ng-template>
         </p-table>
-    </div>
+        </p-tabPanel>
+    </p-tabView>
+   
 </ng-container>
 
 <ng-template #noData>

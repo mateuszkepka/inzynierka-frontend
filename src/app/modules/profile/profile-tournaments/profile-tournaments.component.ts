@@ -11,6 +11,7 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class ProfileTournamentsComponent implements OnInit, DoCheck {
   @Input() currentUser: User;
+  @Input() currentlyLoggedUser: User;
 
   userTournaments: Tournament[] = [];
   userId: number;
@@ -23,7 +24,7 @@ export class ProfileTournamentsComponent implements OnInit, DoCheck {
 
   searchParams: GetUserTournamentsParams = {
     role: TournamentRoles.PLAYER,
-    status: TournamentStatus.PAST
+    status: TournamentStatus.FINISHED
   };
 
   constructor(
@@ -32,9 +33,14 @@ export class ProfileTournamentsComponent implements OnInit, DoCheck {
     private readonly activatedRoute: ActivatedRoute,
   ) {
     this.userId = Number(this.activatedRoute.snapshot.params.id);
+
   }
 
   async ngOnInit() {
+    if (this.currentlyLoggedUser.userId === this.userId) {
+      this.searchParams.role = TournamentRoles.ORGANIZER;
+      this.searchParams.status = TournamentStatus.UPCOMING;
+    }
     this.setRolesOptions();
     this.setStatusOptions();
     await this.loadUserTournaments();
@@ -53,7 +59,6 @@ export class ProfileTournamentsComponent implements OnInit, DoCheck {
       }
     );
     this.isLoading = false;
-    console.log(this.userTournaments);
   }
 
   setRolesOptions() {

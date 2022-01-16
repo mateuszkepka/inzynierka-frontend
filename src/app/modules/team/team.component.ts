@@ -66,6 +66,9 @@ export class TeamComponent implements OnInit {
   }
 
   async setCurrentUserAccounts() {
+    if (!this.currentUser) {
+      return;
+    }
     this.currentUserAccounts = await this.apiService.getUserAccounts(this.currentUser.userId);
   }
 
@@ -100,7 +103,7 @@ export class TeamComponent implements OnInit {
   getAvatar() {
     this.isAvatarLoading = true;
     this.apiService
-      .getUploadedTeamAvatar(this.team.teamProfileImage)
+      .getUploadedTeamAvatar(this.team.profilePicture)
       .subscribe(data => {
         this.createImageFromBlob(data, `avatarToShow`);
         this.isAvatarLoading = false;
@@ -113,7 +116,7 @@ export class TeamComponent implements OnInit {
   getBackground() {
     this.isBackgroundLoading = true;
     this.apiService
-      .getUploadedTeamBackground(this.team.teamProfileBackground)
+      .getUploadedTeamBackground(this.team.backgroundPicture)
       .subscribe(data => {
         this.createImageFromBlob(data, `backgroundToShow`);
         this.isBackgroundLoading = false;

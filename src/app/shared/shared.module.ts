@@ -13,6 +13,7 @@ import { NoDataComponent } from './components/no-data/no-data.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PromoComponent } from './components/promo/promo.component';
+import { RequiredRoleDirective } from './directives/required-roles.directive';
 import { RouterModule } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import player from 'lottie-web';
@@ -28,7 +29,8 @@ const playerFactory = () => player;
     NoDataComponent,
     NotificationsComponent,
     FirstLetterUpperCasePipe,
-    IsUserCaptainDirective
+    IsUserCaptainDirective,
+    RequiredRoleDirective
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ const playerFactory = () => player;
     NoDataComponent,
     NotificationsComponent,
     FirstLetterUpperCasePipe,
-    IsUserCaptainDirective
+    IsUserCaptainDirective,
+    RequiredRoleDirective
   ]
 })
 export class SharedModule { }

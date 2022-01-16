@@ -1,6 +1,8 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { Dictionary, groupBy } from 'lodash';
 
-import { TreeNode } from 'primeng/api';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: `app-tournament-ladder`,
@@ -8,41 +10,45 @@ import { TreeNode } from 'primeng/api';
   styleUrls: [`./tournament-ladder.component.scss`]
 })
 export class TournamentLadderComponent implements OnInit {
-  nodesData: TreeNode[];
+  tournamentId: number;
 
-  constructor() { }
+  upperBracketMatches: any[] = [];
+  lowerBracketMatches: any[] = [];
 
-  ngOnInit(): void {
-    this.nodesData = [{
-      label: `F.C Barcelona`,
-      expanded: true,
-      children: [
-          {
-              label: `F.C Barcelona`,
-              expanded: true,
-              children: [
-                  {
-                      label: `Chelsea FC`
-                  },
-                  {
-                      label: `F.C. Barcelona`
-                  }
-              ]
-          },
-          {
-              label: `Real Madrid`,
-              expanded: true,
-              children: [
-                  {
-                      label: `Bayern Munich`
-                  },
-                  {
-                      label: `Real Madrid`
-                  }
-              ]
-          }
-      ]
-  }];
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router
+  ) {
+    this.tournamentId = Number(this.activatedRoute.snapshot.params.id);
   }
 
+  async ngOnInit() {
+      const res = await this.apiService.getTournamentStandings(this.tournamentId);
+      this.setBrackets(res[0], `upperBracketMatches`);
+      if (res.length > 1) {
+        this.setBrackets(res[1], `lowerBracketMatches`);
+      }
+  }
+
+  setBrackets(bracketMatches, arrayKey: string) {
+    if (!bracketMatches) {
+      return;
+    }
+    const matchesMap = groupBy(bracketMatches.matches, `round`);
+
+    Object.keys(matchesMap).forEach((key) => {
+      this[arrayKey].push(matchesMap[key]);
+    });
+
+    this[arrayKey] = this[arrayKey].slice().reverse();
+  }
+
+
+  navigateToTeam(teamId: number) {
+    if (!teamId) {
+      return;
+    }
+    void this.router.navigate([`/team/${teamId}`]);
+  }
 }

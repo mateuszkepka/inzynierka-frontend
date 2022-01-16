@@ -24,9 +24,9 @@
         
         <ng-template pTemplate="body" let-managedTournament>
             <tr>
-                <td>{{ managedTournament.tournament.name || '-' }}</td>
+                <td>{{ managedTournament.name || '-' }}</td>
                 <td>
-                    <button label="Manage" class="p-button-info" type="button" pButton [routerLink]="['/manage-tournaments', managedTournament.tournament.tournamentId]"></button>
+                    <button label="Manage" class="p-button-info" type="button" pButton [routerLink]="['/manage-tournaments', managedTournament.tournamentId]"></button>
                 </td>
             </tr>
 

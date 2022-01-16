@@ -19,6 +19,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     registerEndMinDate = new Date();
     tournamentStartMinDate = new Date();
     tournamentEndMinDate = new Date();
+    endingHour = new Date();
 
     subscriptions: Subscription[] = [];
     gamePresets: Format[] = [];
@@ -76,7 +77,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         registerEndDate: new FormControl(``, [Validators.required]),
         tournamentStartDate: new FormControl(``, [Validators.required]),
         numberOfGroups: new FormControl(null),
-        endingHour: new FormControl(null, [Validators.required]),
+        endingHour: new FormControl(this.endingHour, [Validators.required]),
         description: new FormControl(``, [Validators.required]),
         format: new FormControl(``, [Validators.required]),
         prize: new FormGroup({
@@ -90,7 +91,9 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         private readonly apiService: ApiService,
         private readonly router: Router,
         private readonly notificationsService: NotificationsService
-    ) {}
+    ) {
+        this.endingHour.setMinutes(0);
+    }
 
     async onSubmit() {
         let requestBody = {

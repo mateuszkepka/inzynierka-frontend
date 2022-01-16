@@ -26,6 +26,7 @@ import {
     Tournament,
     TournamentAdmin,
     TournamentTeam,
+    UpdatePrizeInput,
     UpdateSuspensionInput,
     UpdateTeamInput,
     UpdateTournamentInput,
@@ -112,26 +113,26 @@ export class ApiService {
     }
 
     async uploadUserAvatar(data: FormData, user: User) {
-        const url = this.apiUrl + `/users/${user.userId}/upload-user-image`;
+        const url = this.apiUrl + `/users/${user.userId}/avatars`;
         return this.httpClient.post(url, data, {
             observe: `response`
         }).toPromise();
     }
 
     async uploadUserBackground(data: FormData, user: User) {
-        const url = this.apiUrl + `/users/${user.userId}/upload-user-background`;
+        const url = this.apiUrl + `/users/${user.userId}/backgrounds`;
         return this.httpClient.post(url, data, {
             observe: `response`,
         }).toPromise();
     }
 
     getUploadedAvatar(imagePath: string): Observable<Blob> {
-        const url = this.apiUrl + `/users/avatar/${imagePath}`;
+        const url = this.apiUrl + `/users/avatars/${imagePath}`;
         return this.httpClient.get(url, { responseType: `blob` });
     }
 
     getUploadedBackground(imagePath: string): Observable<Blob> {
-        const url = this.apiUrl + `/users/background/${imagePath}`;
+        const url = this.apiUrl + `/users/backgrounds/${imagePath}`;
         return this.httpClient.get(url, { responseType: `blob` });
     }
 
@@ -180,9 +181,10 @@ export class ApiService {
     }
 
     async registerTeamForTournament(input: RegisterForTournamentInput, tournamentId: number) {
-        const url = this.apiUrl + `/tournaments/${tournamentId}/teams`;
+        const correctInput = omit(input, [`teamId`]);
+        const url = this.apiUrl + `/tournaments/${tournamentId}/teams/${input.teamId}`;
         input = omit(input, [`tournamentId`]);
-        return this.httpClient.post<ParticipatingTeam>(url, input, { withCredentials: true }).toPromise();
+        return this.httpClient.post<ParticipatingTeam>(url, correctInput, { withCredentials: true }).toPromise();
     }
 
     async getManagedTournaments() {
@@ -195,14 +197,17 @@ export class ApiService {
         return this.httpClient.get<ParticipatingTeam[]>(url, { withCredentials: true }).toPromise();
     }
 
-    async acceptTeam(participatingTeamId: number) {
-        const url = this.apiUrl + `/tournaments/accept-team`;
-        return this.httpClient.post<ParticipatingTeam>(url, { participatingTeamId } ,{ withCredentials: true }).toPromise();
+    async acceptTeam(tournamentId: number, participatingTeamId: number, status: string) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}/teams/${participatingTeamId}`;
+        return this.httpClient.patch<ParticipatingTeam>(url, { status } ,{ withCredentials: true }).toPromise();
     }
 
-    async getTournamentTeams(tournamentId: number) {
+    async getTournamentTeams(tournamentId: number, status?: string) {
         const url = this.apiUrl + `/tournaments/${tournamentId}/teams`;
-        return this.httpClient.get<TournamentTeam[]>(url, { withCredentials: true }).toPromise();
+        if (!status) {
+            return this.httpClient.get<TournamentTeam[]>(url, { withCredentials: true }).toPromise();
+        }
+        return this.httpClient.get<TournamentTeam[]>(url, { withCredentials: true, params: { status } }).toPromise();
     }
 
     async getTournamentAdmins(tournamentId: number) {
@@ -211,8 +216,8 @@ export class ApiService {
     }
 
     async createTournamentAdmin(tournamentId: number, userId: number) {
-        const url = this.apiUrl + `/tournaments/${tournamentId}/admins`;
-        return this.httpClient.post<TournamentAdmin>(url, { userId }, { withCredentials: true }).toPromise();
+        const url = this.apiUrl + `/tournaments/${tournamentId}/admins/${userId}`;
+        return this.httpClient.post<TournamentAdmin>(url, { }, { withCredentials: true }).toPromise();
     }
 
     async getAdminsToInvite(tournamentId: number) {
@@ -226,12 +231,12 @@ export class ApiService {
     }
 
     async checkInTorunament(tournamentId: number, teamId: number) {
-        const url = this.apiUrl + `/tournaments/${tournamentId}/teams/${teamId}`;
+        const url = this.apiUrl + `/tournaments/${tournamentId}/teams/${teamId}/check-in`;
         return this.httpClient.post(url, {}, { withCredentials: true, observe: `response` }).toPromise();
     }
 
     async uploadTournamentAvatar(data: FormData, tournamentId: number) {
-        const url = this.apiUrl + `/tournaments/upload-tournament-image/${tournamentId}`;
+        const url = this.apiUrl + `/tournaments/${tournamentId}/avatars`;
         return this.httpClient.post(url, data, {
             observe: `response`,
             withCredentials: true,
@@ -239,7 +244,7 @@ export class ApiService {
     }
 
     async uploadTournamentBackground(data: FormData, tournamentId: number) {
-        const url = this.apiUrl + `/tournaments/upload-tournament-background/${tournamentId}`;
+        const url = this.apiUrl + `/tournaments/${tournamentId}/backgrounds`;
         return this.httpClient.post(url, data, {
             observe: `response`,
             withCredentials: true,
@@ -247,12 +252,12 @@ export class ApiService {
     }
 
     getUploadedTournamentAvatar(imagePath: string): Observable<Blob> {
-        const url = this.apiUrl + `/tournaments/tournament-profile/${imagePath}`;
+        const url = this.apiUrl + `/tournaments/avatars/${imagePath}`;
         return this.httpClient.get(url, { responseType: `blob` });
     }
 
     getUploadedTournamentBackground(imagePath: string): Observable<Blob> {
-        const url = this.apiUrl + `/tournaments/tournament-background/${imagePath}`;
+        const url = this.apiUrl + `/tournaments/backgrounds/${imagePath}`;
         return this.httpClient.get(url, { responseType: `blob` });
     }
 
@@ -264,6 +269,11 @@ export class ApiService {
     async getTournamentStandings(tournamentId: number) {
         const url = this.apiUrl + `/tournaments/${tournamentId}/standings`;
         return this.httpClient.get<GroupStanding[]>(url, { withCredentials: true }).toPromise();
+    }
+
+    async updatePrize(input: UpdatePrizeInput, tournamentId: number) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}/prizes`;
+        return this.httpClient.patch<Prize>(url, input, { withCredentials: true, observe: `response` }).toPromise();
     }
 
     /* -------------------------------------------------------------------------- */
@@ -300,7 +310,7 @@ export class ApiService {
     }
 
     async uploadTeamAvatar(data: FormData, teamId: number) {
-        const url = this.apiUrl + `/teams/upload-team-image/${teamId}`;
+        const url = this.apiUrl + `/teams/${teamId}/avatars`;
         return this.httpClient.post(url, data, {
             observe: `response`,
             withCredentials: true,
@@ -308,7 +318,7 @@ export class ApiService {
     }
 
     async uploadTeamBackground(data: FormData, teamId: number) {
-        const url = this.apiUrl + `/teams/upload-team-background/${teamId}`;
+        const url = this.apiUrl + `/teams/${teamId}/backgrounds`;
         return this.httpClient.post(url, data, {
             observe: `response`,
             withCredentials: true,
@@ -316,12 +326,12 @@ export class ApiService {
     }
 
     getUploadedTeamAvatar(imagePath: string): Observable<Blob> {
-        const url = this.apiUrl + `/teams/team-profile/${imagePath}`;
+        const url = this.apiUrl + `/teams/avatars/${imagePath}`;
         return this.httpClient.get(url, { responseType: `blob` });
     }
 
     getUploadedTeamBackground(imagePath: string): Observable<Blob> {
-        const url = this.apiUrl + `/teams/team-background/${imagePath}`;
+        const url = this.apiUrl + `/teams/backgrounds/${imagePath}`;
         return this.httpClient.get(url, { responseType: `blob` });
     }
 

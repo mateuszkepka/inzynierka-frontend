@@ -108,6 +108,12 @@ const routes: Routes = [
         loadChildren: async () => import(`./modules/matches/matches.module`).then(
             (m) => m.MatchesModule
         ),
+    },
+    {
+        path: `resolve-matches`,
+        loadChildren: async () => import(`./modules/resolve-matches/resolve-matches.module`).then(
+            (m) => m.ResolveMatchesModule
+        ),
     }
 ];
 

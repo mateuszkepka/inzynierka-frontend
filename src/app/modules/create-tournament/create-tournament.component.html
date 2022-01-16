@@ -88,6 +88,7 @@
                     showTime="true"
                     hourFormat="24"
                     [timeOnly]="true"
+                    [stepMinute]="30"
                 ></p-calendar>
             </div>
 
@@ -98,10 +99,16 @@
                     [options]="gamePresets"
                     formControlName="format"
                     [placeholder]="'Select games format'"
-                    [optionLabel]="'name'"
                     [optionValue]="'name'"
+                    [optionLabel]="'name'"
                     [showClear]="true"
-                ></p-dropdown>
+                >
+                    <ng-template let-format pTemplate="item">
+                        <div [pTooltip]="format.description" tooltipPosition="top">
+                            {{ format.name }}
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </span>
 
             <span 

@@ -68,7 +68,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     const userTeams = await this.apiService.getUserTeams(this.currentUser.userId);
 
     const accountsIds = userAccounts.map((value) => value.playerId);
-    const promises = userTeams.map(async (value) => {
+    const promises = userTeams.filter(async (value) => {
       const team = await this.apiService.getTeamById(value.teamId);
 
       if (accountsIds.includes(team.captainId)) {
@@ -106,10 +106,13 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   setIsRegistrationActive() {
     const now = new Date();
     const registerStartDate = new Date(this.tournament.registerStartDate);
+    const registerEndDate = new Date(this.tournament.registerEndDate);
 
-    const diff = differenceInMilliseconds(now, registerStartDate);
+    const diffStart = differenceInMilliseconds(now, registerStartDate);
+    const diffEnd = differenceInMilliseconds(now, registerEndDate);
 
-    this.isRegistrationActive = diff > 0 && this.checkedIn !== this.tournament.numberOfTeams;
+
+    this.isRegistrationActive = diffStart > 0 && diffEnd < 0 && this.checkedIn !== this.tournament.numberOfTeams;
   }
 
   setIsCheckInActive() {
@@ -135,7 +138,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   getAvatar() {
     this.isAvatarLoading = true;
     this.apiService
-      .getUploadedTournamentAvatar(this.tournament.tournamentProfileImage)
+      .getUploadedTournamentAvatar(this.tournament.profilePicture)
       .subscribe(data => {
         this.createImageFromBlob(data, `avatarToShow`);
         this.isAvatarLoading = false;
@@ -148,7 +151,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   getBackground() {
     this.isBackgroundLoading = true;
     this.apiService
-      .getUploadedTournamentBackground(this.tournament.tournamentProfileBackground)
+      .getUploadedTournamentBackground(this.tournament.backgroundPicture)
       .subscribe(data => {
         this.createImageFromBlob(data, `backgroundToShow`);
         this.isBackgroundLoading = false;

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ParticipatingTeam, ParticipationStatus, Team, TournamentTeam } from 'src/app/shared/interfaces/interfaces';
 
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
-import { ParticipatingTeam } from 'src/app/shared/interfaces/interfaces';
 
 @Component({
   selector: `app-manage-torunament`,
@@ -13,7 +13,7 @@ import { ParticipatingTeam } from 'src/app/shared/interfaces/interfaces';
 export class ManageTorunamentComponent implements OnInit {
 
   tournamentId: number;
-  participatingTeams: ParticipatingTeam[] = [];
+  participatingTeams: TournamentTeam[] = [];
 
   constructor(
     private readonly apiService: ApiService,
@@ -24,11 +24,16 @@ export class ManageTorunamentComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.participatingTeams = await this.apiService.getPendingParticipatingTeams(this.tournamentId);
+    this.participatingTeams = await this.apiService.getTournamentTeams(this.tournamentId, ParticipationStatus.SIGNED);
   }
 
-  async acceptTeam(participatingTeamId: number) {
-    const acceptTeamResponse = await this.apiService.acceptTeam(participatingTeamId).catch(() => false as const);
+  async acceptTeam(participatingTeam: TournamentTeam, status: string) {
+    const acceptTeamResponse = await this.apiService.acceptTeam(
+      this.tournamentId,
+      participatingTeam.team.teamId,
+      status
+    )
+    .catch(() => false as const);
 
     if (!acceptTeamResponse) {
       this.notificationsService.addNotification({
@@ -39,14 +44,15 @@ export class ManageTorunamentComponent implements OnInit {
       return;
     }
 
-    this.participatingTeams.forEach((participatingTeam) => {
-      if (participatingTeam.participatingTeamId === participatingTeamId) {
+    this.participatingTeams.forEach((value) => {
+      if (value.participatingTeamId === participatingTeam.participatingTeamId) {
         this.notificationsService.addNotification({
           severity: `success`,
           detail: `Team ${participatingTeam.team.teamName} accepted sucessfully!`,
           summary: `Team accepted`
         });
-        participatingTeam.isApproved = true;
+        participatingTeam.status = status;
+        participatingTeam = { ...participatingTeam };
         return;
       }
     });

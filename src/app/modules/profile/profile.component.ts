@@ -87,7 +87,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   getAvatar() {
     this.isAvatarLoading = true;
     this.apiService
-      .getUploadedAvatar(this.currentUser.userProfileImage)
+      .getUploadedAvatar(this.currentUser.profilePicture)
       .subscribe(data => {
         this.createImageFromBlob(data, `avatarToShow`);
         this.isAvatarLoading = false;
@@ -100,7 +100,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   getBackground() {
     this.isBackgroundLoading = true;
     this.apiService
-      .getUploadedBackground(this.currentUser.userProfileBackground)
+      .getUploadedBackground(this.currentUser.backgroundPicture)
       .subscribe(data => {
         this.createImageFromBlob(data, `backgroundToShow`);
         this.isBackgroundLoading = false;

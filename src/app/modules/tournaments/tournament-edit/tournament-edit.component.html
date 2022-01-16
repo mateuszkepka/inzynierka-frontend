@@ -43,7 +43,7 @@
                     showTime="true"
                     hourFormat="24"
                     [minDate]="nowDate"
-                    [disabled]="differenceInMilliseconds(form.value.registerStartDate, nowDate) < 0"
+                    [disabled]="differenceInMilliseconds(parseISO(form.value.registerStartDate), nowDate) < 0"
                 ></p-calendar>
             </div>
 
@@ -59,7 +59,7 @@
                     showTime="true"
                     hourFormat="24"
                     [minDate]="form.value.registerStartDate"
-                    [disabled]="differenceInMilliseconds(form.value.registerEndDate, nowDate) < 0"
+                    [disabled]="differenceInMilliseconds(parseISO(form.value.registerEndDate), nowDate) < 0"
                 ></p-calendar>
             </div>
 
@@ -75,7 +75,7 @@
                     showTime="true"
                     hourFormat="24"
                     [minDate]="form.value.registerEndDate"
-                    [disabled]="differenceInMilliseconds(form.value.tournamentStartDate, nowDate) < 0"
+                    [disabled]="differenceInMilliseconds(parseISO(form.value.tournamentStartDate), nowDate) < 0"
                 ></p-calendar>
             </div>
 
@@ -195,32 +195,6 @@
                 Value required
             </small>
 
-            <!-- <div formGroupName="prize" class="w-full">
-                <span class="p-float-label w-full mt-2">
-                    <input
-                        formControlName="distribution"
-                        id="distribution"
-                        type="text" 
-                        pInputText 
-                        [required]="true"
-                    />
-                    <label for="name">Prize <abbr>*</abbr></label>
-                </span>
-            </div>
-
-            <div formGroupName="prize" class="w-full">
-                <span class="p-float-label w-full mt-2">
-                    <input
-                        formControlName="currency"
-                        id="currency"
-                        type="text" 
-                        pInputText 
-                        [required]="true"
-                    />
-                    <label for="currency">Currency <abbr>*</abbr></label>
-                </span>
-            </div> -->
-
             <span class="p-field w-full">
                 <label for="description">Description <abbr>*</abbr></label>
                 <textarea
@@ -239,6 +213,48 @@
                 ></button>
             </div>
 
+        </form>
+
+        <form
+            [formGroup]="prizeForm"
+            class="edit-tournament-form"
+        >
+            <div class="w-full">
+                <span class="p-float-label w-full mt-2">
+                    <input
+                        formControlName="distribution"
+                        id="distribution"
+                        type="text" 
+                        pInputText 
+                        [required]="true"
+                    />
+                    <label for="name">Prize <abbr>*</abbr></label>
+                </span>
+            </div>
+
+            <div class="w-full">
+                <span class="p-float-label w-full mt-2">
+                    <input
+                        formControlName="currency"
+                        id="currency"
+                        type="text" 
+                        pInputText 
+                        [required]="true"
+                    />
+                    <label for="currency">Currency <abbr>*</abbr></label>
+                </span>
+            </div>
+            <div class="edit-tournament-buttons">
+                <button 
+                    type="submit"
+                    pButton
+                    label="Edit prize"
+                    [disabled]="!prizeForm.valid"
+                    (click)="submitPrizeUpdate()"
+                ></button>
+            </div>
+        </form>
+        <form class="edit-tournament-form">
             <span class="p-field w-full mt-6">
                 <label>Tournament avatar</label>
                 <p-fileUpload
