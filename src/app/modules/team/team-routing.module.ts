@@ -1,5 +1,6 @@
 import { RouterModule, Routes } from "@angular/router";
 
+import { AuthGuard } from "src/app/guards/auth.guard";
 import { EditTeamComponent } from "./edit-team/edit-team.component";
 import { InvitePlayersComponent } from "./invite-players/invite-players.component";
 import { NgModule } from "@angular/core";
@@ -12,10 +13,12 @@ const routes: Routes = [
     },
     {
         path: `:id/invite-players`,
+        canActivate: [AuthGuard],
         component: InvitePlayersComponent,
     },
     {
         path: `:id/edit`,
+        canActivate: [AuthGuard],
         component: EditTeamComponent,
     }
 ];

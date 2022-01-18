@@ -1,6 +1,7 @@
 import { RouterModule, Routes } from "@angular/router";
 
 import { AddTournamentAdminComponent } from "./add-tournament-admin/add-tournament-admin.component";
+import { AuthGuard } from "src/app/guards/auth.guard";
 import { NgModule } from "@angular/core";
 import { RegisterForTournamentComponent } from "./register-for-tournament/register-for-tournament.component";
 import { TournamentDetailsComponent } from "./tournament-details/tournament-details.component";
@@ -18,6 +19,7 @@ const routes: Routes = [
     },
     {
         path: `:id/edit`,
+        canActivate: [AuthGuard],
         component: TournamentEditComponent
     },
     {
@@ -26,6 +28,7 @@ const routes: Routes = [
     },
     {
         path: `:id/add-admin`,
+        canActivate: [AuthGuard],
         component: AddTournamentAdminComponent,
     }
 ];

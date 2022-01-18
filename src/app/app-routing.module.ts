@@ -24,6 +24,7 @@ const routes: Routes = [
     },
     {
         path: `manage-tournaments`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/manage-tournaments/manage-tournaments.module`).then(m => m.ManageTournamentsModule)
     },
     {
@@ -93,12 +94,14 @@ const routes: Routes = [
     },
     {
         path: `manage-reports`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/manage-reports/manage-reports.module`).then(
             (m) => m.ManageReportsModule
         ),
     },
     {
         path: `manage-suspensions`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/manage-suspensions/manage-suspensions.module`).then(
             (m) => m.ManageSuspensionsModule
         ),
@@ -111,9 +114,14 @@ const routes: Routes = [
     },
     {
         path: `resolve-matches`,
+        canActivate: [AuthGuard],
         loadChildren: async () => import(`./modules/resolve-matches/resolve-matches.module`).then(
             (m) => m.ResolveMatchesModule
         ),
+    },
+    {
+        path: `**`,
+        redirectTo: `/`
     }
 ];
 
