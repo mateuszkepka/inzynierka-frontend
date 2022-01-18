@@ -1,43 +1,132 @@
 <ng-container *ngIf="match">
     <div class="container">
-        <div class="flex flex-col w-full items-center">
-            <p>
-                {{ (match.matchStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}
-            </p>
-    
-            <div class="flex flex-row gap-8">
-                <p class="text-3xl">
-                    {{ match.firstRoster.team.teamName || "-" }}
-                </p>
-                <p class="text-2xl">
-                    vs.
-                </p>
-                <p class="text-3xl">
-                    {{ match.secondRoster.team.teamName || "-" }}
-                </p>
-            </div>
-            <p><strong>Match status: </strong>{{ match.status || "-" }}</p>
-        </div>
 
-        <div class="grid grid-cols-2 pt-12">
-            <div>
-                <p class="text-2xl">Team {{ match.firstRoster.team.teamName }} roster</p>
-                <p class="py-4" *ngFor="let player of match.firstRoster.roster">
-                    {{ player.username }}
-                </p>
-            </div>
-            <div>
-                <p class="text-2xl">Team {{ match.firstRoster.team.teamName }} roster</p>
-                <p class="py-4" *ngFor="let player of match.secondRoster.roster">
-                    {{ player.username }}
-                </p>
-            </div>
+        <button 
+            label="Send match results"
+            class="p-button-info"
+            type="button" 
+            pButton 
+            [routerLink]="['/matches', match.matchId, 'resolve']"
+            *ngIf="showResolveButton"
+        ></button>
+        <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <p class="text-2xl">Team {{ match.firstRoster.team.teamName }} roster</p>
+                    <p class="py-4" *ngFor="let player of match.firstRoster.roster">
+                        {{ player.username }}
+                    </p>
+                </div>
+                <div class="flex flex-col w-full items-center">
+                    <p>
+                        {{ (match.matchStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}
+                    </p>
+            
+                    <div class="flex flex-col gap-4 items-center">
+                        <p 
+                            class="text-3xl" 
+                            [ngClass]="{
+                                'winner': secondTeamMatchesCount < firstTeamMatchesCount,
+                                'loser': secondTeamMatchesCount > firstTeamMatchesCount
+                            }"
+                        >
+                            {{ match.firstRoster.team.teamName || "-" }}
+                        </p>
+                        <p class="text-2xl">
+                            vs.
+                        </p>
+                        <p 
+                            class="text-3xl" 
+                            [ngClass]="{
+                                'winner': secondTeamMatchesCount > firstTeamMatchesCount,
+                                'loser': secondTeamMatchesCount < firstTeamMatchesCount
+                            }"
+                        >
+                            {{ match.secondRoster.team.teamName || "-" }}
+                        </p>
+                    </div>
+                    <p><strong>Match status: </strong>{{ match.status || "-" }}</p>
+                    <p class="text-2xl">{{firstTeamMatchesCount}}:{{secondTeamMatchesCount}}</p>
+                </div>
+                <div>
+                    <p class="text-2xl">Team {{ match.secondRoster.team.teamName }} roster</p>
+                    <p class="py-4" *ngFor="let player of match.secondRoster.roster">
+                        {{ player.username }}
+                    </p>
+                </div>
         </div>
         
         <div>
             <p class="text-2xl py-12">Maps</p>
             <div *ngIf="match.maps.length > 0; else noMatches">
-                MATCHES PLAYED
+                <p-tabView [activeIndex]="0">
+                    <p-tabPanel [header]="'Match ' + (i + 1)" *ngFor="let map of match.maps; index as i">
+                        <p><strong>Play time: </strong>{{ map.time }}</p>
+                        <div class="grid grid-cols-2">
+                            <div class="mb-4 border-r-2 border-gray-200">
+                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === 1 ? "Winners" : "Losers" }}</p>
+                                <ng-container *ngFor="let player of match.firstRoster.roster">
+                                    <div class="flex flex-row flex-wrap gap-4 py-4 border-b-2 border-gray-200 match">
+                                        <p class="flex-item font-semibold">
+                                            {{ player.username }}
+                                        </p>
+                                        <p class="flex-item">
+                                            <strong>Score: </strong>
+                                            {{ player.performances[i].kills }}/{{ player.performances[i].deaths }}/{{ player.performances[i].assists }}
+                                        </p>
+                                        
+                                        <p class="flex-item">
+                                            <strong>K/D/A ratio: </strong>
+                                            {{ ((player.performances[i].kills + player.performances[i].assists) / player.performances[i].deaths).toFixed(1) }}
+                                        </p>
+                                        <p class="flex-item"></p>
+    
+                                        <p class="flex-item">
+                                            <strong>Minions: </strong>
+                                            {{ player.performances[i].creepScore }}
+                                        </p>
+    
+                                        <p class="flex-item">
+                                            <strong>Gold: </strong>
+                                            {{ player.performances[i].gold }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === 2 ? "Winners" : "Losers" }}</p>
+                                <ng-container *ngFor="let player of match.secondRoster.roster">
+                                    <div class="flex flex-row flex-wrap gap-4 p-4 border-b-2 border-gray-200 match">
+                                        <p class="flex-item font-semibold">
+                                            {{ player.username }}
+                                        </p>
+                                        <p class="flex-item">
+                                            <strong>Score: </strong>
+                                            {{ player.performances[i].kills }}/{{ player.performances[i].deaths }}/{{ player.performances[i].assists }}
+                                        </p>
+                                        
+                                        <p class="flex-item">
+                                            <strong>K/D/A ratio: </strong>
+                                            {{ ((player.performances[i].kills + player.performances[i].assists) / player.performances[i].deaths).toFixed(1) }}
+                                        </p>
+                                        <p class="flex-item"></p>
+    
+                                        <p class="flex-item">
+                                            <strong>Minions: </strong>
+                                            {{ player.performances[i].creepScore }}
+                                        </p>
+    
+                                        <p class="flex-item">
+                                            <strong>Gold: </strong>
+                                            {{ player.performances[i].gold }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+                            </div>
+
+                        </div>
+                    </p-tabPanel>
+                </p-tabView>
             </div>
         </div>
     </div>

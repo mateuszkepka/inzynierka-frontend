@@ -1,3 +1,4 @@
+import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ResolveMatchesComponent } from './resolve-matches.component';
@@ -14,6 +15,7 @@ import { TableModule } from 'primeng/table';
     ResolveMatchesRoutingModule,
     SharedModule,
     TableModule,
+    ButtonModule
   ]
 })
 export class ResolveMatchesModule { }

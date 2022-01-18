@@ -251,15 +251,39 @@ export interface Match {
     firstRoster: Roster;
     secondRoster: Roster;
     tournamentId: number;
-    groupId: number;
+    groupId?: number;
+    maps: Map[];
+}
+
+export interface Map {
+    mapId: number;
+    mapWinner: number;
+    time: string;
+    performances: MapPerformance[];
+}
+
+export interface MapPerformance {
+    kills: number;
+    deaths: number;
+    assists: number;
+    creepScore: number;
+    gold: number;
+    playerId: number;
 }
 
 export interface Roster {
     participatingTeamId: number;
     team: {
-        team: number;
+        teamId: number;
         teamName: string;
     };
+    roster: RosterPlayer[];
+}
+
+export interface RosterPlayer {
+    username: string;
+    playerId: number;
+    performances?: MapPerformance[];
 }
 
 export interface Report {

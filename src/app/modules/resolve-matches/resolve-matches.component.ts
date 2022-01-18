@@ -48,6 +48,8 @@ export class ResolveMatchesComponent implements OnInit, OnDestroy {
       this.currentUser.userId,
       MatchStatus.RESOLVING
     ).catch(() => []);
+
+    console.log(this.matches);
   }
 
 

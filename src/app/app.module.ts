@@ -1,5 +1,3 @@
-import * as passwordValidation from './validators/password';
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -31,15 +29,8 @@ import { TournamentState } from './state/tournament.state';
     ReactiveFormsModule,
     FormlyModule.forRoot({
       extras: { lazyRender: true },
-      validators: [
-        {
-          name: `passwordValidator`,
-          validation: passwordValidation.passwordValidator
-        }
-      ],
       validationMessages: [
         { name: `required`, message: `This field is required` },
-        { name: `password`, message: passwordValidation.passwordValidatorMessage }
       ],
       types: [
         { name: `datepicker`, component: FormlyFieldPrimengCalendarComponent },

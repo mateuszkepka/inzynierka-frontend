@@ -1,0 +1,33 @@
+<div class="container" *ngIf="match">
+    <p
+        [routerLink]="['/user-dashboard']"
+        class="hover:underline font-bold cursor-pointer pb-4"
+    >
+        Back to user dashboard
+    </p>
+    <span class="p-field w-full mt-6" *ngFor="let match of matchesAmount; index as i">
+        <label [for]="'file-upload' + i" class="font-semibold">
+            Result of map no. {{ i + 1 }}
+        </label>
+        <p-fileUpload
+            [name]="'file-upload' + i"
+            multiple="false"
+            accept="image/*"
+            maxFileSize="10000000"
+            [showUploadButton]="false"
+            (onSelect)="selectMatchResult($event)"
+            (onRemove)="removeMatchResult($event)"
+            (onClear)="removeMatchResult($event)"
+        >
+        </p-fileUpload>
+    </span>
+
+    <button 
+        label="Send results" 
+        class="p-button-info mt-4" 
+        type="button" 
+        pButton
+        (click)="sendResults()"
+    ></button>
+
+</div>

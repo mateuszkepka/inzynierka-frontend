@@ -1,6 +1,53 @@
-<ng-container *ngIf="matches.length > 0; else noData">
+<div class="container">
+        <ng-container *ngIf="matches.length > 0; else noData">
 
-</ng-container>
+        <p
+            [routerLink]="['/user-dashboard']"
+            class="hover:underline font-bold cursor-pointer pb-4"
+        >
+            Back to user dashboard
+        </p>
+    
+        <p-table
+                [value]="matches"
+                [paginator]="true"
+                [rows]="2"
+                [showCurrentPageReport]="true"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="{first}-{last} of {totalRecords}"
+                [rowsPerPageOptions]="[10, 15, 20]"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Match start date</th>
+                        <th>First team</th>
+                        <th>Second team</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                
+                <ng-template pTemplate="body" let-match>
+                    <tr>
+                        <td>{{ (match.matchStartDate | date: "dd/MM/yyyy hh:mm") || '-' }}</td>
+                        <td>{{ match.firstRoster.team.teamName || '-' }}</td>
+                        <td>{{ match.secondRoster.team.teamName || '-' }}</td>
+                        <td>{{ match.status || '-' }}</td>
+                        <td>
+                            <button 
+                                label="Go to details" 
+                                class="p-button-info" 
+                                type="button" 
+                                pButton 
+                                [routerLink]="['/matches', match.matchId]"
+                            ></button>
+                        </td>
+                    </tr>
+        
+                </ng-template>
+            </p-table>
+    </ng-container>
+</div>
 
 <ng-template #noData>
     <div class="container flex flex-col items-center">

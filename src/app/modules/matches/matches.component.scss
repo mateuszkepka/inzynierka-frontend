@@ -1,0 +1,15 @@
+.flex-item {
+    min-width: 200px;
+}
+
+.match:last-of-type {
+    border-bottom: unset;
+}
+
+.winner {
+    color: rgb(34, 110, 34);
+}
+
+.loser {
+    color: rgb(117, 9, 9);
+}

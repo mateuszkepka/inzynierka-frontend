@@ -2,7 +2,7 @@
     <button
         type="button"
         pButton
-        class="p-button-info"
+        class="p-button-info mb-4"
         label="Add administrator"
         *ngIf="currentUser && currentUser.userId === currentTournament.organizerId"
         (click)="navigateToAddAdmin()"
@@ -21,12 +21,22 @@
             <tr>
                 <th>Admin username</th>
                 <th>Admin e-mail address</th>
+                <th *ngIf="currentUser && currentUser.userId === currentTournament.organizerId"></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-admin>
             <tr>
                 <td>{{ admin.username || "-" }}</td>
                 <td>{{ admin.email || "-" }}</td>
+                <td *ngIf="currentUser && currentUser.userId === currentTournament.organizerId">
+                    <button
+                        type="button"
+                        pButton
+                        class="p-button-danger"
+                        label="Remove administrator"
+                        (click)="showModal(admin)"
+                    ></button>
+                </td>
             </tr>
         </ng-template>
         </p-table>

@@ -276,6 +276,11 @@ export class ApiService {
         return this.httpClient.patch<Prize>(url, input, { withCredentials: true, observe: `response` }).toPromise();
     }
 
+    async removeAdmin(tournamentId: number, adminId: number) {
+        const url = this.apiUrl + `/tournaments/${tournamentId}/admins/${adminId}`;
+        return this.httpClient.delete<TournamentAdmin>(url, { withCredentials: true }).toPromise();
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                    TEAM                                    */
     /* -------------------------------------------------------------------------- */
@@ -414,5 +419,13 @@ export class ApiService {
     async getMatchById(matchId: number) {
         const url = this.apiUrl + `/matches/${matchId}`;
         return this.httpClient.get<Match>(url, { withCredentials: true }).toPromise();
+    }
+
+    async resolveMatch(data: FormData, matchId: number) {
+        const url = this.apiUrl + `/matches/${matchId}/results`;
+        return this.httpClient.post(url, data, {
+            observe: `response`,
+            withCredentials: true,
+        }).toPromise();
     }
 }
