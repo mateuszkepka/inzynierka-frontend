@@ -104,6 +104,9 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   }
 
   setIsRegistrationActive() {
+    if (this.currentUser) {
+      return false;
+    }
     const now = new Date();
     const registerStartDate = new Date(this.tournament.registerStartDate);
     const registerEndDate = new Date(this.tournament.registerEndDate);
@@ -116,6 +119,9 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   }
 
   setIsCheckInActive() {
+    if (this.currentUser) {
+      return false;
+    }
     const now = new Date();
     const checkInOpenDate = new Date(this.tournament.checkInOpenDate);
     const checkInCloseDate = new Date(this.tournament.checkInCloseDate);

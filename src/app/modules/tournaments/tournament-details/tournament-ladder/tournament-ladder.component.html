@@ -19,8 +19,8 @@
         <div 
           class="bracket-team" 
           [ngClass]="{
-            'winner': match.winner && match.winner === match.firstTeam?.teamId, 
-            'loser': match.winner && match.winner !== match.firstTeam?.teamId
+            'winner': match.winner && match.winner === 1, 
+            'loser': match.winner && match.winner !== 1
           }"
           (click)="navigateToTeam(match.firstTeam?.teamId)"
         >
@@ -28,14 +28,14 @@
             {{ match.firstTeam?.teamName || "TBA" }}
           </div>
           <div class="bracket-score">
-            {{ (match.winner && match.winner === match.firstTeam?.teamId) ? "1" : "0" }}
+            {{ (match.winner && match.winner === 1) ? "1" : "0" }}
           </div>
         </div>
         <div 
           class="bracket-team"
           [ngClass]="{
-            'winner': match.winner && match.winner === match.secondTeam?.teamId, 
-            'loser': match.winner && match.winner !== match.secondTeam?.teamId
+            'winner': match.winner && match.winner === 2, 
+            'loser': match.winner && match.winner !== 2
           }"
           (click)="navigateToTeam(match.secondTeam?.teamId)"
         >
@@ -43,7 +43,7 @@
             {{ match.secondTeam?.teamName || "TBA" }}
           </div>
           <div class="bracket-score">
-            {{ (match.winner && match.winner === match.secondTeam?.teamId) ? "1" : "0" }}
+            {{ (match.winner && match.winner === 2) ? "1" : "0" }}
           </div>
         </div>
       </div>

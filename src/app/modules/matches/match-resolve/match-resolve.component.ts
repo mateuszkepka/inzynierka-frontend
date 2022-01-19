@@ -1,8 +1,9 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Match } from 'src/app/shared/interfaces/interfaces';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { isEqual } from 'lodash';
 
 @Component({
@@ -13,6 +14,7 @@ import { isEqual } from 'lodash';
 export class MatchResolveComponent implements OnInit {
   matchId: number;
   match: Match;
+  isLoading = false;
 
   imagesFormData = new FormData();
 
@@ -22,6 +24,9 @@ export class MatchResolveComponent implements OnInit {
   constructor(
     private readonly apiService: ApiService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly notificationsService: NotificationsService,
+
   ) {
     this.matchId = Number(this.activatedRoute.snapshot.params.id);
   }
@@ -47,13 +52,27 @@ export class MatchResolveComponent implements OnInit {
   }
 
   async sendResults() {
+    this.isLoading = true;
     this.filesArray.forEach((file) => {
       this.imagesFormData.append(`image[]`, file);
     });
 
     const res = await this.apiService.resolveMatch(this.imagesFormData, this.matchId);
+    let severity = `success`;
+    let summary = `Results uploaded`;
+    let detail = `You have sucessfully uploaded match results`;
+    if (res.ok) {
+      this.notificationsService.addNotification({severity, summary, detail});
+      this.isLoading = false;
+      void this.router.navigate([`/matches`, this.matchId]);
+      return;
+    }
+    severity = `error`;
+    summary = `Error while uploading images`;
+    detail = `${res.statusText}`;
 
-    console.log(res);
+    this.notificationsService.addNotification({severity, summary, detail});
+    this.isLoading = false;
   }
 
 }

@@ -28,6 +28,9 @@
         type="button" 
         pButton
         (click)="sendResults()"
+        [disabled]="isLoading"
     ></button>
+    
+    <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
 
 </div>

@@ -39,6 +39,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.match = await this.apiService.getMatchById(this.matchId);
+    console.log(this.match);
     this.firstTeam = await this.apiService.getTeamById(this.match.firstRoster.team.teamId);
     this.secondTeam = await this.apiService.getTeamById(this.match.secondRoster.team.teamId);
     this.listenOnCurrentUserChange();

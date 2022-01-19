@@ -7,7 +7,7 @@
             type="button" 
             pButton 
             [routerLink]="['/matches', match.matchId, 'resolve']"
-            *ngIf="showResolveButton"
+            *ngIf="showResolveButton && match.status !== 'finished'"
         ></button>
         <div class="grid grid-cols-3 gap-4">
                 <div>
@@ -55,7 +55,7 @@
                 </div>
         </div>
         
-        <div>
+        <div *ngIf="match">
             <p class="text-2xl py-12">Maps</p>
             <div *ngIf="match.maps.length > 0; else noMatches">
                 <p-tabView [activeIndex]="0">
@@ -63,9 +63,9 @@
                         <p><strong>Play time: </strong>{{ map.time }}</p>
                         <div class="grid grid-cols-2">
                             <div class="mb-4 border-r-2 border-gray-200">
-                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === 1 ? "Winners" : "Losers" }}</p>
+                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === match.firstRoster.team.teamId ? "Winners" : "Losers" }}</p>
                                 <ng-container *ngFor="let player of match.firstRoster.roster">
-                                    <div class="flex flex-row flex-wrap gap-4 py-4 border-b-2 border-gray-200 match">
+                                    <div *ngIf="player.performances" class="flex flex-row flex-wrap gap-4 py-4 border-b-2 border-gray-200 match">
                                         <p class="flex-item font-semibold">
                                             {{ player.username }}
                                         </p>
@@ -82,19 +82,19 @@
     
                                         <p class="flex-item">
                                             <strong>Minions: </strong>
-                                            {{ player.performances[i].creepScore }}
+                                            {{ player.performances[i].creepScore || "n/a" }}
                                         </p>
     
                                         <p class="flex-item">
                                             <strong>Gold: </strong>
-                                            {{ player.performances[i].gold }}
+                                            {{ player.performances[i].gold || "n/a" }}
                                         </p>
                                     </div>
                                 </ng-container>
                             </div>
 
                             <div class="mb-4">
-                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === 2 ? "Winners" : "Losers" }}</p>
+                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === match.secondRoster.team.teamId ? "Winners" : "Losers" }}</p>
                                 <ng-container *ngFor="let player of match.secondRoster.roster">
                                     <div class="flex flex-row flex-wrap gap-4 p-4 border-b-2 border-gray-200 match">
                                         <p class="flex-item font-semibold">
@@ -113,12 +113,12 @@
     
                                         <p class="flex-item">
                                             <strong>Minions: </strong>
-                                            {{ player.performances[i].creepScore }}
+                                            {{ player.performances[i].creepScore || "n/a" }}
                                         </p>
     
                                         <p class="flex-item">
                                             <strong>Gold: </strong>
-                                            {{ player.performances[i].gold }}
+                                            {{ player.performances[i].gold || "n/a" }}
                                         </p>
                                     </div>
                                 </ng-container>

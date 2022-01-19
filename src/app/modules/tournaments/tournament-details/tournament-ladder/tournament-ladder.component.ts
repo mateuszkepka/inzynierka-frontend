@@ -42,6 +42,7 @@ export class TournamentLadderComponent implements OnInit {
     });
 
     this[arrayKey] = this[arrayKey].slice().reverse();
+    console.log(this[arrayKey]);
   }
 
 

@@ -5,6 +5,7 @@ import { MatchResolveComponent } from './match-resolve/match-resolve.component';
 import { MatchesComponent } from './matches.component';
 import { MatchesRoutingModule } from './matches-routing.module';
 import { NgModule } from '@angular/core';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { TabViewModule } from 'primeng/tabview';
     TabViewModule,
     ButtonModule,
     FileUploadModule,
+    ProgressSpinnerModule
   ]
 })
 export class MatchesModule { }
