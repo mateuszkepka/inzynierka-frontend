@@ -17,8 +17,11 @@
       </p>
       <div class="bracket-matchup" *ngFor="let match of stage">
         <div 
-          class="bracket-team winner" 
-          
+          class="bracket-team" 
+          [ngClass]="{
+            'winner': match.winner && match.winner === 1, 
+            'loser': match.winner && match.winner !== 1
+          }"
           (click)="navigateToTeam(match.firstTeam?.teamId)"
         >
           <div class="bracket-name">
@@ -29,8 +32,11 @@
           </div>
         </div>
         <div 
-          class="bracket-team loser"
-         
+          class="bracket-team"
+          [ngClass]="{
+            'winner': match.winner && match.winner === 2, 
+            'loser': match.winner && match.winner !== 2
+          }"
           (click)="navigateToTeam(match.secondTeam?.teamId)"
         >
           <div class="bracket-name">
