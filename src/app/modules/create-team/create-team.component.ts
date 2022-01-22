@@ -83,23 +83,27 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    const response = await this.apiService.createTeam(this.model);
+    const response = await this.apiService.createTeam(this.model)
+    .catch((err) => {
+      this.notificationsService.addNotification({
+        severity: `error`,
+        summary: `Error!`,
+        detail: `${err.error.message}`
+      });
+    })
+    ;
 
-    if (response.ok) {
+    if (response) {
       this.notificationsService.addNotification({
         severity: `success`,
         summary: `Success!`,
         detail: `Team has been created.`
       });
-      await this.sendImages(response.body);
-      void this.router.navigate([`/team/${response.body.teamId}`]);
+      await this.sendImages(response);
+      void this.router.navigate([`/team/${response.teamId}`]);
       return;
     }
-    this.notificationsService.addNotification({
-      severity: `error`,
-      summary: `Error!`,
-      detail: `Something went wrong.`
-    });
+
   }
 
   async setUserAccounts() {

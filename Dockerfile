@@ -8,7 +8,6 @@ COPY . .
 RUN npm install
 RUN npm install -g @angular/cli@12.2.1
 
-RUN npm run build
+RUN npx ng build --configuration production
 
-EXPOSE 4200
-
+CMD ["npm", "run", "start"]

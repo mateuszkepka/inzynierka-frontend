@@ -59,17 +59,6 @@
 
         <span class="p-float-label w-full mt-6">
             <input
-                formControlName="university"
-                id="university"
-                type="text" 
-                pInputText 
-                [required]="true"
-            />
-            <label for="university">University <abbr>*</abbr></label>
-        </span>
-
-        <span class="p-float-label w-full mt-6">
-            <input
                 formControlName="country"
                 id="country"
                 type="text" 
@@ -81,13 +70,23 @@
 
         <span class="p-float-label w-full mt-6">
             <input
+                formControlName="university"
+                id="university"
+                type="text" 
+                pInputText
+            />
+            <label for="university">University</label>
+        </span>
+
+
+        <span class="p-float-label w-full mt-6">
+            <input
                 formControlName="studentId"
                 id="studentId"
                 type="text" 
-                pInputText 
-                [required]="true"
+                pInputText
             />
-            <label for="studentId">Student ID Number<abbr>*</abbr></label>
+            <label for="studentId">Student ID Number</label>
         </span>
 
         <span class="p-field w-full mt-6">
@@ -119,7 +118,14 @@
             </p-fileUpload>
         </span>
         <span class="field w-full mt-4">
-            <p-checkbox value="form.controls.terms.value" formControlName="terms" name="groupname" label="Accept terms of use"></p-checkbox>
+            <p-checkbox 
+                value="form.controls.terms.value"
+                formControlName="terms" 
+                id="terms" 
+                name="terms" 
+                label="Accept terms of use"
+                [required]="true"
+            ></p-checkbox>
         </span>
             <div class="register-buttons">
                 <button

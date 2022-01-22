@@ -36,13 +36,14 @@ import {
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 import { omit } from "lodash";
 
 @Injectable({
     providedIn: `root`,
 })
 export class ApiService {
-    apiUrl = `http://localhost:3000`;
+    apiUrl = environment.apiUrl;
 
     constructor(private readonly httpClient: HttpClient) {}
 
@@ -286,7 +287,7 @@ export class ApiService {
     /* -------------------------------------------------------------------------- */
     async createTeam(input: CreateTeamInput) {
         const url = this.apiUrl + `/teams`;
-        return this.httpClient.post<Team>(url, input, { withCredentials: true, observe: `response` }).toPromise();
+        return this.httpClient.post<Team>(url, input, { withCredentials: true }).toPromise();
     }
 
     async getTeamById(teamId: number) {

@@ -1,6 +1,6 @@
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { AddPrizeInput, CreateTournamentInput, Format, Tournament } from "src/app/shared/interfaces/interfaces";
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { IconDefinition, faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 import { ApiService } from "src/app/services/api.service";
@@ -38,6 +38,22 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         },
     ];
 
+    groupsMapsNumbers = [
+        {
+            value: 1
+        },
+        {
+            value: 2,
+        },
+        {
+            value: 3
+        },
+        {
+            value: 5
+        },
+
+    ];
+
     numberOfTeams = [
         {
             value: 2
@@ -71,12 +87,12 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     form = new FormGroup({
         name: new FormControl(``, [Validators.required]),
         numberOfPlayers: new FormControl(null, [Validators.required]),
-        numberOfTeams: new FormControl(null, [Validators.required]),
+        numberOfTeams: new FormControl(null, [Validators.required, this.teamsNumberValidator()]),
         numberOfMaps: new FormControl(null, [Validators.required]),
         registerStartDate: new FormControl(``, [Validators.required]),
         registerEndDate: new FormControl(``, [Validators.required]),
         tournamentStartDate: new FormControl(``, [Validators.required]),
-        numberOfGroups: new FormControl(null),
+        numberOfGroups: new FormControl(null, [this.groupsNumberValidator()]),
         endingHour: new FormControl(this.endingHour, [Validators.required]),
         description: new FormControl(``, [Validators.required]),
         format: new FormControl(``, [Validators.required]),
@@ -110,9 +126,17 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
             };
 
         }
-        const response = await this.apiService.createTournament(requestBody as CreateTournamentInput);
-        const addPrizeResponse = await this.addTournamentPrize(response);
+        const response = await this.apiService.createTournament(requestBody as CreateTournamentInput)
+        .catch((err) => {
+            this.notificationsService.addNotification({
+                severity: `error`,
+                summary: `Error!`,
+                detail: `${err.error.message}`
+            });
+            return;
+        });
 
+        const addPrizeResponse = await this.addTournamentPrize(response as Tournament);
         if (response && addPrizeResponse) {
             this.notificationsService.addNotification({
                 severity: `success`,
@@ -125,11 +149,6 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.notificationsService.addNotification({
-            severity: `error`,
-            summary: `Error!`,
-            detail: `Something went wrong.`
-        });
     }
 
     async ngOnInit() {
@@ -248,5 +267,24 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
 
   showNotification(severity: string, detail: string, summary: string) {
     this.notificationsService.addNotification({severity, summary, detail});
+  }
+
+  groupsNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!this.form) {
+            return;
+        }
+        const invalid = this.form.value.numberOfTeams % control.value !== 0 ;
+        return invalid ? { numberOfGroups: { value: control.value } } : null;
+    };
+  }
+  teamsNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!this.form) {
+            return;
+        }
+        const invalid = control.value % this.form.value.numberOfGroups !== 0 ;
+        return invalid ? { numberOfTeams: { value: control.value } } : null;
+    };
   }
 }

@@ -19,7 +19,7 @@ html, body{
   display: flex;
   gap: 1rem;
   flex-direction: row;
-  height: 1000px;
+  height: 2500px;
   min-width: 100%;
   overflow-x: auto;
 }
@@ -30,12 +30,7 @@ html, body{
   justify-content: space-around;
   height: 100%;
   width: 100%;
-  flex-grow: 1;
   transition: all ease .5s;
-}
-
-.bracket-level:hover{
-  width: 200%;
 }
 
 .bracket-matchup{
@@ -46,15 +41,16 @@ html, body{
   height: 100%;
   display: flex;
   flex-direction: column;
+  gap: 2px;
   justify-content: space-between;
   cursor: pointer;
 }
 
 .bracket-team{
-  height: 45%;
   width: 100%;
-  background-color: #F5F5F5;
-  box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
+  padding: 4px 0;
+  border: 1px solid #ababab;
+  border-radius: 5px;
   display: flex;
   flex-direction: row;
   transition: all ease .5s;
@@ -84,12 +80,16 @@ html, body{
 
 .winner>.bracket-name, .winner>.bracket-score{
   font-weight: bold;
-  color: #D07030;
+  color: rgb(34, 110, 34);
+}
+
+.loser>.bracket-name, .loser>.bracket-score{
+  font-weight: bold;
+  color: rgb(117, 9, 9);
 }
 
 .bracket-team:hover{
   background-color: #E8E8E8;
-  height: 100%;
   transition: all ease .5s;
 }
 
@@ -97,7 +97,6 @@ html, body{
   overflow: none;
   text-overflow: clip;
   white-space: normal;
-  line-height: 1em;
   align-self: center;
   width: 100%;
 }

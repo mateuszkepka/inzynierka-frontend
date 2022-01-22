@@ -67,7 +67,15 @@ export class CreatePlayerComponent implements OnInit {
   }
 
   async onSubmit() {
-    const response = await this.apiService.createPlayer(this.model);
+    const response = await this.apiService.createPlayer(this.model)
+    .catch((err) => {
+      this.notificationsService.addNotification({
+        severity: `error`,
+        summary: `Error!`,
+        detail: `${err.error.message}`,
+      });
+    })
+    ;
 
     if (response) {
       this.notificationsService.addNotification({
@@ -79,10 +87,6 @@ export class CreatePlayerComponent implements OnInit {
       return;
     }
 
-    this.notificationsService.addNotification({
-      severity: `error`,
-      summary: `Error!`,
-      detail: `Something went wrong`,
-    });
+
   }
 }

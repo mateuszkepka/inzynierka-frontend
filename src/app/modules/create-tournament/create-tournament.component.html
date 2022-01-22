@@ -45,6 +45,12 @@
                     [minDate]="registerStartMinDate"
                 ></p-calendar>
             </div>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.registerStartDate.touched && form.controls.registerStartDate.invalid"
+            >
+                Value required
+            </small>
 
             <div class="p-field w-full">
                 <label for="registerEndDate">Register end date <abbr>*</abbr></label>
@@ -61,6 +67,12 @@
                     [disabled]="!form.value.registerStartDate"
                 ></p-calendar>
             </div>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.registerEndDate.touched && form.controls.registerEndDate.invalid"
+            >
+                Value required
+            </small>
 
             <div class="p-field w-full">
                 <label for="tournamentStartDate">Tournament start date <abbr>*</abbr></label>
@@ -77,6 +89,12 @@
                     [disabled]="!form.value.registerEndDate"
                 ></p-calendar>
             </div>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.tournamentStartDate.touched && form.controls.tournamentStartDate.invalid"
+            >
+                Value required
+            </small>
 
             <div class="p-field w-full">
                 <label for="endingHour">Enter matches ending hour<abbr>*</abbr></label>
@@ -110,6 +128,12 @@
                     </ng-template>
                 </p-dropdown>
             </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.format.touched && form.controls.format.invalid"
+            >
+                Value required
+            </small>
 
             <span 
                 class="p-field w-full flex flex-col"
@@ -124,6 +148,12 @@
                 >
                 </p-inputNumber>
             </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.numberOfGroups.touched && form.controls.numberOfGroups.invalid"
+            >
+                {{ form.controls.numberOfGroups?.errors['numberOfGroups'] ? 'Number of teams divided by number of groups must give no rest': 'Value required' }}
+            </small>
 
             <span 
                 class="p-field w-full flex flex-col"
@@ -138,6 +168,12 @@
                 >
                 </p-inputNumber>
             </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.numberOfTeams.touched && form.controls.numberOfTeams.invalid"
+            >
+                Value required
+            </small>
 
             <span 
                 class="p-field w-full flex flex-col"
@@ -158,7 +194,7 @@
                 class="p-error" 
                 *ngIf="form.controls.numberOfTeams.touched && form.controls.numberOfTeams.invalid"
             >
-                Value required
+                {{ form.controls.numberOfTeams?.errors['numberOfTeams'] ? 'Number of teams divided by number of groups must give no rest': 'Value required' }}
             </small>
 
             <span 
@@ -184,7 +220,7 @@
                 <label for="numberOfMaps">Number of maps<abbr>*</abbr></label>
                 <p-dropdown
                     inputId="numberOfMaps"
-                    [options]="mapsNumbers"
+                    [options]="form.controls.format.value.includes('Ladder') ? mapsNumbers : groupsMapsNumbers"
                     formControlName="numberOfMaps"
                     [placeholder]="'Select number of maps'"
                     [optionLabel]="'value'"
@@ -192,16 +228,10 @@
                     [showClear]="true"
                 ></p-dropdown>
             </span>
-            <small 
-                class="p-error" 
-                *ngIf="form.controls.numberOfMaps.touched && form.controls.numberOfMaps.invalid"
-            >
-                Value required
-            </small>
 
             <small 
                 class="p-error" 
-                *ngIf="form.controls.format.touched && form.controls.format.invalid"
+                *ngIf="form.controls.numberOfMaps.touched && form.controls.numberOfMaps.invalid"
             >
                 Value required
             </small>
@@ -230,8 +260,8 @@
                     />
                     <label for="currency">Currency <abbr>*</abbr></label>
                 </span>
-                
             </div>
+            
 
             <span class="p-field w-full">
                 <label for="description">Description <abbr>*</abbr></label>
@@ -241,6 +271,12 @@
                     formControlName="description"
                 ></textarea>
             </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.description.touched && form.controls.description.invalid"
+            >
+                Value required
+            </small>
 
             <span class="p-field w-full mt-6">
                 <label>Profile avatar</label>

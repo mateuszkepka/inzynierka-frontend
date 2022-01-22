@@ -25,11 +25,11 @@ export class RegisterComponent {
         email: new FormControl(``, [Validators.required, Validators.email]),
         username: new FormControl(``, [Validators.required]),
         country: new FormControl(``, [Validators.required]),
-        university: new FormControl(``, [Validators.required]),
+        university: new FormControl(``),
         password: new FormControl(``, [Validators.required]),
         repeatPassword: new FormControl(``, [Validators.required, this.repeatPasswordValidator()]),
-        studentId: new FormControl(``, [Validators.required]),
-        terms: new FormControl(false, [Validators.required])
+        studentId: new FormControl(``),
+        terms: new FormControl(null, [Validators.required])
     });
 
     constructor(
@@ -43,14 +43,15 @@ export class RegisterComponent {
             omit(
                 this.form.value, [`repeatPassword`, `terms`]
             ) as RegisterInput
-        );
+        ).catch((err) => {
+            this.showNotification(`error`, `${err.error.message}`, `Error!`);
+        });
         if (res) {
             this.showNotification(`success`, `Account has been created.`, `Success!`);
             await this.sendImages(res);
             void this.router.navigate([`/log-in`]);
             return;
         }
-        this.showNotification(`error`, `An error occurred.`, `Error!`);
     }
 
     repeatPasswordValidator(): ValidatorFn {
