@@ -58,19 +58,13 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
           title: `Your teams`,
           subtitle: `See or manage your teams`,
           link: `profile/${this.currentUser.userId}`,
-          activeTab: 4
+          activeTab: 3
       },
       userSuspensions: {
           title: `Your suspensions`,
           subtitle: `See your suspensions`,
           link: `profile/${this.currentUser.userId}`,
           activeTab: 2
-      },
-      userPerformance: {
-          title: `Your performance`,
-          subtitle: `See your performance`,
-          link: `profile/${this.currentUser.userId}`,
-          activeTab: 3
       },
       createTournament: {
           title: `Create tournament`,

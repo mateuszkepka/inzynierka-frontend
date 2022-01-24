@@ -104,7 +104,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   }
 
   setIsRegistrationActive() {
-    if (this.currentUser) {
+    if (!this.currentUser) {
       return false;
     }
     const now = new Date();
@@ -119,7 +119,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   }
 
   setIsCheckInActive() {
-    if (this.currentUser) {
+    if (!this.currentUser) {
       return false;
     }
     const now = new Date();

@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { Invitation, Player, Team, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
@@ -27,6 +28,7 @@ export class TeamPlayersTabComponent implements OnInit, OnDestroy, OnChanges {
     private readonly store: Store,
     private readonly router: Router,
     private readonly apiService: ApiService,
+    private readonly notificationsService: NotificationsService,
   ) { }
 
   async ngOnInit() {
@@ -70,4 +72,27 @@ export class TeamPlayersTabComponent implements OnInit, OnDestroy, OnChanges {
     void this.router.navigate([`/team/${this.currentTeam.teamId}/invite-players`]);
   }
 
+  async deletePlayer(player) {
+    console.log(`PLAYER`, player);
+    const res = await this.apiService
+      .removeInvitation(player.invitationId)
+      .catch((err) =>
+        this.notificationsService.
+        addNotification({
+          severity: `error`,
+          summary:`Something went wrong`,
+          detail:`${err.error.message}`
+        })
+    );
+
+    if (res) {
+      this.notificationsService.
+        addNotification({
+          severity: `success`,
+          summary:`Removed player!`,
+          detail: `Player was successfully removed`
+        });
+      await this.getMembersList();
+    }
+  }
 }

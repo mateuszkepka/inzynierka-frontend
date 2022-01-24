@@ -26,7 +26,7 @@
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.name.touched && form.controls.name.invalid"
+                *ngIf="form.controls.name.dirty && form.controls.name.invalid"
             >
                 Value required
             </small>
@@ -47,7 +47,7 @@
             </div>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.registerStartDate.touched && form.controls.registerStartDate.invalid"
+                *ngIf="form.controls.registerStartDate.dirty && form.controls.registerStartDate.invalid"
             >
                 Value required
             </small>
@@ -69,7 +69,7 @@
             </div>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.registerEndDate.touched && form.controls.registerEndDate.invalid"
+                *ngIf="form.controls.registerEndDate.dirty && form.controls.registerEndDate.invalid"
             >
                 Value required
             </small>
@@ -91,7 +91,7 @@
             </div>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.tournamentStartDate.touched && form.controls.tournamentStartDate.invalid"
+                *ngIf="form.controls.tournamentStartDate.dirty && form.controls.tournamentStartDate.invalid"
             >
                 Value required
             </small>
@@ -120,6 +120,7 @@
                     [optionValue]="'name'"
                     [optionLabel]="'name'"
                     [showClear]="true"
+                    (onChange)="clearNumbers()"
                 >
                     <ng-template let-format pTemplate="item">
                         <div [pTooltip]="format.description" tooltipPosition="top">
@@ -130,7 +131,7 @@
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.format.touched && form.controls.format.invalid"
+                *ngIf="form.controls.format.dirty && form.controls.format.invalid"
             >
                 Value required
             </small>
@@ -145,12 +146,13 @@
                     mode="decimal" 
                     inputId="numberOfGroups" 
                     [useGrouping]="false"
+                    (ngModelChange)="onChange()"
                 >
                 </p-inputNumber>
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.numberOfGroups.touched && form.controls.numberOfGroups.invalid"
+                *ngIf="form.controls.numberOfGroups.dirty && form.controls.numberOfGroups.invalid"
             >
                 {{ form.controls.numberOfGroups?.errors['numberOfGroups'] ? 'Number of teams divided by number of groups must give no rest': 'Value required' }}
             </small>
@@ -165,12 +167,13 @@
                     mode="decimal" 
                     inputId="numberOfTeams" 
                     [useGrouping]="false"
+                    (ngModelChange)="onChange()"
                 >
                 </p-inputNumber>
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.numberOfTeams.touched && form.controls.numberOfTeams.invalid"
+                *ngIf="form.controls.numberOfTeams.dirty && form.controls.numberOfTeams.invalid && (form.controls.format.value === 'Single Round Robin' || form.controls.format.value === 'Double Round Robin')"
             >
                 Value required
             </small>
@@ -192,7 +195,7 @@
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.numberOfTeams.touched && form.controls.numberOfTeams.invalid"
+                *ngIf="form.controls.numberOfTeams.dirty && form.controls.numberOfTeams.invalid && (form.controls.format.value === 'Single Elimination Ladder' && form.controls.format.value === 'Double Elimination Ladder')"
             >
                 {{ form.controls.numberOfTeams?.errors['numberOfTeams'] ? 'Number of teams divided by number of groups must give no rest': 'Value required' }}
             </small>
@@ -211,7 +214,7 @@
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.numberOfPlayers.touched && form.controls.numberOfPlayers.invalid"
+                *ngIf="form.controls.numberOfPlayers.dirty && form.controls.numberOfPlayers.invalid"
             >
                 Value required
             </small>
@@ -231,7 +234,7 @@
 
             <small 
                 class="p-error" 
-                *ngIf="form.controls.numberOfMaps.touched && form.controls.numberOfMaps.invalid"
+                *ngIf="form.controls.numberOfMaps.dirty && form.controls.numberOfMaps.invalid"
             >
                 Value required
             </small>
@@ -273,7 +276,7 @@
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.description.touched && form.controls.description.invalid"
+                *ngIf="form.controls.description.dirty && form.controls.description.invalid"
             >
                 Value required
             </small>

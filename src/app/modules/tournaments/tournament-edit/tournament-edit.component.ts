@@ -1,7 +1,7 @@
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CreateTournamentInput, Format, Tournament, UpdatePrizeInput, UpdateTournamentInput } from 'src/app/shared/interfaces/interfaces';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { differenceInMilliseconds, parseISO } from 'date-fns';
 
 import { ApiService } from 'src/app/services/api.service';
@@ -33,6 +33,21 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
   mapsNumbers = [
     {
         value: 1
+    },
+    {
+        value: 3
+    },
+    {
+        value: 5
+    },
+  ];
+
+  groupsMapsNumbers = [
+    {
+        value: 1
+    },
+    {
+        value: 2,
     },
     {
         value: 3
@@ -75,13 +90,13 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
   form = new FormGroup({
     name: new FormControl(``, [Validators.required]),
     numberOfPlayers: new FormControl(null, [Validators.required]),
-    numberOfTeams: new FormControl(null, [Validators.required]),
+    numberOfTeams: new FormControl(null, [Validators.required, this.teamsNumberValidator()]),
     numberOfMaps: new FormControl(null, [Validators.required]),
-    numberOfGroups: new FormControl(null, [Validators.required]),
     registerStartDate: new FormControl(``, [Validators.required]),
     registerEndDate: new FormControl(``, [Validators.required]),
     tournamentStartDate: new FormControl(``, [Validators.required]),
-    endingHour: new FormControl(null, [Validators.required]),
+    numberOfGroups: new FormControl(null, [this.groupsNumberValidator()]),
+    endingHour: new FormControl(``, [Validators.required]),
     description: new FormControl(``, [Validators.required]),
     format: new FormControl(``, [Validators.required]),
   });
@@ -252,5 +267,44 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
         summary: `Error!`,
         detail: response.statusText
     });
+  }
+
+  groupsNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!this.form) {
+            return;
+        }
+        if (this.form.value.format === `Single Elimination Ladder` || this.form.value.format === `Double Elimination Ladder`) {
+            return;
+        }
+        const invalid = this.form.value.numberOfTeams % control.value !== 0 ;
+        return invalid ? { numberOfGroups: { value: control.value } } : null;
+    };
+  }
+  teamsNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!this.form) {
+            return;
+        }
+        if (this.form.value.format === `Single Elimination Ladder` || this.form.value.format === `Double Elimination Ladder`) {
+            const foundValue = this.numberOfTeams.find((numberOfTeams) => numberOfTeams.value === control.value);
+            if (foundValue) {
+                return;
+            }
+            return { numberOfTeams: { value: control.value }};
+        }
+        const invalid = control.value % this.form.value.numberOfGroups !== 0 ;
+        return invalid ? { numberOfTeams: { value: control.value } } : null;
+    };
+  }
+
+  clearNumbers() {
+      this.form.controls.numberOfGroups.reset();
+      this.form.controls.numberOfTeams.reset();
+  }
+
+  onChange() {
+    this.form.controls.numberOfGroups.updateValueAndValidity();
+    this.form.controls.numberOfTeams.updateValueAndValidity();
   }
 }

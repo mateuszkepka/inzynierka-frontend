@@ -10,7 +10,6 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: [`./tournament-competitors-tab.component.scss`]
 })
 export class TournamentCompetitorsTabComponent implements OnInit, DoCheck {
-  // TODO: FINISH TEMPLATE
   teamsList: TournamentTeam[];
   tournamentId: number;
 

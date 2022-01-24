@@ -63,7 +63,7 @@ export class CreatePlayerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    Object.keys(RegionsLoL).map((value) => (this.regions.push({ region: value })));
+    Object.keys(RegionsLoL).forEach((value) => (this.regions.push({ region: value })));
   }
 
   async onSubmit() {
@@ -84,9 +84,6 @@ export class CreatePlayerComponent implements OnInit {
         detail: `Your League of Legends account has been added.`
       });
       void this.router.navigate([`/user-accounts`]);
-      return;
     }
-
-
   }
 }

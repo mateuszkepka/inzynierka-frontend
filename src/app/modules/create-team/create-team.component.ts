@@ -101,9 +101,7 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
       });
       await this.sendImages(response);
       void this.router.navigate([`/team/${response.teamId}`]);
-      return;
     }
-
   }
 
   async setUserAccounts() {

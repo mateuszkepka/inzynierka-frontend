@@ -51,7 +51,6 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         {
             value: 5
         },
-
     ];
 
     numberOfTeams = [
@@ -133,7 +132,6 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
                 summary: `Error!`,
                 detail: `${err.error.message}`
             });
-            return;
         });
 
         const addPrizeResponse = await this.addTournamentPrize(response as Tournament);
@@ -146,9 +144,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
 
             await this.sendImages(response);
             void this.router.navigate([`/tournaments/${response.tournamentId}`]);
-            return;
         }
-
     }
 
     async ngOnInit() {
@@ -192,7 +188,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
             currency: this.form.value.prize.currency || `None`,
         };
 
-        return await this.apiService.addPrize(input);
+        return this.apiService.addPrize(input);
     }
 
     setRegisterEndMinDate(date: Date) {
@@ -274,6 +270,9 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         if (!this.form) {
             return;
         }
+        if (this.form.value.format === `Single Elimination Ladder` || this.form.value.format === `Double Elimination Ladder`) {
+            return;
+        }
         const invalid = this.form.value.numberOfTeams % control.value !== 0 ;
         return invalid ? { numberOfGroups: { value: control.value } } : null;
     };
@@ -283,8 +282,25 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         if (!this.form) {
             return;
         }
+        if (this.form.value.format === `Single Elimination Ladder` || this.form.value.format === `Double Elimination Ladder`) {
+            const foundValue = this.numberOfTeams.find((numberOfTeams) => numberOfTeams.value === control.value);
+            if (foundValue) {
+                return;
+            }
+            return { numberOfTeams: { value: control.value }};
+        }
         const invalid = control.value % this.form.value.numberOfGroups !== 0 ;
         return invalid ? { numberOfTeams: { value: control.value } } : null;
     };
+  }
+
+  clearNumbers() {
+      this.form.controls.numberOfGroups.reset();
+      this.form.controls.numberOfTeams.reset();
+  }
+
+  onChange() {
+    this.form.controls.numberOfGroups.updateValueAndValidity();
+    this.form.controls.numberOfTeams.updateValueAndValidity();
   }
 }

@@ -43,7 +43,8 @@ import { omit } from "lodash";
     providedIn: `root`,
 })
 export class ApiService {
-    apiUrl = environment.apiUrl;
+    // apiUrl = environment.apiUrl;
+    apiUrl = `https://inzynierka-turnieje.herokuapp.com`;
 
     constructor(private readonly httpClient: HttpClient) {}
 
@@ -62,7 +63,7 @@ export class ApiService {
 
     async refreshToken() {
         const url = this.apiUrl + `/auth/refresh`;
-        return await this.httpClient.get<User>(url, { withCredentials: true }).toPromise();
+        return this.httpClient.get<User>(url, { withCredentials: true }).toPromise();
     }
 
     async logOut() {
@@ -363,6 +364,11 @@ export class ApiService {
     async acceptPlayerInvitation(invitationId: number, status: ResponseStatus) {
         const url = this.apiUrl + `/invitations/${invitationId}`;
         return this.httpClient.patch(url, { status }, { withCredentials: true }).toPromise();
+    }
+
+    async removeInvitation(invitationId: number) {
+        const url = this.apiUrl + `/invitations/${invitationId}`;
+        return this.httpClient.delete(url, { withCredentials: true }).toPromise();
     }
 
     /* -------------------------------------------------------------------------- */

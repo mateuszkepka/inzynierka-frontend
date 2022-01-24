@@ -26,7 +26,7 @@
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.name.touched && form.controls.name.invalid"
+                *ngIf="form.controls.name.dirty && form.controls.name.invalid"
             >
                 Value required
             </small>
@@ -102,11 +102,12 @@
                     [optionLabel]="'name'"
                     [optionValue]="'name'"
                     [showClear]="true"
+                    (onChange)="clearNumbers()"
                 ></p-dropdown>
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.format.touched && form.controls.format.invalid"
+                *ngIf="form.controls.format.dirty && form.controls.format.invalid"
             >
                 Value required
             </small>
@@ -121,9 +122,16 @@
                     mode="decimal" 
                     inputId="numberOfGroups" 
                     [useGrouping]="false"
+                    (ngModelChange)="onChange()"
                 >
                 </p-inputNumber>
             </span>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.numberOfGroups.dirty && form.controls.numberOfGroups.invalid"
+            >
+                {{ form.controls.numberOfGroups?.errors['numberOfGroups'] ? 'Number of teams divided by number of groups must give no rest': 'Value required' }}
+            </small>
 
             <span 
                 class="p-field w-full flex flex-col"
@@ -135,10 +143,16 @@
                     mode="decimal" 
                     inputId="numberOfTeams" 
                     [useGrouping]="false"
+                    (ngModelChange)="onChange()"
                 >
                 </p-inputNumber>
             </span>
-
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.numberOfTeams.dirty && form.controls.numberOfTeams.invalid && (form.controls.format.value === 'Single Round Robin' || form.controls.format.value === 'Double Round Robin')"
+            >
+                Value required
+            </small>
             <span 
                 class="p-field w-full flex flex-col"
                 *ngIf="form.controls.format.value === 'Single Elimination Ladder' || form.controls.format.value === 'Double Elimination Ladder'"
@@ -156,9 +170,9 @@
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.numberOfTeams.touched && form.controls.numberOfTeams.invalid"
+                *ngIf="form.controls.numberOfTeams.dirty && form.controls.numberOfTeams.invalid && (form.controls.format.value === 'Single Elimination Ladder' && form.controls.format.value === 'Double Elimination Ladder')"
             >
-                Value required
+                {{ form.controls.numberOfTeams?.errors['numberOfTeams'] ? 'Number of teams divided by number of groups must give no rest': 'Value required' }}
             </small>
 
             <span class="p-field w-full flex flex-col">
@@ -168,12 +182,13 @@
                     mode="decimal" 
                     inputId="numberOfPlayers" 
                     [useGrouping]="false"
+                    (ngModelChange)="onChange()"
                 >
                 </p-inputNumber>
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.numberOfPlayers.touched && form.controls.numberOfPlayers.invalid"
+                *ngIf="form.controls.numberOfPlayers.dirty && form.controls.numberOfPlayers.invalid"
             >
                 Value required
             </small>
@@ -190,7 +205,7 @@
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.numberOfMaps.touched && form.controls.numberOfMaps.invalid"
+                *ngIf="form.controls.numberOfMaps.dirty && form.controls.numberOfMaps.invalid"
             >
                 Value required
             </small>
@@ -208,7 +223,7 @@
                 <button 
                     type="submit"
                     pButton
-                    label="Edit tournament"
+                    label="Save tournament changes"
                     [disabled]="!form.valid"
                 ></button>
             </div>
@@ -248,7 +263,7 @@
                 <button 
                     type="submit"
                     pButton
-                    label="Edit prize"
+                    label="Save prize changes"
                     [disabled]="!prizeForm.valid"
                     (click)="submitPrizeUpdate()"
                 ></button>
