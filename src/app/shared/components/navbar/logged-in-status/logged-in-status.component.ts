@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
 import { ApiService } from 'src/app/services/api.service';
 import { RefreshTokenService } from 'src/app/services/refresh-token.service';
@@ -15,6 +15,8 @@ import { cloneDeep } from 'lodash';
   styleUrls: [`./logged-in-status.component.scss`]
 })
 export class LoggedInStatusComponent implements OnInit, OnDestroy {
+  @Output() emitNavigationClick = new EventEmitter();
+
   subscriptions: Subscription[] = [];
   currentUser: User;
 

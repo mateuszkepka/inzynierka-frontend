@@ -106,6 +106,17 @@ export interface UpdateSuspensionInput {
     suspensionId?: number;
 }
 
+export interface UpdateMatchInput {
+    tournamentId?: number;
+    matchStartDate?: Date;
+    matchEndDate?: Date;
+    winner?: number;
+    matchStatus?: string;
+    firstRosterId?: number;
+    secondRosterId?: number;
+    numberOfMaps?: number;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               REQUEST PARAMS                               */
 /* -------------------------------------------------------------------------- */

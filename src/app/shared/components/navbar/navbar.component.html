@@ -1,22 +1,61 @@
 <nav>
-    <p class="cursor-pointer" [routerLink]="['/']">LOGO</p>
-    <div class="menu">
-        <span class="menu-item">
-            <fa-icon [icon]="faTrophy"></fa-icon>
-            <p [routerLink]="['/tournaments']">Tournaments</p>
-        </span>
-        <span class="menu-item">
-            <fa-icon [icon]="faSitemap"></fa-icon>
-            <p [routerLink]="['/organization']">Organization</p>
-        </span>
-        <span class="menu-item">
-            <fa-icon [icon]="faGamepad"></fa-icon>
-            <p [routerLink]="['/participation']">Participation</p>
-        </span>
-        <span class="menu-item">
-            <fa-icon [icon]="faAt"></fa-icon>
-            <p [routerLink]="['/contact-us']">Contact us</p>
-        </span>
+    <div class="nav-wrapper">
+        <p class="cursor-pointer" [routerLink]="['/']">LOGO</p>
+        <div class="menu">
+            <span class="menu-item">
+                <fa-icon [icon]="faTrophy"></fa-icon>
+                <p [routerLink]="['/tournaments']">Tournaments</p>
+            </span>
+            <span class="menu-item">
+                <fa-icon [icon]="faSitemap"></fa-icon>
+                <p [routerLink]="['/organization']">Organization</p>
+            </span>
+            <span class="menu-item">
+                <fa-icon [icon]="faGamepad"></fa-icon>
+                <p [routerLink]="['/participation']">Participation</p>
+            </span>
+            <span class="menu-item">
+                <fa-icon [icon]="faAt"></fa-icon>
+                <p [routerLink]="['/contact-us']">Contact us</p>
+            </span>
+        </div>
+        <app-logged-in-status></app-logged-in-status>
     </div>
-    <app-logged-in-status></app-logged-in-status>
+
+    <div class="mobile-nav-wrapper">
+        <p class="cursor-pointer" [routerLink]="['/']">LOGO</p>
+        <div class="hamburger-icon" (click)="showMobileMenu()">
+            <div class="hamburger-icon-item"></div>
+            <div class="hamburger-icon-item"></div>
+            <div class="hamburger-icon-item"></div>
+        </div>
+    </div>
 </nav>
+
+<div class="mobile-menu p-4" #mobileMenu>
+    <div class="flex flex-row justify-between w-full">
+        <p class="cursor-pointer" [routerLink]="['/']" (click)="hideMobileMenu()">LOGO</p>
+        <p class="cursor-pointer" (click)="hideMobileMenu()">Close menu</p>
+
+    </div>
+        <div class="menu">
+            <span class="menu-item" (click)="hideMobileMenu()">
+                <fa-icon [icon]="faTrophy"></fa-icon>
+                <p [routerLink]="['/tournaments']">Tournaments</p>
+            </span>
+            <span class="menu-item" (click)="hideMobileMenu()">
+                <fa-icon [icon]="faSitemap"></fa-icon>
+                <p [routerLink]="['/organization']">Organization</p>
+            </span>
+            <span class="menu-item" (click)="hideMobileMenu()">
+                <fa-icon [icon]="faGamepad"></fa-icon>
+                <p [routerLink]="['/participation']">Participation</p>
+            </span>
+            <span class="menu-item" (click)="hideMobileMenu()">
+                <fa-icon [icon]="faAt"></fa-icon>
+                <p [routerLink]="['/contact-us']">Contact us</p>
+            </span>
+        </div>
+        <app-logged-in-status (emitNavigationClick)="hideMobileMenu()"></app-logged-in-status>
+</div>
+

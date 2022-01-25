@@ -16,11 +16,19 @@
                     Hello, {{ currentUser.username }}
                 </p>
 
-                <p class="overlay-panel__item cursor-pointer" [routerLink]="['/user-dashboard']">
+                <p 
+                    class="overlay-panel__item cursor-pointer" 
+                    [routerLink]="['/user-dashboard']"
+                    (click)="emitNavigationClick.emit()"
+                >
                     Dashboard
                 </p>
 
-                <p class="overlay-panel__item cursor-pointer" (click)="logOut()">Log out</p>
+                <p 
+                    class="overlay-panel__item cursor-pointer" 
+                    (click)="logOut()"
+                    (click)="emitNavigationClick.emit()"
+                >Log out</p>
             </div>
         </ng-template>
     </p-overlayPanel>

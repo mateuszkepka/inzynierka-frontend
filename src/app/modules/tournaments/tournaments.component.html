@@ -31,7 +31,6 @@
                 <th>Registration End Date</th>
                 <th>Tournament Start Date</th>
                 <th>Registered teams</th>
-                <th>Format</th>
                 <th>See details</th>
             </tr>
         </ng-template>
@@ -42,7 +41,6 @@
                 <td>{{ (tournament.registerEndDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
                 <td>{{ (tournament.tournamentStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
                 <td>{{ (tournament.checkedIn) || "-" }} / {{ tournament.numberOfTeams || "-" }}</td>
-                <td>{{ (tournament.format) || "-" }}</td>
                 <td>
                     <button 
                         pButton 

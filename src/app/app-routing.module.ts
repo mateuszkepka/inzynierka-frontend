@@ -120,6 +120,13 @@ const routes: Routes = [
         ),
     },
     {
+        path: `manage-roles`,
+        canActivate: [AuthGuard],
+        loadChildren: async () => import(`./modules/manage-roles/manage-roles.module`).then(
+            (m) => m.ManageRolesModule
+        )
+    },
+    {
         path: `**`,
         redirectTo: `/`
     }

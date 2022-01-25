@@ -1,4 +1,4 @@
-<div class="module-card" (click)="onClick(moduleData.link)">
+<div class="module-card" (click)="onClick(moduleData.link)" *ngIf="moduleData">
     <p class="module-card__title">{{ moduleData.title }}</p>
     <p class="module-card__subtitle">{{ moduleData.subtitle }}</p>
 </div>

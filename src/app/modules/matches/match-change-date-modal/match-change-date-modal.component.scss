@@ -1,0 +1,9 @@
+::ng-deep .p-highlight {
+    background: #2196F3 !important;
+    transition: 0.2s !important;
+    color: white !important;
+}
+
+::ng-deep .p-datepicker-today > span:not(.p-highlight) {
+    background: transparent !important;
+}

@@ -26,6 +26,7 @@ import {
     Tournament,
     TournamentAdmin,
     TournamentTeam,
+    UpdateMatchInput,
     UpdatePrizeInput,
     UpdateSuspensionInput,
     UpdateTeamInput,
@@ -43,8 +44,7 @@ import { omit } from "lodash";
     providedIn: `root`,
 })
 export class ApiService {
-    // apiUrl = environment.apiUrl;
-    apiUrl = `https://inzynierka-turnieje.herokuapp.com`;
+    apiUrl = environment.apiUrl;
 
     constructor(private readonly httpClient: HttpClient) {}
 
@@ -74,6 +74,12 @@ export class ApiService {
     /* -------------------------------------------------------------------------- */
     /*                                    USER                                    */
     /* -------------------------------------------------------------------------- */
+
+    async getAllUsers() {
+        const url = this.apiUrl + `/users`;
+        return this.httpClient.get<User[]>(url, { withCredentials: true }).toPromise();
+
+    }
     async getUserById(userId: number) {
         const url = this.apiUrl + `/users/${userId}`;
         return this.httpClient.get<User>(url, { withCredentials: true }).toPromise();
@@ -136,6 +142,16 @@ export class ApiService {
     getUploadedBackground(imagePath: string): Observable<Blob> {
         const url = this.apiUrl + `/users/backgrounds/${imagePath}`;
         return this.httpClient.get(url, { responseType: `blob` });
+    }
+
+    grantRole(role: string, userId: number) {
+        const url = this.apiUrl + `/users/${userId}/roles/grant`;
+        return this.httpClient.post<User>(url, { role }, { withCredentials: true }).toPromise();
+    }
+
+    revokeRole(role: string, userId: number) {
+        const url = this.apiUrl + `/users/${userId}/roles/revoke`;
+        return this.httpClient.post<User>(url, { role }, { withCredentials: true }).toPromise();
     }
 
     /* -------------------------------------------------------------------------- */
@@ -434,5 +450,10 @@ export class ApiService {
             observe: `response`,
             withCredentials: true,
         }).toPromise();
+    }
+
+    async updateMatch(matchId: number, body: UpdateMatchInput) {
+        const url = this.apiUrl + `/matches/${matchId}`;
+        return this.httpClient.patch<Match>(url, body, { withCredentials: true }).toPromise();
     }
 }

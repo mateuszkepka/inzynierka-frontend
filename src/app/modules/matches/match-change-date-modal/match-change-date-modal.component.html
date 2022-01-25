@@ -1,0 +1,9 @@
+<div class="flex flex-col gap-4">
+    <p-calendar
+        [(ngModel)]="newMatchDate"
+        [inline]="true"
+        [todayButtonStyleClass]="'todayButton'"
+        showTime="true"
+    ></p-calendar>
+    <button type="button" pButton label="Save match date" (click)="confirmChange()"></button>
+</div>

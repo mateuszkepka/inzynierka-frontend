@@ -106,6 +106,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         title: `Resolve matches`,
         subtitle: `Send your match results`,
         link: `/resolve-matches`
+      },
+      manageRoles: {
+        title: `Manage roles`,
+        subtitle: `Grant or revoke users roles`,
+        link: `/manage-roles`
       }
     };
   }

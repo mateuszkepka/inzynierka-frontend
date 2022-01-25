@@ -1,0 +1,88 @@
+<div class="container">
+    <p
+        [routerLink]="['/user-dashboard']"
+        class="hover:underline font-bold cursor-pointer pb-4"
+    >
+        Back to user dashboard
+    </p>
+
+    <p-table 
+        *ngIf="users.length > 0; else noData"
+        [value]="users"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="{first}-{last} of {totalRecords}"
+        [rowsPerPageOptions]="[10,15,20]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Username</th>
+                <th>E-mail address</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>{{ (user.username) || '-' }}</td>
+                <td>{{ (user.email) || '-' }}</td>
+                <td>
+                    <button
+                        *ngIf="user.roles.includes('organizer')"
+                        label="Revoke 'organizer'"
+                        class="p-button-danger ml-2" 
+                        type="button" 
+                        pButton
+                        (click)="revokeRole('organizer', user)"
+                    ></button>
+                    
+                    <button
+                        *ngIf="user.roles.includes('admin')"
+                        label="Revoke 'admin'"
+                        class="p-button-danger ml-2" 
+                        type="button" 
+                        pButton
+                        (click)="revokeRole('admin', user)"
+                    ></button>
+
+                    
+                    <button
+                        *ngIf="!user.roles.includes('organizer')"
+                        label="Grant 'organizer'"
+                        class="p-button-primary ml-2" 
+                        type="button" 
+                        pButton
+                        (click)="grantRole('organizer', user)"
+                    ></button>
+                    
+                    <button
+                        *ngIf="!user.roles.includes('admin')"
+                        label="Grant 'admin'"
+                        class="p-button-primary ml-2" 
+                        type="button" 
+                        pButton
+                        (click)="grantRole('admin', user)"
+                    ></button>
+                </td>
+            </tr>
+
+        </ng-template>
+    </p-table>
+</div>
+
+<ng-template #noData>
+    <div class="container flex flex-col items-center">
+        <p
+            [routerLink]="['/user-dashboard']"
+            class="hover:underline font-bold cursor-pointer pb-4"
+        >
+            Back to user dashboard
+        </p>
+        <app-no-data></app-no-data>
+        <p>
+            No users found
+        </p>
+    </div>
+</ng-template>

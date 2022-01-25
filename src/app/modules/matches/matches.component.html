@@ -9,6 +9,15 @@
             [routerLink]="['/matches', match.matchId, 'resolve']"
             *ngIf="showResolveButton && match.status !== 'finished'"
         ></button>
+
+        <button 
+            label="Change match date"
+            class="p-button-info"
+            type="button" 
+            pButton
+            (click)="showModal(match)"
+            *ngIf="showChangeDateButton && (match.status === 'scheduled')"
+        ></button>
         <div class="grid grid-cols-3 gap-4">
                 <div>
                     <p class="text-2xl">Team {{ match.firstRoster.team.teamName }} roster</p>
