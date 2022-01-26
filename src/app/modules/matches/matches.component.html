@@ -67,7 +67,7 @@
         <div *ngIf="match">
             <p class="text-2xl py-12">Maps</p>
             <div *ngIf="match.maps.length > 0; else noMatches">
-                <p-tabView [activeIndex]="0">
+                <p-tabView (onChange)="onTabChange()" [activeIndex]="0">
                     <p-tabPanel [header]="'Match ' + (i + 1)" *ngFor="let map of match.maps; index as i">
                         <p><strong>Play time: </strong>{{ map.time }}</p>
                         <div class="grid grid-cols-2">

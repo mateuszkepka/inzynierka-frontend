@@ -135,5 +135,9 @@ export class TeamComponent implements OnInit {
     if (image) {
        reader.readAsDataURL(image);
     }
- }
+  }
+
+  onTabChange() {
+    window.scroll(0,0);
+  }
 }

@@ -19,7 +19,7 @@
         *ngIf="currentlyLoggedUser.userId !== currentUserId"
         (click)="showModal()"
     ></button>
-    <p-tabView [activeIndex]="activeTab">
+    <p-tabView (onChange)="onTabChange()" [activeIndex]="activeTab">
         <p-tabPanel header="Details">
             <div class="flex">
                 <router-outlet

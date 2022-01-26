@@ -176,5 +176,9 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     if (image) {
        reader.readAsDataURL(image);
     }
- }
+  }
+
+  onTabChange() {
+    window.scroll(0,0);
+  }
 }

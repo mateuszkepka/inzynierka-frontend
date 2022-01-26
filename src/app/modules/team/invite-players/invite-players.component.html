@@ -1,7 +1,7 @@
 <div class="container" *ngIf="playersList && currentTeam">
     <p
         [routerLink]="['/team', currentTeam.teamId]"
-        class="hover:underline font-bold cursor-pointer pb-4"
+        class="hover:underline font-bold cursor-pointer py-4"
     >
         Back to '{{ currentTeam.teamName }}' details
     </p>

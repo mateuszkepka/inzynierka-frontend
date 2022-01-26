@@ -1,5 +1,5 @@
 <ng-container *ngIf="groupStandings && groupStandings.length > 0; else noData">
-    <p-tabView [activeIndex]="0">
+    <p-tabView (onChange)="onTabChange()" [activeIndex]="0">
         <p-tabPanel *ngFor="let group of groupStandings" [header]="'Group ' + group.name">
             <p-table
             [value]="group.standings"

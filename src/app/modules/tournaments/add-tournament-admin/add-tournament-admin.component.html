@@ -1,7 +1,7 @@
 <div class="container" *ngIf="usersList && currentTournament">
     <p
         [routerLink]="['/tournaments', currentTournament.tournamentId]"
-        class="hover:underline font-bold cursor-pointer pb-4"
+        class="hover:underline font-bold cursor-pointer py-4"
     >
         Back to '{{ currentTournament.name }}' details
     </p>

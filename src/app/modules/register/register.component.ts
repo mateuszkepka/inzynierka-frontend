@@ -1,10 +1,8 @@
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
-import { FormlyFieldConfig, FormlyFormOptions } from "@ngx-formly/core";
 import { RegisterInput, User } from "src/app/shared/interfaces/interfaces";
 
 import { ApiService } from "src/app/services/api.service";
 import { Component } from "@angular/core";
-import { MessageService } from "primeng/api";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Router } from "@angular/router";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
@@ -39,9 +37,13 @@ export class RegisterComponent {
     ) {}
 
     async onSubmit() {
+        let requestBody = this.form.value;
+        if (!requestBody.studentId || !requestBody.university) {
+            requestBody = omit(requestBody, [`studentId`, `university`]);
+        }
         const res = await this.apiService.register(
             omit(
-                this.form.value, [`repeatPassword`, `terms`]
+                requestBody, [`repeatPassword`, `terms`]
             ) as RegisterInput
         ).catch((err) => {
             this.showNotification(`error`, `${err.error.message}`, `Error!`);
@@ -91,6 +93,7 @@ export class RegisterComponent {
         if (!this.backgroundFormData.has(`image`)) {
             return;
         }
+
         const sendBackgroundResponse = await this.apiService.uploadUserBackground(this.backgroundFormData, createdUser);
         let severity = `success`;
         let detail = `Background has been uploaded!`;

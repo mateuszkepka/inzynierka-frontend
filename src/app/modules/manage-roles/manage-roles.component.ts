@@ -13,11 +13,14 @@ import { cloneDeep } from 'lodash';
 export class ManageRolesComponent implements OnInit {
 
   users: User[] = [];
+  allUsers: User[] = [];
+  filterValue = ``;
 
   constructor(private readonly apiService: ApiService, private readonly notificationsService: NotificationsService) { }
 
   async ngOnInit() {
     this.users = await this.apiService.getAllUsers();
+    this.allUsers = cloneDeep(this.users);
   }
 
   async grantRole(role: string, user: User) {
@@ -60,5 +63,9 @@ export class ManageRolesComponent implements OnInit {
       summary: `Error`,
       detail: `Error while changing role`
     });
+  }
+
+  filterUsers() {
+    this.users = this.allUsers.filter((value) => value.username.includes(this.filterValue));
   }
 }

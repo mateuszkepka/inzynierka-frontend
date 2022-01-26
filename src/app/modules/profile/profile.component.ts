@@ -157,4 +157,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       detail
     });
   }
+
+  onTabChange() {
+    window.scroll(0,0);
+  }
 }

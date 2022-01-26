@@ -177,4 +177,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
     );
   }
 
+  onTabChange() {
+    window.scroll(0,0);
+  }
 }

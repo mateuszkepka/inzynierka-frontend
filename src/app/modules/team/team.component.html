@@ -35,7 +35,7 @@
             ></button>
 
         </div>
-        <p-tabView [activeIndex]="0">
+        <p-tabView (onChange)="onTabChange()" [activeIndex]="0">
             <p-tabPanel header="Players">
                 <app-team-players-tab 
                     [currentTeam]="team"

@@ -38,7 +38,7 @@
             (click)="sendCheckInRequest()"
             *ngIf="isCheckInActive"
         ></button>
-        <p-tabView [activeIndex]="0">
+        <p-tabView (onChange)="onTabChange()" [activeIndex]="0">
             <p-tabPanel header="Details">
                 <app-tournament-details-tab></app-tournament-details-tab>
             </p-tabPanel>

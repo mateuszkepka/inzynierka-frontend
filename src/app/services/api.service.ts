@@ -87,7 +87,7 @@ export class ApiService {
 
     async patchUser(user: User) {
         const url = this.apiUrl + `/users/${user.userId}`;
-        return this.httpClient.put<User>(url, user).toPromise();
+        return this.httpClient.patch<User>(url, user).toPromise();
     }
 
     async getMe() {

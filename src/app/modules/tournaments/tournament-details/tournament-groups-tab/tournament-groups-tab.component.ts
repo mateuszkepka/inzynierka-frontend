@@ -29,4 +29,8 @@ export class TournamentGroupsTabComponent implements OnInit {
     this.groupStandings = await this.apiService.getTournamentStandings(this.tournamentId);
   }
 
+  onTabChange() {
+    window.scroll(0,0);
+  }
+
 }

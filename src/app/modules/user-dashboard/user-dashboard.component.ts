@@ -90,7 +90,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         title: `Your matches`,
         subtitle: `See your match history`,
         link: `/profile/${this.currentUser.userId}`,
-        activeTab: 6
+        activeTab: 5
       },
       manageReports: {
         title: `Manage reports`,
