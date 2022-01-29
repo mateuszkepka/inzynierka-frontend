@@ -20,13 +20,11 @@ export class NavbarComponent implements OnInit {
   }
 
   showMobileMenu() {
-    console.log(`SHOW`, this.mobileMenu);
     this.mobileMenu.nativeElement.style.display = `flex`;
     this.renderer.addClass(document.body, `block-scroll`);
   }
 
   hideMobileMenu() {
-    console.log(`SHOW`, this.mobileMenu);
     this.mobileMenu.nativeElement.style.display = `none`;
     this.renderer.removeClass(document.body, `block-scroll`);
   }

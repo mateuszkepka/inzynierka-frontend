@@ -29,7 +29,7 @@
                 
                 <ng-template pTemplate="body" let-match>
                     <tr>
-                        <td>{{ (match.matchStartDate | date: "dd/MM/yyyy hh:mm") || '-' }}</td>
+                        <td>{{ (match.matchStartDate | date: "dd/MM/yyyy HH:mm") || '-' }}</td>
                         <td>{{ match.firstRoster.team.teamName || '-' }}</td>
                         <td>{{ match.secondRoster.team.teamName || '-' }}</td>
                         <td>{{ match.status || '-' }}</td>

@@ -56,15 +56,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
           async (currentUser: User) => {
             if (currentUser) {
               this.currentlyLoggedUser = currentUser;
+                if (currentUser.userId === this.currentUserId) {
+                  this.currentUser = currentUser;
+                  await this.getImages();
+                  return;
+                }
+                await this.getCurrentUser();
+                await this.getImages();
+              }
             }
-            if (currentUser.userId === this.currentUserId) {
-              this.currentUser = currentUser;
-              await this.getImages();
-              return;
-            }
-            await this.getCurrentUser();
-            await this.getImages();
-          }
         ),
     );
   }
@@ -76,7 +76,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   async getCurrentUser() {
-    this.currentUser = await this.apiService.getUserById(this.currentUserId);
+    this.currentUser = await this.apiService
+      .getUserById(this.currentUserId)
+      .catch((err) => {
+        this.notificationsService.addNotification({
+          severity: `error`,
+          summary: `${err.error.message}`,
+          detail: `Error`
+        });
+        return null;
+        void this.router.navigate([`/`]);
+      });
   }
 
   getImages() {
@@ -141,15 +151,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   async sendReport(reportReason: string) {
-    const res = await this.apiService.createReport(this.currentUserId, reportReason);
+    const res = await this.apiService
+      .createReport(this.currentUserId, reportReason)
+      .catch((err) => {
+        let severity: `error`;
+        const errSummary = `Error!`;
+        const errDetail = `${err.error.message}`;
+        this.notificationsService.addNotification({
+          severity,
+          summary: errSummary,
+          detail: errDetail
+        });
+      });
 
-    let summary = `Success!`;
-    let detail = `Report has been sent`;
-
-    if (!res) {
-      summary = `Error!`;
-      detail = `Something went wrong when sending report! Try again.`;
-    }
+    const summary = `Success!`;
+    const detail = `Report has been sent`;
 
     this.notificationsService.addNotification({
       severity: `success`,

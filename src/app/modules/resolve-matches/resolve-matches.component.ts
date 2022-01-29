@@ -46,10 +46,8 @@ export class ResolveMatchesComponent implements OnInit, OnDestroy {
   async getMatches() {
     this.matches = await this.apiService.getUserMatches(
       this.currentUser.userId,
-      MatchStatus.RESOLVING
+      MatchStatus.SCHEDULED
     ).catch(() => []);
-
-    console.log(this.matches);
   }
 
 

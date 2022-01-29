@@ -96,32 +96,36 @@ export class ProfileDetailsEditComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    const response = await this.apiService.patchUser(this.currentUser);
+    const response = await this.apiService.patchUser(this.currentUser)
+      .catch((err) => {
+        this.notificationsService.addNotification({severity: `error`, summary: `Error!`, detail: `${err.error.message}`});
+      });
     if (response) {
       this.store.dispatch(new SetCurrentUser(response));
       this.notificationsService.addNotification({severity: `success`, summary: `Success!`, detail: `Your data has been updated.`});
       return;
     }
-    this.notificationsService.addNotification({severity: `error`, summary: `Error!`, detail: `An error occurred.`});
   }
 
   async sendAvatar() {
     if (!this.avatarFormData.has(`image`)) {
         return;
     }
-    const sendAvatarResponse = await this.apiService.uploadUserAvatar(this.avatarFormData, this.currentUser);
-    let severity = `success`;
-    let detail = `Avatar has been uploaded!`;
-    let summary = `Success!`;
+    const sendAvatarResponse = await this.apiService
+      .uploadUserAvatar(this.avatarFormData, this.currentUser)
+      .catch((err) => {
+        const errSeverity = `error`;
+        const errDetail = `${err.error.message}`;
+        const errSummary = `Error while uploading avatar`;
+        this.showNotification(errSeverity, errDetail, errSummary);
+      });
+    const severity = `success`;
+    const detail = `Avatar has been uploaded!`;
+    const summary = `Success!`;
 
-    if (!sendAvatarResponse.ok) {
-        severity = `error`;
-        detail = sendAvatarResponse.statusText;
-        summary = `Error while uploading avatar`;
-    }
     this.showNotification(severity, detail, summary);
 
-    if (sendAvatarResponse.ok) {
+    if (sendAvatarResponse) {
       this.store.dispatch(new SetCurrentUser(sendAvatarResponse.body as User));
       void this.router.navigate([{outlets: { profileDetails: [] }}], { relativeTo: this.activatedRoute.parent });
     }
@@ -131,25 +135,25 @@ export class ProfileDetailsEditComponent implements OnInit, OnDestroy {
       if (!this.backgroundFormData.has(`image`)) {
           return;
       }
-      const sendBackgroundResponse = await this.apiService.uploadUserBackground(this.backgroundFormData, this.currentUser);
-      let severity = `success`;
-      let detail = `Background has been uploaded!`;
-      let summary = `Success!`;
+      const sendBackgroundResponse = await this.apiService.uploadUserBackground(this.backgroundFormData, this.currentUser)
+        .catch((err) => {
+          const errSeverity = `error`;
+          const errDetail = `${err.error.message}`;
+          const errSummary = `Error while uploading avatar`;
+          this.showNotification(errSeverity, errDetail, errSummary);
+        });
+      const severity = `success`;
+      const detail = `Background has been uploaded!`;
+      const summary = `Success!`;
 
-      if (!sendBackgroundResponse.ok) {
-          severity = `error`;
-          detail = sendBackgroundResponse.statusText;
-          summary = `Error while uploading background`;
-      }
 
       this.showNotification(severity, detail, summary);
 
-      if (sendBackgroundResponse.ok) {
+      if (sendBackgroundResponse) {
         this.store.dispatch(new SetCurrentUser(sendBackgroundResponse.body as User));
         void this.router.navigate([{outlets: { profileDetails: [] }}], { relativeTo: this.activatedRoute.parent });
       }
   }
-
 
   selectAvatar(event: any) {
     this.avatarFormData.append(`image`, event.currentFiles[0]);

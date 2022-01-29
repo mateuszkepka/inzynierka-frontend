@@ -5,24 +5,24 @@
                 Details
             </p>
             <p>
-                Registration start date: {{ tournament.registerStartDate | date:"dd/MM/yyyy hh:mm" }}
+                Registration start date: {{ tournament.registerStartDate | date:"dd/MM/yyyy HH:mm" }}
             </p>
             <p>
-                Registration end date: {{ tournament.registerEndDate | date:"dd/MM/yyyy hh:mm" }}
+                Registration end date: {{ tournament.registerEndDate | date:"dd/MM/yyyy HH:mm" }}
             </p>
             <p>
-                Tournament start date: {{ tournament.tournamentStartDate | date:"dd/MM/yyyy hh:mm" }}
-            </p>
-            
-            <p>
-                Check-in open date: {{ tournament.checkInOpenDate | date:"dd/MM/yyyy hh:mm" }}
+                Tournament start date: {{ tournament.tournamentStartDate | date:"dd/MM/yyyy HH:mm" }}
             </p>
             
             <p>
-                Check-in close date: {{ tournament.checkInCloseDate | date:"dd/MM/yyyy hh:mm" }}
+                Check-in open date: {{ tournament.checkInOpenDate | date:"dd/MM/yyyy HH:mm" }}
+            </p>
+            
+            <p>
+                Check-in close date: {{ tournament.checkInCloseDate | date:"dd/MM/yyyy HH:mm" }}
             </p>
             <p>
-                Ending hour: {{ (endingHour | date:"hh:mm") || "-" }}
+                Ending hour: {{ (endingHour | date:"HH:mm") || "-" }}
             </p>
             <p>
                 Number of players: {{ tournament.numberOfPlayers }}

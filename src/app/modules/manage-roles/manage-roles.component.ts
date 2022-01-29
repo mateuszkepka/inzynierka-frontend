@@ -19,7 +19,7 @@ export class ManageRolesComponent implements OnInit {
   constructor(private readonly apiService: ApiService, private readonly notificationsService: NotificationsService) { }
 
   async ngOnInit() {
-    this.users = await this.apiService.getAllUsers();
+    this.users = await this.apiService.getAllUsers().catch(() => []);
     this.allUsers = cloneDeep(this.users);
   }
 

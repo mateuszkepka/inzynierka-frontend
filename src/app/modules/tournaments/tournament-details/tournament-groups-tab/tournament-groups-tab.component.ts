@@ -26,7 +26,7 @@ export class TournamentGroupsTabComponent implements OnInit {
   }
 
   async getGroupStandings() {
-    this.groupStandings = await this.apiService.getTournamentStandings(this.tournamentId);
+    this.groupStandings = await this.apiService.getTournamentStandings(this.tournamentId).catch(() => []);
   }
 
   onTabChange() {

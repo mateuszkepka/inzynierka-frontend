@@ -128,9 +128,16 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
         format: this.form.value.formatId,
 
     };
-    const response = await this.apiService.updateTournament(requestBody as UpdateTournamentInput, this.tournamentId);
+    const response = await this.apiService.updateTournament(requestBody as UpdateTournamentInput, this.tournamentId)
+    .catch((err) => {
+      this.notificationsService.addNotification({
+        severity: `error`,
+        summary: `Error!`,
+        detail: `${err.error.message}`
+      });
+    });
 
-    if (response.ok) {
+    if (response) {
         this.notificationsService.addNotification({
             severity: `success`,
             summary: `Success!`,
@@ -141,11 +148,7 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
         return;
     }
 
-    this.notificationsService.addNotification({
-        severity: `error`,
-        summary: `Error!`,
-        detail: response.statusText
-    });
+
   }
 
   ngOnDestroy(): void {
@@ -155,7 +158,7 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
   }
 
   async getGamePresets() {
-    this.gamePresets = await this.apiService.getFormats();
+    this.gamePresets = await this.apiService.getFormats().catch(() => []);
   }
 
   async getCurrentTournament() {
@@ -211,18 +214,21 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
     if (!this.avatarFormData.has(`image`)) {
         return;
     }
-    const sendAvatarResponse = await this.apiService.uploadTournamentAvatar(this.avatarFormData, this.tournamentId);
-    let severity = `success`;
-    let detail = `Avatar has been uploaded!`;
-    let summary = `Success!`;
+    const sendAvatarResponse = await this.apiService.uploadTournamentAvatar(this.avatarFormData, this.tournamentId)
+      .catch((err) => {
+        const severity = `error`;
+        const detail = `${err.error.message}`;
+        const summary = `Error while uploading avatar`;
+        this.showNotification(severity, detail, summary);
+      });
 
-    if (!sendAvatarResponse.ok) {
-        severity = `error`;
-        detail = sendAvatarResponse.statusText;
-        summary = `Error while uploading avatar`;
+    if (sendAvatarResponse) {
+      const severity = `success`;
+      const detail = `Avatar has been uploaded!`;
+      const summary = `Success!`;
+      this.showNotification(severity, detail, summary);
     }
 
-    this.showNotification(severity, detail, summary);
   }
 
   async sendBackground() {
@@ -230,18 +236,21 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
           return;
       }
       const sendBackgroundResponse = await this.apiService
-        .uploadTournamentBackground(this.backgroundFormData, this.tournamentId);
-      let severity = `success`;
-      let detail = `Background has been uploaded!`;
-      let summary = `Success!`;
+        .uploadTournamentBackground(this.backgroundFormData, this.tournamentId)
+        .catch((err) => {
+          const severity = `error`;
+          const detail = `${err.error.message}`;
+          const summary = `Error while uploading background`;
+          this.showNotification(severity, detail, summary);
+        });
 
-      if (!sendBackgroundResponse.ok) {
-          severity = `error`;
-          detail = sendBackgroundResponse.statusText;
-          summary = `Error while uploading background`;
+      if (sendBackgroundResponse) {
+        const severity = `error`;
+        const detail = sendBackgroundResponse.statusText;
+        const summary = `Error while uploading background`;
+        this.showNotification(severity, detail, summary);
       }
 
-      this.showNotification(severity, detail, summary);
   }
 
   showNotification(severity: string, detail: string, summary: string) {
@@ -249,9 +258,17 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
   }
 
   async submitPrizeUpdate() {
-    const response = await this.apiService.updatePrize(this.prizeForm.value as UpdatePrizeInput, this.tournamentId);
+    const response = await this.apiService.updatePrize(this.prizeForm.value as UpdatePrizeInput, this.tournamentId)
+      .catch((err) => {
+        this.notificationsService.addNotification({
+            severity: `error`,
+            summary: `Error!`,
+            detail: `${err.error.message}`
+        });
 
-    if (response.ok) {
+      });
+
+    if (response) {
         this.notificationsService.addNotification({
             severity: `success`,
             summary: `Success!`,
@@ -262,11 +279,6 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
         return;
     }
 
-    this.notificationsService.addNotification({
-        severity: `error`,
-        summary: `Error!`,
-        detail: response.statusText
-    });
   }
 
   groupsNumberValidator(): ValidatorFn {

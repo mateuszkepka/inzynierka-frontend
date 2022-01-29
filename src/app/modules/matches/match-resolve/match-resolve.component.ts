@@ -13,7 +13,7 @@ import { isEqual } from 'lodash';
 })
 export class MatchResolveComponent implements OnInit {
   matchId: number;
-  match: Match;
+  match: Match | false;
   isLoading = false;
 
   imagesFormData = new FormData();
@@ -32,12 +32,14 @@ export class MatchResolveComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.match = await this.apiService.getMatchById(this.matchId);
+    this.match = await this.apiService.getMatchById(this.matchId).catch(() => false as const);
     this.setMatchesAmount();
   }
 
   setMatchesAmount() {
-    this.matchesAmount = Array(this.match.numberOfMaps).fill(1);
+    if (this.match) {
+      this.matchesAmount = Array(this.match.numberOfMaps).fill(1);
+    }
   }
 
   selectMatchResult(event: any) {
@@ -56,23 +58,26 @@ export class MatchResolveComponent implements OnInit {
     this.filesArray.forEach((file) => {
       this.imagesFormData.append(`image[]`, file);
     });
-
-    const res = await this.apiService.resolveMatch(this.imagesFormData, this.matchId);
     let severity = `success`;
     let summary = `Results uploaded`;
     let detail = `You have sucessfully uploaded match results`;
-    if (res.ok) {
+
+    const res = await this.apiService
+      .resolveMatch(this.imagesFormData, this.matchId)
+      .catch((err) => {
+          severity = `error`;
+          summary = `Error while uploading images`;
+          detail = `${err.error.message}`;
+          this.notificationsService.addNotification({severity, summary, detail});
+          this.isLoading = false;
+      });
+    if (res) {
       this.notificationsService.addNotification({severity, summary, detail});
       this.isLoading = false;
       void this.router.navigate([`/matches`, this.matchId]);
       return;
-    }
-    severity = `error`;
-    summary = `Error while uploading images`;
-    detail = `${res.statusText}`;
+    };
 
-    this.notificationsService.addNotification({severity, summary, detail});
-    this.isLoading = false;
   }
 
 }

@@ -22,10 +22,10 @@ export class MatchesComponent implements OnInit, OnDestroy {
 
   firstTeamMatchesCount = 0;
   secondTeamMatchesCount = 0;
-  match: Match;
+  match: Match | false;
 
-  firstTeam: Team;
-  secondTeam: Team;
+  firstTeam: Team | false;
+  secondTeam: Team | false;
 
   currentUser: User | undefined;
   currentUserAccounts: Player[] = [];
@@ -46,13 +46,16 @@ export class MatchesComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.match = await this.apiService.getMatchById(this.matchId);
-    this.firstTeam = await this.apiService.getTeamById(this.match.firstRoster.team.teamId);
-    this.secondTeam = await this.apiService.getTeamById(this.match.secondRoster.team.teamId);
-    this.listenOnCurrentUserChange();
-    if (this.match.maps.length > 0) {
-      this.prepareMapsData();
-      this.countTeamsWins();
+    this.match = await this.apiService.getMatchById(this.matchId).catch(() => false as const);
+    if (this.match) {
+      this.firstTeam = await this.apiService.getTeamById(this.match.firstRoster.team.teamId).catch(() => false as const);
+      this.secondTeam = await this.apiService.getTeamById(this.match.secondRoster.team.teamId).catch(() => false as const);
+      this.listenOnCurrentUserChange();
+      if (this.match.maps.length > 0) {
+        this.prepareMapsData();
+        this.countTeamsWins();
+      }
+
     }
   }
 
@@ -91,8 +94,8 @@ export class MatchesComponent implements OnInit, OnDestroy {
       return false;
     }
     const accountIds = this.currentUserAccounts.map((value) => value.playerId);
-    const isFirstTeamCaptain = accountIds.find((value) => value === this.firstTeam.captainId);
-    const isSecondTeamCaptain = accountIds.find((value) => value === this.secondTeam.captainId);
+    const isFirstTeamCaptain = accountIds.find((value) => value === (this.firstTeam as Team).captainId);
+    const isSecondTeamCaptain = accountIds.find((value) => value === (this.secondTeam as Team).captainId);
 
     this.showResolveButton = Boolean(isFirstTeamCaptain) || Boolean(isSecondTeamCaptain);
   }
@@ -155,13 +158,15 @@ export class MatchesComponent implements OnInit, OnDestroy {
   }
 
   prepareMapsData() {
-    this.prepareRosterData(this.match.firstRoster.roster);
-    this.prepareRosterData(this.match.secondRoster.roster);
+    if (this.match) {
+      this.prepareRosterData(this.match.firstRoster.roster);
+      this.prepareRosterData(this.match.secondRoster.roster);
+    }
   }
 
   prepareRosterData(roster) {
     roster.forEach((player) => {
-      this.match.maps.forEach((map) => {
+      (this.match as Match).maps.forEach((map) => {
         const performance = map.performances.find((perf) => perf.playerId === player.playerId);
         if (!player.performances) {
           player.performances = [];
@@ -169,12 +174,15 @@ export class MatchesComponent implements OnInit, OnDestroy {
         player.performances.push(performance);
       });
     });
+
   }
 
   countTeamsWins() {
-    this.match.maps.forEach((map) =>
-      map.mapWinner === 1 ? ++this.firstTeamMatchesCount : ++this.secondTeamMatchesCount
-    );
+    if (this.match) {
+      this.match.maps.forEach((map) =>
+        map.mapWinner === 1 ? ++this.firstTeamMatchesCount : ++this.secondTeamMatchesCount
+      );
+    }
   }
 
   onTabChange() {

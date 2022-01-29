@@ -1,4 +1,4 @@
-<div *ngIf="isVisible">
+<div *ngIf="isVisible && !isLoading; else loadingSpinner">
     <div class="container" *ngIf="teamsList.length > 0; else noData">
         <p-table
             [value]="teamsList"
@@ -26,7 +26,7 @@
                             </p>
                         </div>
                     </td>
-                    <td>{{ (team.creationDate | date:"dd/MM/yyyy hh:mm") || "-" }}</td>
+                    <td>{{ (team.creationDate | date:"dd/MM/yyyy HH:mm") || "-" }}</td>
                     <td>
                         <button label="See details" class="p-button-info" type="button" pButton [routerLink]="['/team', team.teamId]"></button>
                     </td>
@@ -48,5 +48,10 @@
     <div class="container flex flex-col items-center">
         <app-no-data></app-no-data>
         <p>Not registered in any team.</p>
+    </div>
+</ng-template>
+<ng-template #loadingSpinner>
+    <div class="container flex items-center">
+        <p-progressSpinner></p-progressSpinner>
     </div>
 </ng-template>

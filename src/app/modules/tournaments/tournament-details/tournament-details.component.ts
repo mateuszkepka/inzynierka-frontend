@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Tournament, TournamentTeam, User } from 'src/app/shared/interfaces/interfaces';
+import { differenceInMilliseconds, isAfter, isBefore } from 'date-fns';
 
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -8,7 +9,6 @@ import { SetTournament } from 'src/app/state/tournament.actions';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 import { cloneDeep } from 'lodash';
-import { differenceInMilliseconds } from 'date-fns';
 
 @Component({
   selector: `app-tournament-details`,
@@ -64,8 +64,8 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
   }
 
   async sendCheckInRequest() {
-    const userAccounts = await this.apiService.getUserAccounts(this.currentUser.userId);
-    const userTeams = await this.apiService.getUserTeams(this.currentUser.userId);
+    const userAccounts = await this.apiService.getUserAccounts(this.currentUser.userId).catch(() => []);
+    const userTeams = await this.apiService.getUserTeams(this.currentUser.userId).catch(() => []);
 
     const accountsIds = userAccounts.map((value) => value.playerId);
     const promises = userTeams.filter(async (value) => {
@@ -80,9 +80,17 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
 
     const foundTournamentTeam = this.tournamentTeams.find((value) => ownedTeamsIds.includes(value.team.teamId));
 
-    const res = await this.apiService.checkInTorunament(this.tournamentId, foundTournamentTeam.team.teamId);
+    const res = await this.apiService
+      .checkInTorunament(this.tournamentId, foundTournamentTeam.team.teamId)
+      .catch((err) => {
+        this.notificationsService.addNotification({
+          severity: `error`,
+          summary: `Something went wrong`,
+          detail: `${err.error.message}`
+        });
+      });
 
-    if (res.ok) {
+    if (res) {
       this.notificationsService.addNotification({
         severity: `success`,
         summary: `Checked in!`,
@@ -111,11 +119,10 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     const registerStartDate = new Date(this.tournament.registerStartDate);
     const registerEndDate = new Date(this.tournament.registerEndDate);
 
-    const diffStart = differenceInMilliseconds(now, registerStartDate);
-    const diffEnd = differenceInMilliseconds(now, registerEndDate);
+    const isNowAfterStart = isAfter(now, registerStartDate);
+    const isNowBeforeEnd = isBefore(now, registerEndDate);
 
-
-    this.isRegistrationActive = diffStart > 0 && diffEnd < 0 && this.checkedIn !== this.tournament.numberOfTeams;
+    this.isRegistrationActive = isNowAfterStart && isNowBeforeEnd && this.checkedIn !== this.tournament.numberOfTeams;
   }
 
   setIsCheckInActive() {
@@ -126,10 +133,10 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     const checkInOpenDate = new Date(this.tournament.checkInOpenDate);
     const checkInCloseDate = new Date(this.tournament.checkInCloseDate);
 
-    const diffStart = differenceInMilliseconds(now, checkInOpenDate);
-    const diffEnd = differenceInMilliseconds(now, checkInCloseDate);
+    const isNowAfterStart = isAfter(now, checkInOpenDate);
+    const isNowBeforeEnd = isBefore(now, checkInCloseDate);
 
-    this.isCheckInActive = diffStart > 0 && diffEnd < 0;
+    this.isCheckInActive = isNowAfterStart && isNowBeforeEnd;
   }
 
   async getTournamentTeams() {

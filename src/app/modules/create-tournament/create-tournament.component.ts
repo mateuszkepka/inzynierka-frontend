@@ -1,13 +1,15 @@
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { AddPrizeInput, CreateTournamentInput, Format, Tournament } from "src/app/shared/interfaces/interfaces";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { IconDefinition, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import { cloneDeep, omit } from "lodash";
+import { differenceInMilliseconds, isBefore } from "date-fns";
 
 import { ApiService } from "src/app/services/api.service";
 import { NotificationsService } from "src/app/services/notifications.service";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
-import { omit } from "lodash";
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: `app-create-tournament`,
@@ -16,6 +18,7 @@ import { omit } from "lodash";
 })
 export class CreateTournamentComponent implements OnInit, OnDestroy {
     registerStartMinDate = new Date();
+    registerStartDate = new Date();
     registerEndMinDate = new Date();
     tournamentStartMinDate = new Date();
     tournamentEndMinDate = new Date();
@@ -88,9 +91,9 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         numberOfPlayers: new FormControl(null, [Validators.required]),
         numberOfTeams: new FormControl(null, [Validators.required, this.teamsNumberValidator()]),
         numberOfMaps: new FormControl(null, [Validators.required]),
-        registerStartDate: new FormControl(``, [Validators.required]),
-        registerEndDate: new FormControl(``, [Validators.required]),
-        tournamentStartDate: new FormControl(``, [Validators.required]),
+        registerStartDate: new FormControl(null, [Validators.required, this.registerStartDateValidator()]),
+        registerEndDate: new FormControl(``, [Validators.required, this.registerEndDateValidator()]),
+        tournamentStartDate: new FormControl(``, [Validators.required, this.tournamentStartDateValidator()]),
         numberOfGroups: new FormControl(null, [this.groupsNumberValidator()]),
         endingHour: new FormControl(this.endingHour, [Validators.required]),
         description: new FormControl(``, [Validators.required]),
@@ -105,7 +108,8 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     constructor(
         private readonly apiService: ApiService,
         private readonly router: Router,
-        private readonly notificationsService: NotificationsService
+        private readonly notificationsService: NotificationsService,
+        private readonly cdRef: ChangeDetectorRef
     ) {
         this.endingHour.setMinutes(0);
     }
@@ -153,22 +157,22 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
             this.form.controls
                 .registerStartDate
                 .valueChanges
-                .subscribe((val) => this.setRegisterEndMinDate(val)),
+                .subscribe((val) => {
+                    this.setRegisterEndMinDate(val);
+                }),
             this.form.controls
                 .registerEndDate
                 .valueChanges
                 .subscribe((val) => this.setTournamentStartMinDate(val)),
-            this.form.controls
-                .tournamentStartDate
-                .valueChanges
-                .subscribe((val) => this.setTournamentEndMinDate(val)),
-            this.form.controls
+           this.form.controls
                 .format
                 .valueChanges
                 .subscribe(() => {
                     this.form.controls.numberOfTeams.setValue(null);
                 }),
         );
+        // this.setRegisterStartDate();
+
     }
 
     ngOnDestroy(): void {
@@ -178,7 +182,7 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     }
 
     async getGamePresets() {
-        this.gamePresets = await this.apiService.getFormats();
+        this.gamePresets = await this.apiService.getFormats().catch(() => []);
     }
 
     async addTournamentPrize(tournament: Tournament) {
@@ -188,19 +192,23 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
             currency: this.form.value.prize.currency || `None`,
         };
 
-        return this.apiService.addPrize(input);
+        return this.apiService.addPrize(input).catch(() => {});
     }
 
     setRegisterEndMinDate(date: Date) {
-        this.registerEndMinDate = date;
+        if (!date) {
+            return;
+        }
+        const newDate = cloneDeep(date);
+        this.registerEndMinDate = newDate;
     }
 
     setTournamentStartMinDate(date: Date) {
-        this.tournamentStartMinDate = date;
-    }
-
-    setTournamentEndMinDate(date: Date) {
-        this.tournamentEndMinDate = date;
+        if (!date) {
+            return;
+        }
+        const newDate = cloneDeep(date);
+        this.tournamentStartMinDate = newDate;
     }
 
   selectAvatar(event: any) {
@@ -228,18 +236,22 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     if (!this.avatarFormData.has(`image`)) {
         return;
     }
-    const sendAvatarResponse = await this.apiService.uploadTournamentAvatar(this.avatarFormData, createdTournament.tournamentId);
-    let severity = `success`;
-    let detail = `Avatar has been uploaded!`;
-    let summary = `Success!`;
+    const sendAvatarResponse = await this.apiService
+        .uploadTournamentAvatar(this.avatarFormData, createdTournament.tournamentId)
+        .catch((err) => {
+            const severity = `error`;
+            const detail = `${err.error.message}`;
+            const summary = `Error while uploading avatar`;
+            this.showNotification(severity, detail, summary);
+        });
 
-    if (!sendAvatarResponse.ok) {
-        severity = `error`;
-        detail = sendAvatarResponse.statusText;
-        summary = `Error while uploading avatar`;
+    if (sendAvatarResponse) {
+        const severity = `success`;
+        const detail = `Avatar has been uploaded!`;
+        const summary = `Success!`;
+        this.showNotification(severity, detail, summary);
     }
 
-    this.showNotification(severity, detail, summary);
   }
 
   async sendBackground(createdTournament: Tournament) {
@@ -247,18 +259,21 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
           return;
       }
       const sendBackgroundResponse = await this.apiService
-        .uploadTournamentBackground(this.backgroundFormData, createdTournament.tournamentId);
-      let severity = `success`;
-      let detail = `Background has been uploaded!`;
-      let summary = `Success!`;
+        .uploadTournamentBackground(this.backgroundFormData, createdTournament.tournamentId)
+        .catch((err) => {
+            const severity = `error`;
+            const detail = `${err.error.message}`;
+            const summary = `Error while uploading background`;
+            this.showNotification(severity, detail, summary);
+        });
 
-      if (!sendBackgroundResponse.ok) {
-          severity = `error`;
-          detail = sendBackgroundResponse.statusText;
-          summary = `Error while uploading background`;
+      if (sendBackgroundResponse) {
+        const severity = `success`;
+        const detail = `Background has been uploaded!`;
+        const summary = `Success!`;
+        this.showNotification(severity, detail, summary);
       }
 
-      this.showNotification(severity, detail, summary);
   }
 
   showNotification(severity: string, detail: string, summary: string) {
@@ -291,6 +306,53 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         }
         const invalid = control.value % this.form.value.numberOfGroups !== 0 ;
         return invalid ? { numberOfTeams: { value: control.value } } : null;
+    };
+  }
+
+  registerStartDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!this.form) {
+            return;
+        }
+        if (!control.value) {
+            return;
+        }
+
+        if(!isBefore(this.registerStartMinDate, control.value)) {
+            return { registerStartDate: { value: control.value }};
+        }
+    };
+  }
+
+  registerEndDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        if (!this.form) {
+            return;
+        }
+
+        if (!control.value) {
+            return;
+        }
+
+        if(!isBefore(this.registerEndMinDate, control.value)) {
+            return { registerEndDate: { value: control.value }};
+        }
+    };
+  }
+
+  tournamentStartDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+
+        if (!this.form) {
+            return;
+        }
+
+        if (!control.value) {
+            return;
+        }
+        if(!isBefore(this.tournamentStartMinDate, control.value)) {
+            return { tournamentStartDate: { value: control.value }};
+        }
     };
   }
 

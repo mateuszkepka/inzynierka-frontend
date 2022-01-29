@@ -41,7 +41,7 @@ export class AddTournamentAdminComponent implements OnInit {
   }
 
   async getAllUsers() {
-    const users = await this.apiService.getAdminsToInvite(this.tournamentId);
+    const users = await this.apiService.getAdminsToInvite(this.tournamentId).catch(() => []);
     this.usersList.push(...users);
   }
 
@@ -62,7 +62,14 @@ export class AddTournamentAdminComponent implements OnInit {
       return;
     }
     this.adminsList.forEach(async (user) => {
-      const invitationResult = await this.apiService.createTournamentAdmin(this.tournamentId, user.userId);
+      const invitationResult = await this.apiService.createTournamentAdmin(this.tournamentId, user.userId)
+        .catch((err) => {
+          this.notificationsService.addNotification({
+            severity: `error`,
+            summary: `Something went wrong`,
+            detail: `${err.error.message}`,
+          });
+        });
 
       if (invitationResult) {
         this.notificationsService.addNotification({
@@ -72,11 +79,7 @@ export class AddTournamentAdminComponent implements OnInit {
         });
         return;
       }
-      this.notificationsService.addNotification({
-        severity: `error`,
-        summary: `Something went wrong`,
-        detail: `Admin not added, please try again`,
-      });
+
     });
 
     void this.router.navigate([`/tournaments/${this.currentTournament.tournamentId}`]);

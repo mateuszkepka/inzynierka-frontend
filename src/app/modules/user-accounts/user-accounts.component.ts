@@ -30,7 +30,7 @@ export class UserAccountsComponent implements OnInit, OnDestroy {
   }
 
   async getUserAccounts() {
-    this.userAccounts = await this.apiService.getUserAccounts(this.currentUser.userId);
+    this.userAccounts = await this.apiService.getUserAccounts(this.currentUser.userId).catch(() => []);
   }
 
   ngOnDestroy() {

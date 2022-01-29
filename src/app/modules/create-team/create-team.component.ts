@@ -105,7 +105,7 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
   }
 
   async setUserAccounts() {
-    const result = await this.apiService.getUserAccounts(this.currentUser.userId);
+    const result = await this.apiService.getUserAccounts(this.currentUser.userId).catch(() => []);
     result.forEach((value) => this.userAccounts.push(value));
   }
 
@@ -134,36 +134,46 @@ export class CreateTeamComponent implements OnInit, OnDestroy {
     if (!this.avatarFormData.has(`image`)) {
         return;
     }
-    const sendAvatarResponse = await this.apiService.uploadTeamAvatar(this.avatarFormData, createdTeam.teamId);
-    let severity = `success`;
-    let detail = `Avatar has been uploaded!`;
-    let summary = `Success!`;
+    const sendAvatarResponse = await this.apiService
+      .uploadTeamAvatar(this.avatarFormData, createdTeam.teamId)
+      .catch((err) => {
+        const severity = `error`;
+        const detail = `${err.error.message}`;
+        const summary = `Error while uploading avatar`;
+        this.showNotification(severity, detail, summary);
 
-    if (!sendAvatarResponse.ok) {
-        severity = `error`;
-        detail = sendAvatarResponse.statusText;
-        summary = `Error while uploading avatar`;
+      });
+
+    if (sendAvatarResponse) {
+      const severity = `success`;
+      const detail = `Avatar has been uploaded!`;
+      const summary = `Success!`;
+      this.showNotification(severity, detail, summary);
     }
 
-    this.showNotification(severity, detail, summary);
   }
 
   async sendBackground(createdTeam: Team) {
       if (!this.backgroundFormData.has(`image`)) {
           return;
       }
-      const sendBackgroundResponse = await this.apiService.uploadTeamBackground(this.backgroundFormData, createdTeam.teamId);
-      let severity = `success`;
-      let detail = `Background has been uploaded!`;
-      let summary = `Success!`;
+      const sendBackgroundResponse = await this.apiService
+        .uploadTeamBackground(this.backgroundFormData, createdTeam.teamId)
+        .catch((err) => {
+          const severity = `error`;
+          const detail = `${err.error.message}`;
+          const summary = `Error while uploading avatar`;
+          this.showNotification(severity, detail, summary);
 
-      if (!sendBackgroundResponse.ok) {
-          severity = `error`;
-          detail = sendBackgroundResponse.statusText;
-          summary = `Error while uploading background`;
+        });
+
+      if (sendBackgroundResponse) {
+        const severity = `success`;
+        const detail = `Background has been uploaded!`;
+        const summary = `Success!`;
+        this.showNotification(severity, detail, summary);
       }
 
-      this.showNotification(severity, detail, summary);
   }
 
   showNotification(severity: string, detail: string, summary: string) {

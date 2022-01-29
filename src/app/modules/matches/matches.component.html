@@ -3,7 +3,7 @@
 
         <button 
             label="Send match results"
-            class="p-button-info"
+            class="p-button-info mt-4"
             type="button" 
             pButton 
             [routerLink]="['/matches', match.matchId, 'resolve']"
@@ -12,7 +12,7 @@
 
         <button 
             label="Change match date"
-            class="p-button-info"
+            class="p-button-info mt-4"
             type="button" 
             pButton
             (click)="showModal(match)"
@@ -27,7 +27,7 @@
                 </div>
                 <div class="flex flex-col w-full items-center">
                     <p>
-                        {{ (match.matchStartDate | date:"dd/MM/yyyy hh:mm") || "-" }}
+                        {{ (match.matchStartDate | date:"dd/MM/yyyy HH:mm") || "-" }}
                     </p>
             
                     <div class="flex flex-col gap-4 items-center">

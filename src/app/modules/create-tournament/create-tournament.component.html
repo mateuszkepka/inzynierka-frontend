@@ -37,9 +37,9 @@
                     formControlName="registerStartDate"
                     [showIcon]="true" 
                     inputId="registerStartDate" 
-                    placeholder="Enter register start date" 
+                    placeholder="Enter date in format: dd-mm-yyyy hh:mm"
                     [required]="true"
-                    dateFormat="yy-mm-dd"
+                    dateFormat="dd-mm-yy"
                     showTime="true"
                     hourFormat="24"
                     [minDate]="registerStartMinDate"
@@ -56,9 +56,9 @@
                 <label for="registerEndDate">Register end date <abbr>*</abbr></label>
                 <p-calendar
                     formControlName="registerEndDate"
-                    [showIcon]="true" 
                     inputId="registerEndDate" 
-                    placeholder="Enter register end date" 
+                    [showIcon]="true" 
+                    placeholder="Enter date in format: dd-mm-yyyy hh:mm"
                     [required]="true"
                     dateFormat="yy-mm-dd"
                     showTime="true"
@@ -78,16 +78,17 @@
                 <label for="tournamentStartDate">Tournament start date <abbr>*</abbr></label>
                 <p-calendar
                     formControlName="tournamentStartDate"
-                    [showIcon]="true" 
                     inputId="tournamentStartDate" 
-                    placeholder="Enter tournament start date" 
+                    placeholder="Enter date in format: dd-mm-yyyy hh:mm"
                     [required]="true"
+                    [showIcon]="true" 
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
                     [minDate]="tournamentStartMinDate"
                     [disabled]="!form.value.registerEndDate"
                 ></p-calendar>
+                
             </div>
             <small 
                 class="p-error" 

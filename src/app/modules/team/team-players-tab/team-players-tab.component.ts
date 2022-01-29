@@ -50,7 +50,7 @@ export class TeamPlayersTabComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async getMembersList() {
-    this.membersList = await this.apiService.getTeamMembers(this.currentTeam.teamId);
+    this.membersList = await this.apiService.getTeamMembers(this.currentTeam.teamId).catch(() => []);
   }
 
   listenOnCurrentUserChange() {
@@ -73,7 +73,6 @@ export class TeamPlayersTabComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async deletePlayer(player) {
-    console.log(`PLAYER`, player);
     const res = await this.apiService
       .removeInvitation(player.invitationId)
       .catch((err) =>

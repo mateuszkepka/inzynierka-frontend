@@ -75,18 +75,22 @@ export class RegisterComponent {
         if (!this.avatarFormData.has(`image`)) {
             return;
         }
-        const sendAvatarResponse = await this.apiService.uploadUserAvatar(this.avatarFormData, createdUser);
-        let severity = `success`;
-        let detail = `Avatar has been uploaded!`;
-        let summary = `Success!`;
+        const sendAvatarResponse = await this.apiService.uploadUserAvatar(this.avatarFormData, createdUser)
+            .catch((err) => {
+                const errSeverity = `error`;
+                const errDetail = `${err.error.message}`;
+                const errSummary = `Error while uploading avatar`;
 
-        if (!sendAvatarResponse.ok) {
-            severity = `error`;
-            detail = sendAvatarResponse.statusText;
-            summary = `Error while uploading avatar`;
+                this.showNotification(errSeverity, errDetail, errSummary);
+            });
+
+        if(sendAvatarResponse) {
+            const severity = `success`;
+            const detail = `Avatar has been uploaded!`;
+            const summary = `Success!`;
+
+            this.showNotification(severity, detail, summary);
         }
-
-        this.showNotification(severity, detail, summary);
     }
 
     async sendBackground(createdUser: User) {
@@ -94,18 +98,23 @@ export class RegisterComponent {
             return;
         }
 
-        const sendBackgroundResponse = await this.apiService.uploadUserBackground(this.backgroundFormData, createdUser);
-        let severity = `success`;
-        let detail = `Background has been uploaded!`;
-        let summary = `Success!`;
+        const sendBackgroundResponse = await this.apiService.uploadUserBackground(this.backgroundFormData, createdUser)
+            .catch((err) => {
+                const errSeverity = `error`;
+                const errDetail = `${err.error.message}`;
+                const errSummary = `Error while uploading background`;
 
-        if (!sendBackgroundResponse.ok) {
-            severity = `error`;
-            detail = sendBackgroundResponse.statusText;
-            summary = `Error while uploading background`;
+                this.showNotification(errSeverity, errDetail, errSummary);
+            });
+
+
+        if (sendBackgroundResponse) {
+            const severity = `success`;
+            const detail = `Background has been uploaded!`;
+            const summary = `Success!`;
+            this.showNotification(severity, detail, summary);
         }
 
-        this.showNotification(severity, detail, summary);
     }
 
     showNotification(severity: string, detail: string, summary: string) {

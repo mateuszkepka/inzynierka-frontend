@@ -88,7 +88,7 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
     if (change) {
       change.forEachChangedItem(async (item) => {
         if (item.key === `teamId` && item.currentValue !== item.previousValue) {
-          this.playersList = await this.apiService.getTeamMembers(this.model.teamId);
+          this.playersList = await this.apiService.getTeamMembers(this.model.teamId).catch(() => []);
         }
       });
     }
@@ -99,24 +99,47 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
   }
 
   async setTeamsList() {
-    const res = await this.apiService.getUserTeams(this.currentUser.userId);
+    const res = await this.apiService.getUserTeams(this.currentUser.userId).catch(() => []);
     this.teamsList.push(...res);
   }
 
   async onSubmit() {
-    this.model.roster =
-      this.model.roster.map(
-        (value) => ({
-            username: value.user.username,
+    const rosterPromises = await Promise.all(
+      this.model.roster.map(async (value) => {
+        const user = await this.apiService.getUserById(value.userId).catch(() => {});
+        if (user) {
+          return {
+            username: user.username,
             playerId: value.playerId,
-         }));
-    this.model.subs = this.model.subs.map(
-      (value) => ({
-          username: value.user.username,
-          playerId: value.playerId,
-       }));
+          };
+        }
+      })
+    );
+    this.model.roster = rosterPromises;
 
-    const response = await this.apiService.registerTeamForTournament(this.model, this.tournamentId);
+    const subsPromises = await Promise.all(
+      this.model.subs.map(async (value) => {
+        const user = await this.apiService.getUserById(value.userId).catch(() => {});
+        if (user) {
+          return {
+            username: user.username,
+            playerId: value.playerId,
+          };
+        }
+      })
+    );
+    this.model.subs = subsPromises;
+
+    const response = await this.apiService
+    .registerTeamForTournament(this.model, this.tournamentId)
+    .catch((err) => {
+      this.notificationsService.addNotification({
+          severity: `error`,
+          summary: `Error!`,
+          detail: `${err.error.message}`
+      });
+
+    });
 
     if (response) {
       this.notificationsService.addNotification({
@@ -128,11 +151,6 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
       return;
     }
 
-    this.notificationsService.addNotification({
-        severity: `error`,
-        summary: `Error!`,
-        detail: `Something went wrong.`
-    });
   }
 
   search(event: any) {

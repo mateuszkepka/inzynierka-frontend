@@ -24,7 +24,7 @@ export class ProfileMatchesComponent implements OnInit, OnDestroy, DoCheck {
   isLoading = false;
   isVisible = false;
 
-  status: MatchStatus.SCHEDULED;
+  status = MatchStatus.SCHEDULED;
 
   constructor(
     private readonly elementRef: ElementRef,

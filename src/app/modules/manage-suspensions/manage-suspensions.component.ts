@@ -41,10 +41,12 @@ export class ManageSuspensionsComponent implements OnInit, OnDestroy {
   }
 
   async getSuspensions() {
-    this.suspensions = await this.apiService.getSuspensionsFiltered(this.filters);
+    this.suspensions = await this.apiService.getSuspensionsFiltered(this.filters).catch(() => []);
     this.suspensions.forEach(async (suspension) => {
-      const currentUser = await this.apiService.getUserById(suspension.userId);
-      suspension.username = currentUser.username;
+      const currentUser = await this.apiService.getUserById(suspension.userId).catch(() => false as const);
+      if (currentUser) {
+        suspension.username = currentUser.username;
+      }
     });
   }
 
@@ -73,17 +75,23 @@ export class ManageSuspensionsComponent implements OnInit, OnDestroy {
 
   async updateSuspension(updateSuspensionInput: UpdateSuspensionInput) {
     const suspensionId = updateSuspensionInput.suspensionId;
-    const res = await this.apiService.updateSuspension(omit(updateSuspensionInput, [`suspensionId`]), suspensionId);
 
     let summary = `Success!`;
     let detail = `Suspension has been updated`;
     let severity = `success`;
 
-    if (!res) {
-      severity = `error`;
-      summary = `Error!`;
-      detail = `Something went wrong when sending report! Try again.`;
-    }
+    await this.apiService
+      .updateSuspension(omit(updateSuspensionInput, [`suspensionId`]), suspensionId)
+      .catch((err) => {
+        severity = `error`;
+        summary = `Error!`;
+        detail = `${err.error.message}`;
+        this.notificationsService.addNotification({
+          severity,
+          summary,
+          detail
+        });
+      });
 
     this.notificationsService.addNotification({
       severity,
@@ -91,9 +99,7 @@ export class ManageSuspensionsComponent implements OnInit, OnDestroy {
       detail
     });
 
-    if (res) {
-      await this.getSuspensions();
-    }
+    await this.getSuspensions();
   }
 
 }

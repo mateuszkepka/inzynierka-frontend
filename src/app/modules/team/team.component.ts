@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Player, Team, User } from 'src/app/shared/interfaces/interfaces';
 
 import { ApiService } from 'src/app/services/api.service';
@@ -35,6 +35,7 @@ export class TeamComponent implements OnInit {
     private readonly store: Store,
     private readonly router: Router,
     private readonly notificationsService: NotificationsService,
+    private readonly cdRef: ChangeDetectorRef,
   ) {
     this.teamId = Number(this.activatedRoute.snapshot.params.id);
   }
@@ -77,9 +78,17 @@ export class TeamComponent implements OnInit {
   }
 
   async deleteTeam() {
-    const res = await this.apiService.deleteTeam(this.teamId);
+    const res = await this.apiService.deleteTeam(this.teamId)
+      .catch((err) => {
+        this.notificationsService.addNotification({
+          severity: `error`,
+          summary: `Error!`,
+          detail: `${err.error.message}`
+        });
+      })
+    ;
 
-    if (res.ok) {
+    if (res) {
       this.notificationsService.addNotification({
         severity: `success`,
         summary: `Success!`,
@@ -88,11 +97,7 @@ export class TeamComponent implements OnInit {
       void this.router.navigate([`/profile/${this.currentUser.userId}`]);
       return;
     }
-    this.notificationsService.addNotification({
-      severity: `error`,
-      summary: `Error!`,
-      detail: `Something went wrong.`
-    });
+
   }
 
   getImages() {

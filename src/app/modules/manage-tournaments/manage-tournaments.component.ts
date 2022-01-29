@@ -51,6 +51,6 @@ export class ManageTournamentsComponent implements OnInit, OnDestroy {
         role: TournamentRoles.TOURNAMENT_ADMIN,
         status: TournamentStatus.UPCOMING
       }
-    );
+    ).catch(() => []);
   }
 }

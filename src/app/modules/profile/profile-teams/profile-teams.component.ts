@@ -20,6 +20,7 @@ export class ProfileTeamsComponent implements OnInit, OnDestroy, DoCheck {
   currentProfileId: number;
 
   isVisible = false;
+  isLoading = false;
 
   constructor(
     private readonly elementRef: ElementRef,
@@ -44,7 +45,15 @@ export class ProfileTeamsComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   async setTeamsList() {
-    this.teamsList = await this.apiService.getUserTeams(this.currentProfileId).catch(() => []);
+    this.isLoading = true;
+    this.teamsList = await this.apiService
+      .getUserTeams(this.currentProfileId)
+      .catch(() => {
+        this.isLoading = false;
+        return [];
+      });
+
+    this.isLoading = false;
   }
 
   listenOnCurrentlyLoggedUserChange() {

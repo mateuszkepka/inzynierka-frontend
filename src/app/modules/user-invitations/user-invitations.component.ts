@@ -23,7 +23,7 @@ export class UserInvitationsComponent implements OnInit {
   }
 
   async getPendingInvitations() {
-    this.pendingInvitations = await this.apiService.getPendingInvitations({ status: InvitationStatus.Pending });
+    this.pendingInvitations = await this.apiService.getPendingInvitations({ status: InvitationStatus.Pending }).catch(() => []);
     const promises = this.pendingInvitations.map(async (value) => {
       const teamName = await this.getTeamName(value.teamId);
       return {

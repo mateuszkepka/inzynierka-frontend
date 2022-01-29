@@ -24,7 +24,7 @@ export class ManageTorunamentComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.participatingTeams = await this.apiService.getTournamentTeams(this.tournamentId, ParticipationStatus.SIGNED);
+    this.participatingTeams = await this.apiService.getTournamentTeams(this.tournamentId, ParticipationStatus.SIGNED).catch(() => []);
   }
 
   async acceptTeam(participatingTeam: TournamentTeam, status: string) {

@@ -44,7 +44,7 @@ import { omit } from "lodash";
     providedIn: `root`,
 })
 export class ApiService {
-    apiUrl = environment.apiUrl;
+    apiUrl = `https://inzynierka-turnieje.herokuapp.com`;
 
     constructor(private readonly httpClient: HttpClient) {}
 
@@ -329,7 +329,7 @@ export class ApiService {
 
     async deleteTeam(teamId: number) {
         const url = this.apiUrl + `/teams/${teamId}`;
-        return this.httpClient.delete<Team>(url, { observe: `response` }).toPromise();
+        return this.httpClient.delete<Team>(url, { withCredentials: true, observe: `response` }).toPromise();
     }
 
     async uploadTeamAvatar(data: FormData, teamId: number) {

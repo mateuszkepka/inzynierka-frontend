@@ -70,7 +70,7 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
   }
 
   async getPlayersList() {
-    this.playersList = await this.apiService.getPlayersToInvite(this.currentTeam.teamId);
+    this.playersList = await this.apiService.getPlayersToInvite(this.currentTeam.teamId).catch(() => []);
   }
 
   search(event: any) {
@@ -90,7 +90,14 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
       return;
     }
     this.invitationsList.forEach(async (invitation) => {
-      const invitationResult = await this.apiService.invitePlayer({playerId: invitation.playerId, teamId: this.currentTeam.teamId});
+      const invitationResult = await this.apiService.invitePlayer({playerId: invitation.playerId, teamId: this.currentTeam.teamId})
+        .catch((err) => {
+          this.notificationsService.addNotification({
+            severity: `error`,
+            summary: `Something went wrong`,
+            detail: `${err.error.message}`,
+          });
+        });
 
       if (invitationResult) {
         this.notificationsService.addNotification({
@@ -100,11 +107,7 @@ export class InvitePlayersComponent implements OnInit, OnDestroy {
         });
         return;
       }
-      this.notificationsService.addNotification({
-        severity: `error`,
-        summary: `Something went wrong`,
-        detail: `Invitation not sent, please try again`,
-      });
+
     });
 
     void this.router.navigate([`/team/${this.currentTeam.teamId}`]);

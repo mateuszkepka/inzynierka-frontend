@@ -1,34 +1,51 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { Dictionary, groupBy } from 'lodash';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { cloneDeep, groupBy } from 'lodash';
 
 import { ApiService } from 'src/app/services/api.service';
+import { Store } from '@ngxs/store';
+import { Subscription } from 'rxjs';
+import { Tournament } from 'src/app/shared/interfaces/interfaces';
 
 @Component({
   selector: `app-tournament-ladder`,
   templateUrl: `./tournament-ladder.component.html`,
   styleUrls: [`./tournament-ladder.component.scss`]
 })
-export class TournamentLadderComponent implements OnInit {
+export class TournamentLadderComponent implements OnInit, OnDestroy {
   tournamentId: number;
+  tournament: Tournament;
 
   upperBracketMatches: any[] = [];
   lowerBracketMatches: any[] = [];
 
+  templates: any[] =[];
+  height: string;
+
+  tournamentSub: Subscription;
+
   constructor(
     private readonly apiService: ApiService,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly store: Store,
   ) {
     this.tournamentId = Number(this.activatedRoute.snapshot.params.id);
   }
 
   async ngOnInit() {
-      const res = await this.apiService.getTournamentStandings(this.tournamentId);
-      this.setBrackets(res[0], `upperBracketMatches`);
-      if (res.length > 1) {
-        this.setBrackets(res[1], `lowerBracketMatches`);
+      this.listenOnTournamentChange();
+      const res = await this.apiService.getTournamentStandings(this.tournamentId).catch(() => []);
+      if (res.length > 0) {
+        this.setBrackets(res[0], `upperBracketMatches`);
+        if (res.length > 1) {
+          this.setBrackets(res[1], `lowerBracketMatches`);
+        }
       }
+  }
+
+  ngOnDestroy(): void {
+      this.tournamentSub.unsubscribe();
   }
 
   setBrackets(bracketMatches, arrayKey: string) {
@@ -42,7 +59,6 @@ export class TournamentLadderComponent implements OnInit {
     });
 
     this[arrayKey] = this[arrayKey].slice().reverse();
-    console.log(this[arrayKey]);
   }
 
 
@@ -51,5 +67,20 @@ export class TournamentLadderComponent implements OnInit {
       return;
     }
     void this.router.navigate([`/team/${teamId}`]);
+  }
+
+  setBracketHeight() {
+    this.height = `${150 * (this.tournament.numberOfTeams / 2)}px`;
+  }
+
+  listenOnTournamentChange() {
+    this.tournamentSub = this.store
+      .select((state) => state.tournament.tournament)
+      .subscribe((tournament: Tournament) => {
+        if (tournament) {
+          this.tournament = cloneDeep(tournament);
+          this.setBracketHeight();
+        }
+      });
   }
 }

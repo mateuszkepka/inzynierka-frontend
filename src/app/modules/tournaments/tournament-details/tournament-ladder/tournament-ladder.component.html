@@ -3,7 +3,7 @@
 <div class="header">
   <h1>Upper bracket</h1>
 </div>
-<div class="bracket-container">
+<div class="bracket-container" [style.height]="height" name="bracketContainer">
   <ng-container *ngIf="upperBracketMatches">
     <div class="bracket-level" *ngFor="let stage of upperBracketMatches; index as i">
       <p class="text-center font-semibold" *ngIf="stage.length !== 1">
@@ -55,7 +55,7 @@
   <div class="header">
     <h1>Lower bracket</h1>
   </div>
-  <div class="bracket-container">
+  <div class="bracket-container" [style.height]="height" name="bracketContainer">
     <ng-container *ngIf="lowerBracketMatches">
       <div class="bracket-level" *ngFor="let stage of lowerBracketMatches; let i = index">
         <p class="text-center font-semibold" *ngIf="stage.length !== 1">Losers Round {{ i + 1 }}</p>
