@@ -44,7 +44,7 @@ import { omit } from "lodash";
     providedIn: `root`,
 })
 export class ApiService {
-    apiUrl = `https://inzynierka-turnieje.herokuapp.com`;
+    apiUrl = environment.apiUrl;
 
     constructor(private readonly httpClient: HttpClient) {}
 

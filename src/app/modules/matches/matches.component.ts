@@ -1,7 +1,7 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Match, Player, Team, User } from 'src/app/shared/interfaces/interfaces';
 
-import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MatchChangeDateModalComponent } from './match-change-date-modal/match-change-date-modal.component';
@@ -41,15 +41,18 @@ export class MatchesComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly notificationsService: NotificationsService,
     public dialogService: DialogService,
+    private readonly router: Router
   ) {
     this.matchId = Number(this.activatedRoute.snapshot.params.id);
   }
 
   async ngOnInit() {
     this.match = await this.apiService.getMatchById(this.matchId).catch(() => false as const);
+    console.log(this.match);
     if (this.match) {
       this.firstTeam = await this.apiService.getTeamById(this.match.firstRoster.team.teamId).catch(() => false as const);
       this.secondTeam = await this.apiService.getTeamById(this.match.secondRoster.team.teamId).catch(() => false as const);
+      console.log(this.firstTeam, `FIRST`);
       this.listenOnCurrentUserChange();
       if (this.match.maps.length > 0) {
         this.prepareMapsData();
@@ -107,7 +110,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
       return;
     }
     const admins = await this.apiService
-      .getTournamentAdmins(22)
+      .getTournamentAdmins((this.match as Match).tournamentId)
       .catch(() => []);
     if (admins.length === 0) {
       this.showChangeDateButton = false;
@@ -187,5 +190,13 @@ export class MatchesComponent implements OnInit, OnDestroy {
 
   onTabChange() {
     window.scroll(0,0);
+  }
+
+  async navigateToProfile(player) {
+    const playerData = await this.apiService.getPlayerById(player.playerId).catch(() => false as const);
+
+    if (playerData) {
+      void this.router.navigate([`/profile`, playerData.user.userId]);
+    }
   }
 }

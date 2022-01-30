@@ -46,7 +46,9 @@ export class RegisterComponent {
                 requestBody, [`repeatPassword`, `terms`]
             ) as RegisterInput
         ).catch((err) => {
-            this.showNotification(`error`, `${err.error.message}`, `Error!`);
+            err.error.message.forEach((item) => {
+                this.showNotification(`error`, `${item}`, `Error!`);
+            });
         });
         if (res) {
             this.showNotification(`success`, `Account has been created.`, `Success!`);

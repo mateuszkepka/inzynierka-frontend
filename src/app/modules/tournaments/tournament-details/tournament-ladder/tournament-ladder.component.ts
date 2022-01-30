@@ -36,6 +36,7 @@ export class TournamentLadderComponent implements OnInit, OnDestroy {
   async ngOnInit() {
       this.listenOnTournamentChange();
       const res = await this.apiService.getTournamentStandings(this.tournamentId).catch(() => []);
+      console.log(res);
       if (res.length > 0) {
         this.setBrackets(res[0], `upperBracketMatches`);
         if (res.length > 1) {

@@ -99,7 +99,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
       },
       manageSuspensions: {
         title: `Manage suspensions`,
-        subtitle: `See and manage all the suspensions`,
+        subtitle: `See and manage all suspensions`,
         link: `/manage-suspensions`
       },
       resolveMatches: {
