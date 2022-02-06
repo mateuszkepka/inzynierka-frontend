@@ -2,7 +2,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CreateTournamentInput, Format, Tournament, UpdatePrizeInput, UpdateTournamentInput } from 'src/app/shared/interfaces/interfaces';
-import { differenceInMilliseconds, parseISO } from 'date-fns';
+import { differenceInMilliseconds, isAfter, parseISO } from 'date-fns';
 
 import { ApiService } from 'src/app/services/api.service';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
@@ -86,6 +86,7 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
 
   differenceInMilliseconds = differenceInMilliseconds;
   parseISO = parseISO;
+  isAfter = isAfter;
 
   form = new FormGroup({
     name: new FormControl(``, [Validators.required]),
@@ -245,9 +246,9 @@ export class TournamentEditComponent implements OnInit, OnDestroy {
         });
 
       if (sendBackgroundResponse) {
-        const severity = `error`;
-        const detail = sendBackgroundResponse.statusText;
-        const summary = `Error while uploading background`;
+        const severity = `success`;
+        const detail = `Background has been uploaded!`;
+        const summary = `Success!`;
         this.showNotification(severity, detail, summary);
       }
 

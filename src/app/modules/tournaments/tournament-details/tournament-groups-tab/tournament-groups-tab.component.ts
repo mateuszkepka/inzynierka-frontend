@@ -13,6 +13,7 @@ export class TournamentGroupsTabComponent implements OnInit {
 
   groupStandings: GroupStanding[];
   tournamentId: number;
+  errorText = ``;
 
   constructor(
     private readonly apiService: ApiService,
@@ -26,7 +27,10 @@ export class TournamentGroupsTabComponent implements OnInit {
   }
 
   async getGroupStandings() {
-    this.groupStandings = await this.apiService.getTournamentStandings(this.tournamentId).catch(() => []);
+    this.groupStandings = await this.apiService.getTournamentStandings(this.tournamentId).catch((err) => {
+      this.errorText = err.error.message;
+      return [];
+    });
   }
 
   onTabChange() {

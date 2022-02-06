@@ -11,8 +11,8 @@
             <div class="flex flex-col gap-4">
                 <p class="text-4xl font-bold">{{ tournament.name }}</p>
                 {{ (tournament.tournamentStartDate | date:"dd/MM/yyyy") || "n/a" }}
-                <p><strong>Checked in: </strong> {{ checkedIn || "n/a" }}</p>
-                <p><strong>Signed in: </strong> {{ tournamentTeams.length || "n/a" }}</p>
+                <p><strong>Checked in: </strong> {{ checkedIn || "0" }}</p>
+                <p><strong>Signed in: </strong> {{ tournamentTeams.length || "0" }}</p>
             </div>
         </div>
     </div>

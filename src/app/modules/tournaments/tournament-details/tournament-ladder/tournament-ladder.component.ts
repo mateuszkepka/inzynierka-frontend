@@ -15,6 +15,7 @@ import { Tournament } from 'src/app/shared/interfaces/interfaces';
 export class TournamentLadderComponent implements OnInit, OnDestroy {
   tournamentId: number;
   tournament: Tournament;
+  errorText = ``;
 
   upperBracketMatches: any[] = [];
   lowerBracketMatches: any[] = [];
@@ -35,8 +36,10 @@ export class TournamentLadderComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
       this.listenOnTournamentChange();
-      const res = await this.apiService.getTournamentStandings(this.tournamentId).catch(() => []);
-      console.log(res);
+      const res = await this.apiService.getTournamentStandings(this.tournamentId).catch((err) => {
+        this.errorText = err.error.message;
+        return [];
+      });
       if (res.length > 0) {
         this.setBrackets(res[0], `upperBracketMatches`);
         if (res.length > 1) {

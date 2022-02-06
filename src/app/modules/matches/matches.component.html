@@ -26,17 +26,19 @@
                             'winner': secondTeamMatchesCount < firstTeamMatchesCount,
                             'loser': secondTeamMatchesCount > firstTeamMatchesCount
                         }"
-                    >{{ match.firstRoster.team.teamName }}</p>
-                    <div 
-                        class="py-4 player-link" 
-                        *ngFor="let player of match.firstRoster.roster"
+                    >{{ match.firstRoster?.team?.teamName || "TBA" }}</p>
+                    <ng-container *ngIf="match.firstRoster">
+                        <div 
+                            class="py-4 player-link" 
+                            *ngFor="let player of match.firstRoster.roster"
+                        >
+                            <p (click)="navigateToProfile(player)">
+                                {{ player.username }}
+    
+                            </p>
+                        </div>
 
-                    >
-                        <p (click)="navigateToProfile(player)">
-                            {{ player.username }}
-
-                        </p>
-                    </div>
+                    </ng-container>
                 </div>
                 <div class="flex flex-col w-full items-center">
                     <p>
@@ -58,12 +60,14 @@
                             'winner': secondTeamMatchesCount > firstTeamMatchesCount,
                             'loser': secondTeamMatchesCount < firstTeamMatchesCount
                         }"
-                    >{{ match.secondRoster.team.teamName }}</p>
-                    <div class="py-4 player-link" *ngFor="let player of match.secondRoster.roster">
-                        <p (click)="navigateToProfile(player)">
-                            {{ player.username }}
-                        </p>
-                    </div>
+                    >{{ match.secondRoster?.team?.teamName || "TBA" }}</p>
+                    <ng-container *ngIf="match.secondRoster">
+                        <div class="py-4 player-link" *ngFor="let player of match.secondRoster.roster">
+                            <p (click)="navigateToProfile(player)">
+                                {{ player.username }}
+                            </p>
+                        </div>
+                    </ng-container>
                 </div>
         </div>
         
@@ -75,7 +79,9 @@
                         <p><strong>Play time: </strong>{{ map.time }}</p>
                         <div class="grid grid-cols-2">
                             <div class="mb-4 border-r-2 border-gray-200">
-                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === 1 ? "Winners" : "Losers" }}</p>
+                                <p class="p-4 border-b-2 border-gray-200">
+                                    {{ map.mapWinner === match.firstRoster?.team?.teamId ? "Winners" : "Losers" }}
+                                </p>
                                 <ng-container *ngFor="let player of match.firstRoster.roster">
                                     <div 
                                     *ngIf="player.performances && player.performances.length > 0" class="flex flex-row flex-wrap gap-4 py-4 border-b-2 border-gray-200 match">
@@ -107,7 +113,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === 2 ? "Winners" : "Losers" }}</p>
+                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === match.firstRoster?.team?.teamId ? "Winners" : "Losers" }}</p>
                                 <ng-container *ngFor="let player of match.secondRoster.roster">
                                     <div
                                         *ngIf="player.performances && player.performances.length > 0" 

@@ -2,8 +2,8 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { AddPrizeInput, CreateTournamentInput, Format, Tournament } from "src/app/shared/interfaces/interfaces";
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { IconDefinition, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import { addMinutes, differenceInMilliseconds, isBefore } from "date-fns";
 import { cloneDeep, omit } from "lodash";
-import { differenceInMilliseconds, isBefore } from "date-fns";
 
 import { ApiService } from "src/app/services/api.service";
 import { NotificationsService } from "src/app/services/notifications.service";
@@ -17,7 +17,7 @@ import { debounceTime } from 'rxjs/operators';
     styleUrls: [`./create-tournament.component.scss`]
 })
 export class CreateTournamentComponent implements OnInit, OnDestroy {
-    registerStartMinDate = new Date();
+    registerStartMinDate = addMinutes(new Date(), 4);
     registerStartDate = new Date();
     registerEndMinDate = new Date();
     tournamentStartMinDate = new Date();
@@ -87,20 +87,20 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     backgroundFormData = new FormData();
 
     form = new FormGroup({
-        name: new FormControl(``, [Validators.required]),
+        tournamentName: new FormControl(``, [Validators.required]),
         numberOfPlayers: new FormControl(null, [Validators.required]),
         numberOfTeams: new FormControl(null, [Validators.required, this.teamsNumberValidator()]),
         numberOfMaps: new FormControl(null, [Validators.required]),
-        registerStartDate: new FormControl(null, [Validators.required, this.registerStartDateValidator()]),
-        registerEndDate: new FormControl(``, [Validators.required, this.registerEndDateValidator()]),
-        tournamentStartDate: new FormControl(``, [Validators.required, this.tournamentStartDateValidator()]),
+        registerStartDate: new FormControl(addMinutes(new Date(), 5), [Validators.required, this.registerStartDateValidator()]),
+        registerEndDate: new FormControl(null, [Validators.required, this.registerEndDateValidator()]),
+        tournamentStartDate: new FormControl(null, [Validators.required, this.tournamentStartDateValidator()]),
         numberOfGroups: new FormControl(null, [this.groupsNumberValidator()]),
         endingHour: new FormControl(this.endingHour, [Validators.required]),
         description: new FormControl(``, [Validators.required]),
         format: new FormControl(``, [Validators.required]),
         prize: new FormGroup({
-            currency: new FormControl(``, [Validators.required]),
-            distribution: new FormControl(``, [Validators.required]),
+            currency: new FormControl(``, []),
+            distribution: new FormControl(``, []),
         }),
         gameId: new FormControl(1, [Validators.required]),
     });
@@ -116,16 +116,18 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
 
     async onSubmit() {
         let requestBody = {
-            ...omit(this.form.value, [`endingHour`]),
+            ...omit(this.form.value, [`endingHour`, `tournamentName`]),
             endingHour: this.form.value.endingHour.getHours(),
             endingMinutes: this.form.value.endingHour.getMinutes(),
+            name: this.form.value.tournamentName,
         };
 
         if (this.form.value.format === `Single Elimination Ladder` || this.form.value.format === `Double Elimination Ladder`) {
             requestBody = {
-                ...omit(this.form.value, [`numberOfGroups`, `endingHour`]),
+                ...omit(this.form.value, [`numberOfGroups`, `endingHour`, `tournamentName`]),
                 endingHour: this.form.value.endingHour.getHours(),
                 endingMinutes: this.form.value.endingHour.getMinutes(),
+                name: this.form.value.tournamentName,
             };
 
         }
@@ -138,8 +140,8 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
             });
         });
 
-        const addPrizeResponse = await this.addTournamentPrize(response as Tournament);
-        if (response && addPrizeResponse) {
+        await this.addTournamentPrize(response as Tournament);
+        if (response) {
             this.notificationsService.addNotification({
                 severity: `success`,
                 summary: `Success!`,
@@ -186,28 +188,49 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
     }
 
     async addTournamentPrize(tournament: Tournament) {
-        const input: AddPrizeInput = {
-            tournamentId: tournament.tournamentId,
-            distribution: this.form.value.prize.distribution,
-            currency: this.form.value.prize.currency || `None`,
-        };
+        if (
+            this.form.value.prize.distribution
+            && this.form.value.prize.currency
+        ) {
+            const input: AddPrizeInput = {
+                tournamentId: tournament.tournamentId,
+                distribution: this.form.value.prize.distribution,
+                currency: this.form.value.prize.currency || `None`,
+            };
 
-        return this.apiService.addPrize(input).catch(() => {});
+            return this.apiService.addPrize(input).catch(() => {});
+        }
     }
 
     setRegisterEndMinDate(date: Date) {
         if (!date) {
             return;
         }
-        const newDate = cloneDeep(date);
-        this.registerEndMinDate = newDate;
+
+        if (this.form.value.registerEndDate) {
+            this.form.controls.registerEndDate.reset();
+        }
+
+        if (this.form.value.tournamentStartDate) {
+            this.form.controls.tournamentStartDate.reset();
+        }
+
+        this.form.patchValue({ registerEndDate: addMinutes(cloneDeep(date), 2)});
+        this.registerEndMinDate = addMinutes(cloneDeep(date),1);
     }
 
     setTournamentStartMinDate(date: Date) {
         if (!date) {
             return;
         }
-        const newDate = cloneDeep(date);
+
+        if (this.form.value.tournamentStartDate) {
+            this.form.controls.tournamentStartDate.reset();
+        }
+
+        const newDate = addMinutes(cloneDeep(date), 40);
+        this.form.patchValue({ tournamentStartDate: addMinutes(cloneDeep(newDate), 1)});
+
         this.tournamentStartMinDate = newDate;
     }
 

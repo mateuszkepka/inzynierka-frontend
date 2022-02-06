@@ -33,13 +33,13 @@
                         let-player
                         pTemplate="item"
                     >
-                        <p>{{ player.summonerName }}</p>
+                        <p>{{ player?.summonerName }}</p>
                     </ng-template>
                     <ng-template
                         let-player
                         pTemplate="selectedItem"
                     >
-                        <span>{{ player.summonerName }}</span>
+                        <span>{{ player?.summonerName }}</span>
                     </ng-template>
                 </p-autoComplete>
 
@@ -57,13 +57,13 @@
                         let-player
                         pTemplate="item"
                     >
-                        <p>{{ player.summonerName }}</p>
+                        <p>{{ player?.summonerName }}</p>
                     </ng-template>
                     <ng-template
                         let-player
                         pTemplate="selectedItem"
                     >
-                        <span>{{ player.summonerName }}</span>
+                        <span>{{ player?.summonerName }}</span>
                     </ng-template>
                 </p-autoComplete>
             </div>

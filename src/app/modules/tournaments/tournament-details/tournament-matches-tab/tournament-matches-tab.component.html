@@ -24,11 +24,11 @@
 
                         <div class="flex flex-row items-center gap-4">
                             <p>
-                                {{ match.firstRoster.team.teamName }}
+                                {{ match.firstRoster?.team?.teamName || 'TBA' }}
                             </p>
                             <p>vs.</p>
                             <p>
-                                {{ match.secondRoster.team.teamName }}
+                                {{ match.secondRoster?.team?.teamName || 'TBA' }}
                             </p>
                         </div>
                     </div>

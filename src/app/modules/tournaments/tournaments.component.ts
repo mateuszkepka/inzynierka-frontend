@@ -36,8 +36,7 @@ export class TournamentsComponent implements OnInit {
         const tournaments = await this.apiService.getAllTournaments(this.status).catch(() => []);
         const promises = tournaments.map(async (tournament) => {
             const res = await this.apiService.getTournamentTeams(tournament.tournamentId).catch(() => []);
-            const checkedIn = res.filter((team) => team.status === `checked`);
-            return {...tournament, checkedIn: checkedIn.length };
+            return {...tournament, checkedIn: res.length };
         });
         this.tournaments = await Promise.all(promises);
     }

@@ -46,7 +46,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     this.tournament = await this.apiService.getTournamentById(this.tournamentId);
     await this.getTournamentTeams();
     this.setCheckedIn();
-    this.setIsRegistrationActive();
+    await this.setIsRegistrationActive();
     this.setIsCheckInActive();
     this.store.dispatch(new SetTournament(this.tournament));
     await this.getImages();
@@ -111,10 +111,23 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  setIsRegistrationActive() {
+  async setIsRegistrationActive() {
     if (!this.currentUser) {
       return false;
     }
+
+    const userTeams = await this.apiService.getUserTeams(this.currentUser.userId).catch(() => []);
+
+    let foundTeam;
+    this.tournamentTeams.forEach((team) => {
+      foundTeam = userTeams.find((value) => value.teamId === team.team.teamId);
+    });
+
+    if (foundTeam) {
+      this.isRegistrationActive = false;
+      return;
+    }
+
     const now = new Date();
     const registerStartDate = new Date(this.tournament.registerStartDate);
     const registerEndDate = new Date(this.tournament.registerEndDate);

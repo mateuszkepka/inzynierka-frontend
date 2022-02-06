@@ -16,17 +16,18 @@
         >
             <span class="p-float-label w-full">
                 <input
-                    formControlName="name"
-                    id="name"
+                    formControlName="tournamentName"
+                    id="tournamentName"
+                    name="tournamentName"
                     type="text" 
                     pInputText 
                     [required]="true"
                 />
-                <label for="name">Name your tournament <abbr>*</abbr></label>
+                <label for="tournamentName">Name your tournament <abbr>*</abbr></label>
             </span>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.name.dirty && form.controls.name.invalid"
+                *ngIf="form.controls.tournamentName.dirty && form.controls.tournamentName.invalid"
             >
                 Value required
             </small>
@@ -37,12 +38,14 @@
                     formControlName="registerStartDate"
                     [showIcon]="true" 
                     inputId="registerStartDate" 
-                    placeholder="Enter date in format: dd-mm-yyyy hh:mm"
+                    placeholder="Enter register start date"
                     [required]="true"
-                    dateFormat="dd-mm-yy"
+                    dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
+                    [defaultDate]="registerStartMinDate"
                     [minDate]="registerStartMinDate"
+                    [todayButtonStyleClass]="'todayButton'"
                 ></p-calendar>
             </div>
             <small 
@@ -58,13 +61,15 @@
                     formControlName="registerEndDate"
                     inputId="registerEndDate" 
                     [showIcon]="true" 
-                    placeholder="Enter date in format: dd-mm-yyyy hh:mm"
+                    placeholder="Enter register end date"
                     [required]="true"
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
                     [minDate]="registerEndMinDate"
+                    [defaultDate]="registerEndMinDate"
                     [disabled]="!form.value.registerStartDate"
+                    [todayButtonStyleClass]="'todayButton'"
                 ></p-calendar>
             </div>
             <small 
@@ -79,14 +84,16 @@
                 <p-calendar
                     formControlName="tournamentStartDate"
                     inputId="tournamentStartDate" 
-                    placeholder="Enter date in format: dd-mm-yyyy hh:mm"
+                    placeholder="Enter tournament start date"
                     [required]="true"
                     [showIcon]="true" 
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
                     [minDate]="tournamentStartMinDate"
+                    [defaultDate]="tournamentStartMinDate"
                     [disabled]="!form.value.registerEndDate"
+                    [todayButtonStyleClass]="'todayButton'"
                 ></p-calendar>
                 
             </div>
@@ -95,6 +102,12 @@
                 *ngIf="form.controls.tournamentStartDate.dirty && form.controls.tournamentStartDate.invalid"
             >
                 Value required
+            </small>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.tournamentStartDate.dirty && form.controls.tournamentStartDate.invalid"
+            >
+                {{ form.controls.tournamentStartDate?.errors['tournamentStartDate'] ? 'Tournament must start at least 40 minutes after registration end': 'Value required' }}
             </small>
 
             <div class="p-field w-full">
@@ -247,9 +260,8 @@
                         id="distribution"
                         type="text" 
                         pInputText 
-                        [required]="true"
                     />
-                    <label for="name">Prize <abbr>*</abbr></label>
+                    <label for="name">Prize</label>
                 </span>
             </div>
 
@@ -260,9 +272,8 @@
                         id="currency"
                         type="text" 
                         pInputText 
-                        [required]="true"
                     />
-                    <label for="currency">Currency <abbr>*</abbr></label>
+                    <label for="currency">Currency</label>
                 </span>
             </div>
             

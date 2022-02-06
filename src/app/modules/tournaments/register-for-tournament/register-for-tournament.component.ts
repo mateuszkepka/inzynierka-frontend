@@ -106,7 +106,7 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
   async onSubmit() {
     const rosterPromises = await Promise.all(
       this.model.roster.map(async (value) => {
-        const user = await this.apiService.getUserById(value.userId).catch(() => {});
+        const user = await this.apiService.getUserById(value.user.userId).catch(() => {});
         if (user) {
           return {
             username: user.username,
@@ -119,7 +119,7 @@ export class RegisterForTournamentComponent implements OnInit, OnDestroy, DoChec
 
     const subsPromises = await Promise.all(
       this.model.subs.map(async (value) => {
-        const user = await this.apiService.getUserById(value.userId).catch(() => {});
+        const user = await this.apiService.getUserById(value.user.userId).catch(() => {});
         if (user) {
           return {
             username: user.username,

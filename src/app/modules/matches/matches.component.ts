@@ -48,11 +48,13 @@ export class MatchesComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.match = await this.apiService.getMatchById(this.matchId).catch(() => false as const);
-    console.log(this.match);
     if (this.match) {
-      this.firstTeam = await this.apiService.getTeamById(this.match.firstRoster.team.teamId).catch(() => false as const);
-      this.secondTeam = await this.apiService.getTeamById(this.match.secondRoster.team.teamId).catch(() => false as const);
-      console.log(this.firstTeam, `FIRST`);
+      if (this.match.firstRoster) {
+        this.firstTeam = await this.apiService.getTeamById(this.match.firstRoster.team.teamId).catch(() => false as const);
+      }
+      if (this.match.secondRoster) {
+        this.secondTeam = await this.apiService.getTeamById(this.match.secondRoster.team.teamId).catch(() => false as const);
+      }
       this.listenOnCurrentUserChange();
       if (this.match.maps.length > 0) {
         this.prepareMapsData();
@@ -97,6 +99,10 @@ export class MatchesComponent implements OnInit, OnDestroy {
       return false;
     }
     const accountIds = this.currentUserAccounts.map((value) => value.playerId);
+    if (!this.firstTeam || !this.secondTeam) {
+      this.showResolveButton = false;
+      return;
+    }
     const isFirstTeamCaptain = accountIds.find((value) => value === (this.firstTeam as Team).captainId);
     const isSecondTeamCaptain = accountIds.find((value) => value === (this.secondTeam as Team).captainId);
 
@@ -183,7 +189,7 @@ export class MatchesComponent implements OnInit, OnDestroy {
   countTeamsWins() {
     if (this.match) {
       this.match.maps.forEach((map) =>
-        map.mapWinner === 1 ? ++this.firstTeamMatchesCount : ++this.secondTeamMatchesCount
+        map.mapWinner === (this.firstTeam as Team).teamId ? ++this.firstTeamMatchesCount : ++this.secondTeamMatchesCount
       );
     }
   }
