@@ -18,26 +18,29 @@
     </div>
 
     <div class="container py-6">
-        <button
-            pButton
-            label="Register for this tournament"
-            type="button"
-            class="p-button-info mb-4"
-            [routerLink]="['/tournaments', tournamentId,'register-for-tournament']"
-            *ngIf="isRegistrationActive"
-        ></button>
+        <ng-container *appRequiredRole="'player'">
+            <button
+                pButton
+                label="Register for this tournament"
+                type="button"
+                class="p-button-info mb-4"
+                [routerLink]="['/tournaments', tournamentId,'register-for-tournament']"
+                *ngIf="isRegistrationActive"
+            ></button>
         
-        <button
-            pButton 
-            label="Check in"
-            type="button" 
-            class="p-button-info mb-4 ml-4"
-            appIsUserCaptain
-            [tournament]="tournament"
-            [tournamentTeams]="tournamentTeams"
-            (click)="sendCheckInRequest()"
-            *ngIf="isCheckInActive"
-        ></button>
+            <button
+                pButton 
+                label="Check in"
+                type="button" 
+                class="p-button-info mb-4 ml-4"
+                appIsUserCaptain
+                [tournament]="tournament"
+                [tournamentTeams]="tournamentTeams"
+                (click)="sendCheckInRequest()"
+                *ngIf="isCheckInActive"
+            ></button>
+        </ng-container>
+        
         <p-tabView (onChange)="onTabChange()" [activeIndex]="0">
             <p-tabPanel header="Details">
                 <app-tournament-details-tab></app-tournament-details-tab>

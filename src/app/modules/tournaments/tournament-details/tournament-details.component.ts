@@ -47,7 +47,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     await this.getTournamentTeams();
     this.setCheckedIn();
     await this.setIsRegistrationActive();
-    this.setIsCheckInActive();
+    await this.setIsCheckInActive();
     this.store.dispatch(new SetTournament(this.tournament));
     await this.getImages();
   }
@@ -97,6 +97,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
         detail: `You have successfully checked in ${foundTournamentTeam.team.teamName}!`
       });
       await this.getTournamentTeams();
+      this.isCheckInActive = false;
       return;
     }
   }
@@ -138,7 +139,7 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     this.isRegistrationActive = isNowAfterStart && isNowBeforeEnd && this.checkedIn !== this.tournament.numberOfTeams;
   }
 
-  setIsCheckInActive() {
+  async setIsCheckInActive() {
     if (!this.currentUser) {
       return false;
     }
@@ -149,7 +150,15 @@ export class TournamentDetailsComponent implements OnInit, OnDestroy {
     const isNowAfterStart = isAfter(now, checkInOpenDate);
     const isNowBeforeEnd = isBefore(now, checkInCloseDate);
 
-    this.isCheckInActive = isNowAfterStart && isNowBeforeEnd;
+    const userTeams = await this.apiService.getUserTeams(this.currentUser.userId).catch(() => []);
+
+    let foundTeam;
+    this.tournamentTeams.forEach((team) => {
+      foundTeam = userTeams.find((value) => value.teamId === team.team.teamId && team.status === `verified`);
+    });
+
+
+    this.isCheckInActive = isNowAfterStart && isNowBeforeEnd && foundTeam;
   }
 
   async getTournamentTeams() {

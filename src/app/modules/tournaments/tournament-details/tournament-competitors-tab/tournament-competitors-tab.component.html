@@ -3,11 +3,11 @@
         <p-table
             [value]="teamsList"
             [paginator]="true"
-            [rows]="2"
+            [rows]="10"
             [showCurrentPageReport]="true"
             responsiveLayout="scroll"
             currentPageReportTemplate="{first}-{last} of {totalRecords}"
-            [rowsPerPageOptions]="[2,3,5]"
+            [rowsPerPageOptions]="[10,15,20]"
         >
             <ng-template pTemplate="header">
                 <tr>
@@ -23,7 +23,7 @@
                     <td class="flex flex-col">
                         {{ team.status | firstLetterUpperCase }}
                         <p>
-                            <strong>Verification date: </strong>{{ (team.verificationDate | date:'dd/MM/YYYY') || 'n/a' }}
+                            <strong>Verification date: </strong>{{ (team.verificationDate | date:'dd/MM/YYYY HH:mm') || 'n/a' }}
                         </p>
                     </td>
                     <td>

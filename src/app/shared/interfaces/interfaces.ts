@@ -410,6 +410,7 @@ export enum ReportStatus {
 
 export enum MatchStatus {
     SCHEDULED = `scheduled`,
+    RESOLVING = `resolving`,
     FINISHED = `finished`,
     CANCELLED = `cancelled`,
 }

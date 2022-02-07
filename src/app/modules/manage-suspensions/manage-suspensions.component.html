@@ -19,7 +19,7 @@
         *ngIf="suspensions.length > 0; else noData"
         [value]="suspensions"
         [paginator]="true"
-        [rows]="2"
+        [rows]="10"
         [showCurrentPageReport]="true"
         responsiveLayout="scroll"
         currentPageReportTemplate="{first}-{last} of {totalRecords}"

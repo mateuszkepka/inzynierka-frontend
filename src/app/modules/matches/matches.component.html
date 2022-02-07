@@ -33,8 +33,7 @@
                             *ngFor="let player of match.firstRoster.roster"
                         >
                             <p (click)="navigateToProfile(player)">
-                                {{ player.username }}
-    
+                                {{ player.username || "n/a" }}
                             </p>
                         </div>
 
@@ -64,7 +63,7 @@
                     <ng-container *ngIf="match.secondRoster">
                         <div class="py-4 player-link" *ngFor="let player of match.secondRoster.roster">
                             <p (click)="navigateToProfile(player)">
-                                {{ player.username }}
+                                {{ player.username || "n/a" }}
                             </p>
                         </div>
                     </ng-container>
@@ -86,27 +85,27 @@
                                     <div 
                                     *ngIf="player.performances && player.performances.length > 0" class="flex flex-row flex-wrap gap-4 py-4 border-b-2 border-gray-200 match">
                                         <p class="flex-item font-semibold">
-                                            {{ player.username }}
+                                            {{ player.username || "n/a" }}
                                         </p>
                                         <p class="flex-item">
                                             <strong>Score: </strong>
-                                            {{ player.performances[i].kills }}/{{ player.performances[i].deaths }}/{{ player.performances[i].assists }}
+                                            {{ player?.performances[i]?.kills || 0 }}/{{ player?.performances[i]?.deaths || 0 }}/{{ player?.performances[i]?.assists || 0 }}
                                         </p>
                                         
                                         <p class="flex-item">
                                             <strong>K/D/A ratio: </strong>
-                                            {{ ((player.performances[i].kills + player.performances[i].assists) / player.performances[i].deaths).toFixed(1) }}
+                                            {{ (((player?.performances[i]?.kills || 0) + (player?.performances[i]?.assists || 0)) / (player?.performances[i]?.deaths || 1)).toFixed(1) }}
                                         </p>
                                         <p class="flex-item"></p>
     
                                         <p class="flex-item">
                                             <strong>Minions: </strong>
-                                            {{ player.performances[i].creepScore || "n/a" }}
+                                            {{ player?.performances[i]?.creepScore || "n/a" }}
                                         </p>
     
                                         <p class="flex-item">
                                             <strong>Gold: </strong>
-                                            {{ player.performances[i].gold || "n/a" }}
+                                            {{ player?.performances[i]?.gold || "n/a" }}
                                         </p>
                                     </div>
                                 </ng-container>
@@ -119,17 +118,16 @@
                                         *ngIf="player.performances && player.performances.length > 0" 
                                         class="flex flex-row flex-wrap gap-4 p-4 border-b-2 border-gray-200 match">
                                         <p class="flex-item font-semibold">
-                                            {{ player.username }}
+                                            {{ player.username || "n/a" }}
                                         </p>
                                         <p class="flex-item">
                                             <strong>Score: </strong>
-                                            <ng-container *ngIf="player.performances[i]"></ng-container>
-                                            {{ player.performances[i].kills }}/{{ player.performances[i].deaths }}/{{ player.performances[i].assists }}
+                                            {{ player?.performances[i]?.kills || 0 }}/{{ player?.performances[i]?.deaths || 0 }}/{{ player?.performances[i]?.assists || 0 }}
                                         </p>
                                         
                                         <p class="flex-item">
                                             <strong>K/D/A ratio: </strong>
-                                            {{ ((player?.performances[i]?.kills + player?.performances[i]?.assists) / player?.performances[i]?.deaths).toFixed(1) || "n/a" }}
+                                            {{ (((player?.performances[i]?.kills || 0) + (player?.performances[i]?.assists || 0)) / (player?.performances[i]?.deaths || 1)).toFixed(1) }}
                                         </p>
                                         <p class="flex-item"></p>
     
