@@ -113,7 +113,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === match.firstRoster?.team?.teamId ? "Winners" : "Losers" }}</p>
+                                <p class="p-4 border-b-2 border-gray-200">{{ map.mapWinner === match.secondRoster?.team?.teamId ? "Winners" : "Losers" }}</p>
                                 <ng-container *ngFor="let player of match.secondRoster.roster">
                                     <div
                                         *ngIf="player.performances && player.performances.length > 0" 
@@ -123,23 +123,24 @@
                                         </p>
                                         <p class="flex-item">
                                             <strong>Score: </strong>
+                                            <ng-container *ngIf="player.performances[i]"></ng-container>
                                             {{ player.performances[i].kills }}/{{ player.performances[i].deaths }}/{{ player.performances[i].assists }}
                                         </p>
                                         
                                         <p class="flex-item">
                                             <strong>K/D/A ratio: </strong>
-                                            {{ ((player.performances[i].kills + player.performances[i].assists) / player.performances[i].deaths).toFixed(1) }}
+                                            {{ ((player?.performances[i]?.kills + player?.performances[i]?.assists) / player?.performances[i]?.deaths).toFixed(1) || "n/a" }}
                                         </p>
                                         <p class="flex-item"></p>
     
                                         <p class="flex-item">
                                             <strong>Minions: </strong>
-                                            {{ player.performances[i].creepScore || "n/a" }}
+                                            {{ player?.performances[i]?.creepScore || "n/a" }}
                                         </p>
     
                                         <p class="flex-item">
                                             <strong>Gold: </strong>
-                                            {{ player.performances[i].gold || "n/a" }}
+                                            {{ player?.performances[i]?.gold || "n/a" }}
                                         </p>
                                     </div>
                                 </ng-container>

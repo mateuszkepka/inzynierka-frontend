@@ -43,8 +43,6 @@
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
-                    [defaultDate]="registerStartMinDate"
-                    [minDate]="registerStartMinDate"
                     [todayButtonStyleClass]="'todayButton'"
                 ></p-calendar>
             </div>
@@ -66,8 +64,6 @@
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
-                    [minDate]="registerEndMinDate"
-                    [defaultDate]="registerEndMinDate"
                     [disabled]="!form.value.registerStartDate"
                     [todayButtonStyleClass]="'todayButton'"
                 ></p-calendar>
@@ -90,8 +86,6 @@
                     dateFormat="yy-mm-dd"
                     showTime="true"
                     hourFormat="24"
-                    [minDate]="tournamentStartMinDate"
-                    [defaultDate]="tournamentStartMinDate"
                     [disabled]="!form.value.registerEndDate"
                     [todayButtonStyleClass]="'todayButton'"
                 ></p-calendar>
