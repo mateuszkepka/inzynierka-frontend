@@ -108,23 +108,27 @@ export class TournamentAdministratorsTabComponent implements OnInit, OnDestroy, 
   }
 
   async removeAdmin(admin: User) {
-    const removeAdminResponse = await this.apiService.removeAdmin(this.tournamentId, admin.userId).catch(() => false as const);
-
-    let severity = `error`;
-    let summary = `Error!`;
-    let detail = `Something went wrong when removing admin! Try again.`;
+    const removeAdminResponse = await this.apiService.removeAdmin(this.tournamentId, admin.userId).catch((err) => {
+      const severity = `error`;
+      const summary = `Error!`;
+      const detail = `${err.error.message}`;
+      this.notificationsService.addNotification({
+        severity,
+        summary,
+        detail
+      });
+    });
 
     if (removeAdminResponse) {
-      severity = `success`;
-      summary = `Success!`;
-      detail = `Admin has been removed`;
+      const severity = `success`;
+      const summary = `Success!`;
+      const detail = `Admin has been removed`;
       await this.getAdministratorsList();
+      this.notificationsService.addNotification({
+        severity,
+        summary,
+        detail
+      });
     }
-
-    this.notificationsService.addNotification({
-      severity,
-      summary,
-      detail
-    });
   }
 }

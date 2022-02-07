@@ -44,10 +44,12 @@ export class ResolveMatchesComponent implements OnInit, OnDestroy {
   }
 
   async getMatches() {
-    this.matches = await this.apiService.getUserMatches(
+    const scheduledMatches = await this.apiService.getUserMatches(
       this.currentUser.userId,
       MatchStatus.SCHEDULED
     ).catch(() => []);
+
+    console.log(`SCHEDULED MATCHES`, scheduledMatches);
   }
 
 
