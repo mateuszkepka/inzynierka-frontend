@@ -44,6 +44,8 @@
                     showTime="true"
                     hourFormat="24"
                     [todayButtonStyleClass]="'todayButton'"
+                    [defaultDate]="registerStartMinDate"
+                    [minDate]="registerStartMinDate"
                 ></p-calendar>
             </div>
             <small 
@@ -66,6 +68,8 @@
                     hourFormat="24"
                     [disabled]="!form.value.registerStartDate"
                     [todayButtonStyleClass]="'todayButton'"
+                    [minDate]="registerEndMinDate"
+                    [defaultDate]="registerEndMinDate"
                 ></p-calendar>
             </div>
             <small 
@@ -88,12 +92,14 @@
                     hourFormat="24"
                     [disabled]="!form.value.registerEndDate"
                     [todayButtonStyleClass]="'todayButton'"
+                    [minDate]="tournamentStartMinDate"
+                    [defaultDate]="tournamentStartMinDate"
                 ></p-calendar>
                 
             </div>
             <small 
                 class="p-error" 
-                *ngIf="form.controls.tournamentStartDate.dirty && form.controls.tournamentStartDate.invalid"
+                *ngIf="form.controls.tournamentStartDate.dirty && form.controls.tournamentStartDate.invalid && !form.controls.tournamentStartDate?.errors['tournamentStartDate']"
             >
                 Value required
             </small>
@@ -103,20 +109,6 @@
             >
                 {{ form.controls.tournamentStartDate?.errors['tournamentStartDate'] ? 'Tournament must start at least 40 minutes after registration end': 'Value required' }}
             </small>
-
-            <div class="p-field w-full">
-                <label for="endingHour">Enter matches ending hour<abbr>*</abbr></label>
-                <p-calendar
-                    formControlName="endingHour"
-                    inputId="endingHour" 
-                    placeholder="Enter ending hour" 
-                    [required]="true"
-                    showTime="true"
-                    hourFormat="24"
-                    [timeOnly]="true"
-                    [stepMinute]="30"
-                ></p-calendar>
-            </div>
 
             <span class="p-field w-full">
                 <label for="format">Select games format <abbr>*</abbr></label>
@@ -245,6 +237,26 @@
                 *ngIf="form.controls.numberOfMaps.dirty && form.controls.numberOfMaps.invalid"
             >
                 Value required
+            </small>
+            
+            <div class="p-field w-full">
+                <label for="endingHour">Enter matches ending hour<abbr>*</abbr></label>
+                <p-calendar
+                    formControlName="endingHour"
+                    inputId="endingHour" 
+                    placeholder="Enter ending hour" 
+                    [required]="true"
+                    showTime="true"
+                    hourFormat="24"
+                    [timeOnly]="true"
+                    [stepMinute]="30"
+                ></p-calendar>
+            </div>
+            <small 
+                class="p-error" 
+                *ngIf="form.controls.endingHour.dirty && form.controls.endingHour.invalid"
+            >
+                {{ form.controls.endingHour?.errors['endingHour'] ? form.controls.endingHour?.errors['endingHour'].value: 'Value required' }}
             </small>
 
             <div formGroupName="prize" class="w-full">

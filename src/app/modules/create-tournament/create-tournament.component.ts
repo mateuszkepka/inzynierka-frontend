@@ -91,11 +91,11 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         numberOfPlayers: new FormControl(null, [Validators.required]),
         numberOfTeams: new FormControl(null, [Validators.required, this.teamsNumberValidator()]),
         numberOfMaps: new FormControl(null, [Validators.required]),
-        registerStartDate: new FormControl(addMinutes(new Date(), 5), [Validators.required]),
-        registerEndDate: new FormControl(null, [Validators.required]),
-        tournamentStartDate: new FormControl(null, [Validators.required]),
+        registerStartDate: new FormControl(addMinutes(new Date(), 5), [Validators.required, this.registerStartDateValidator()]),
+        registerEndDate: new FormControl(null, [Validators.required, this.registerEndDateValidator()]),
+        tournamentStartDate: new FormControl(null, [Validators.required, this.tournamentStartDateValidator()]),
         numberOfGroups: new FormControl(null, [this.groupsNumberValidator()]),
-        endingHour: new FormControl(this.endingHour, [Validators.required]),
+        endingHour: new FormControl(this.endingHour, [Validators.required, this.endingHourValidator()]),
         description: new FormControl(``, [Validators.required]),
         format: new FormControl(``, [Validators.required]),
         prize: new FormGroup({
@@ -378,6 +378,39 @@ export class CreateTournamentComponent implements OnInit, OnDestroy {
         }
     };
   }
+
+  endingHourValidator(): ValidatorFn {
+      return (control: AbstractControl): ValidationErrors | null => {
+          if (!this.form) {
+              return;
+          }
+
+          if (!control.value) {
+              return;
+          }
+          const tournamentStartDate = cloneDeep(this.form.value.tournamentStartDate);
+
+          if (!tournamentStartDate) {
+              return;
+          }
+
+          if (!this.form.value.numberOfMaps) {
+              return;
+          }
+
+          const tournamentEndDate = cloneDeep(tournamentStartDate);
+          tournamentEndDate.setUTCHours(control.value.getUTCHours());
+          tournamentEndDate.setUTCMinutes(control.value.getUTCMinutes());
+
+          if (Math.abs(tournamentStartDate.getTime() - tournamentEndDate.getTime()) < 3600000 * this.form.value.numberOfMaps) {
+            return {
+                endingHour: {
+                    value: `Difference between start and end of the tournament must be greater than ${this.form.value.numberOfMaps} hours`
+                }
+            };
+        }
+      };
+    }
 
   clearNumbers() {
       this.form.controls.numberOfGroups.reset();
