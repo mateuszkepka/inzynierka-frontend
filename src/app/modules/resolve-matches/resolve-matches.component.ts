@@ -49,15 +49,15 @@ export class ResolveMatchesComponent implements OnInit, OnDestroy {
       MatchStatus.SCHEDULED
     ).catch(() => []);
 
-    const resolvingMatches = await this.apiService.getUserMatches(
-      this.currentUser.userId,
-      MatchStatus.RESOLVING
-    ).catch(() => []);
+    // const resolvingMatches = await this.apiService.getUserMatches(
+    //   this.currentUser.userId,
+    //   MatchStatus.RESOLVING
+    // ).catch(() => []);
 
 
     this.matches = [
       ...scheduledMatches,
-      ...resolvingMatches
+      // ...resolvingMatches
     ];
   }
 }
